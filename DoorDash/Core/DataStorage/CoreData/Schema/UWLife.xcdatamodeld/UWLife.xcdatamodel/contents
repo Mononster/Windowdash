@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="UWLife">
+    <entity name="PSChatChannel" representedClassName="PSChatChannel" syncable="YES">
+        <attribute name="createdTimestamp" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="creatorID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastMessage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastMessageTimestamp" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="roomID" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PSChatMessage" inverseName="channel" inverseEntity="PSChatMessage" syncable="YES"/>
+        <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PSUser" inverseName="channels" inverseEntity="PSUser" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="roomID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="PSChatImageModel" representedClassName="PSChatImageModel" syncable="YES">
+        <attribute name="highQualityURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageHeight" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="imageID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageWidth" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="thumbURL" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PSChatMessage" inverseName="imageModel" inverseEntity="PSChatMessage" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="imageID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="PSChatMessage" representedClassName="PSChatMessage" syncable="YES">
+        <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="messageID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="receiverID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="senderID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sentStatus" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timeIntervalSince1970" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="typeString" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="channel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PSChatChannel" inverseName="messages" inverseEntity="PSChatChannel" syncable="YES"/>
+        <relationship name="imageModel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PSChatImageModel" inverseName="message" inverseEntity="PSChatImageModel" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="messageID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="PSUser" representedClassName="PSUser" syncable="YES">
+        <attribute name="avatarDownloadURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="avatarStorageRef" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isCurrent" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isEmailVerified" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="mobilePhoneNumber" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="remoteID" attributeType="String" syncable="YES"/>
+        <relationship name="channels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PSChatChannel" inverseName="users" inverseEntity="PSChatChannel" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="remoteID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <elements>
+        <element name="PSChatChannel" positionX="0" positionY="108" width="128" height="150"/>
+        <element name="PSChatImageModel" positionX="54" positionY="207" width="128" height="135"/>
+        <element name="PSChatMessage" positionX="27" positionY="153" width="128" height="195"/>
+        <element name="PSUser" positionX="-36" positionY="9" width="128" height="180"/>
+    </elements>
+</model>

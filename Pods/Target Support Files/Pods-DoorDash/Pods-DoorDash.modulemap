@@ -1,0 +1,6 @@
+framework module Pods_DoorDash {
+  umbrella header "Pods-DoorDash-umbrella.h"
+
+  export *
+  module * { export * }
+}

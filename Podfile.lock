@@ -1,0 +1,75 @@
+PODS:
+  - Alamofire (4.7.3)
+  - Cache (5.1.0)
+  - FLAnimatedImage (1.0.12)
+  - GoogleMaps (2.7.0):
+    - GoogleMaps/Maps (= 2.7.0)
+  - GoogleMaps/Base (2.7.0)
+  - GoogleMaps/Maps (2.7.0):
+    - GoogleMaps/Base
+  - GooglePlaces (2.7.0):
+    - GoogleMaps/Base (= 2.7.0)
+  - IGListKit (3.4.0):
+    - IGListKit/Default (= 3.4.0)
+  - IGListKit/Default (3.4.0):
+    - IGListKit/Diffing
+  - IGListKit/Diffing (3.4.0)
+  - KeychainAccess (3.1.1)
+  - ObjcExceptionBridging (1.0.1):
+    - ObjcExceptionBridging/ObjcExceptionBridging (= 1.0.1)
+  - ObjcExceptionBridging/ObjcExceptionBridging (1.0.1)
+  - SDWebImage (4.4.2):
+    - SDWebImage/Core (= 4.4.2)
+  - SDWebImage/Core (4.4.2)
+  - SnapKit (4.0.0)
+  - SwiftyJSON (4.1.0)
+  - XCGLogger (6.0.4):
+    - XCGLogger/Core (= 6.0.4)
+  - XCGLogger/Core (6.0.4):
+    - ObjcExceptionBridging
+
+DEPENDENCIES:
+  - Alamofire
+  - Cache
+  - FLAnimatedImage (~> 1.0)
+  - GoogleMaps
+  - GooglePlaces
+  - IGListKit
+  - KeychainAccess
+  - SDWebImage (~> 4.0)
+  - SnapKit
+  - SwiftyJSON
+  - XCGLogger
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - Cache
+    - FLAnimatedImage
+    - GoogleMaps
+    - GooglePlaces
+    - IGListKit
+    - KeychainAccess
+    - ObjcExceptionBridging
+    - SDWebImage
+    - SnapKit
+    - SwiftyJSON
+    - XCGLogger
+
+SPEC CHECKSUMS:
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  Cache: 7737c595aae7d94c7c0feca2c887288624e3b07e
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
+  GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
+  GooglePlaces: 3d06e6c99654545b4738ce49648745779c25f2ef
+  IGListKit: 7a5d788e9fb746bcd402baa8e8b24bc3bd2a5a07
+  KeychainAccess: 7bd430028059754a3debab3cfc0bd1fc7fb85df3
+  ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+  SnapKit: a42d492c16e80209130a3379f73596c3454b7694
+  SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
+  XCGLogger: 4fc1bc0bdd5828cb8dc8da7a843536cda1bea8f3
+
+PODFILE CHECKSUM: af0f2fb057a8ad7b68d66f965c8b4c6a5c6c433f
+
+COCOAPODS: 1.5.3
