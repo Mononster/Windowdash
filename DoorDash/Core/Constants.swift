@@ -8,7 +8,14 @@
 
 import Foundation
 
-enum APIConstants {
+enum Constants {
+
+    public enum API {
+        public enum Endpoint: String {
+            case latest = "https://api-latest.doordash.com/"
+            case production = "https://api.doordash.com/"
+        }
+    }
 
     enum GoogleMapsKey: String {
         case release = "AIzaSyCuMvN-uULAK0AGqUyfqwzAD78t5trETOo"

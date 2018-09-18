@@ -12,12 +12,12 @@ import UIKit
 class AppCoordinator: Coordinator {
 
     let router: Router
-    let navigationController: MainNavigationController
+    let navigationController: DoorDashNavigationController
 
     private var appTracker = AppTracker()
     var coordinators: [Coordinator] = []
 
-    init(navigationController: MainNavigationController,
+    init(navigationController: DoorDashNavigationController,
          router: Router) {
         self.router = router
         self.navigationController = navigationController
@@ -27,8 +27,8 @@ class AppCoordinator: Coordinator {
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         appTracker.start()
-        resetToWelcomeScreen()
-        showContents()
+        showOnboarding()
+        //showContents()
     }
 
     func toPresentable() -> UIViewController {
@@ -44,21 +44,30 @@ class AppCoordinator: Coordinator {
         addCoordinator(coordinator)
     }
 
-    func handleNotifications() {
-        UIApplication.shared.applicationIconBadgeNumber = 0
+    func showOnboarding() {
+        let coordinator = OnboardingCoordinator(router: Router())
+        coordinator.delegate = self
+        coordinator.start()
+        addCoordinator(coordinator)
+        self.router.present(coordinator, animated: false)
     }
 
-    func resetToWelcomeScreen() {
-
+    func handleNotifications() {
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
 
     @objc func reset() {
         coordinators.removeAll()
         navigationController.dismiss(animated: true, completion: nil)
-        resetToWelcomeScreen()
     }
 
     func didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: Data) {
 
+    }
+}
+
+extension AppCoordinator: OnboardingCoordinatorDelegate {
+    func didLoggedin(in coordinator: OnboardingCoordinator) {
+        removeCoordinator(coordinator)
     }
 }

@@ -12,6 +12,7 @@ target 'DoorDash' do
   pod 'IGListKit'
   pod 'Cache'
   pod 'Alamofire'
+  pod 'Moya', '~> 11.0'
   pod 'SwiftyJSON'
   pod 'XCGLogger'
   pod 'KeychainAccess'

@@ -8,13 +8,13 @@
 
 import UIKit
 
-typealias TabConfig = (ESTabBarItemContentView, String, UIImage, UIImage)
+typealias TabConfig = (String, UIImage)
 
 protocol MainTabBarControllerDelegate: class {
-    func startPostingCoordinator()
+    
 }
 
-class MainTabBarController: ESTabBarController {
+class MainTabBarController: UITabBarController {
 
     weak var tabBarDelegate: MainTabBarControllerDelegate?
 
@@ -22,19 +22,11 @@ class MainTabBarController: ESTabBarController {
         super.viewDidLoad()
         self.tabBar.backgroundColor = .white
         self.tabBar.isTranslucent = false
+        self.tabBar.tintColor = ApplicationDependency.manager.theme.colors.doorDashRed
         setup()
     }
 
     private func setup() {
-        shouldHijackHandler = { _, _, index in
-            if index == 2 {
-                return true
-            }
-            return false
-        }
 
-        didHijackHandler = { _, _, _ in
-            self.tabBarDelegate?.startPostingCoordinator()
-        }
     }
 }

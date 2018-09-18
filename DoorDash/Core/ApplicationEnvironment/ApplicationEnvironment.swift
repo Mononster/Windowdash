@@ -40,6 +40,7 @@ struct ApplicationEnvironment {
             dataStore: dataStore,
             mainBundle: mainBundle,
             authToken: authToken,
+            networkConfig: ApplicationEnvironment.current.networkConfig ,
             currentUser: currentUser)
 
         if currentUser != currentActiveUser {

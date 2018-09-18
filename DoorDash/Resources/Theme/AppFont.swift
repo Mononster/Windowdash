@@ -8,151 +8,189 @@
 
 import UIKit
 
-enum FontSize {
-    case small
-    case regular
-    case medium
-    case large
-    case custom(size: CGFloat)
-}
-
 enum FontStyle {
-    case light
     case regular
-    case medium
     case bold
+    case semiBold
+    case medium
+    case light
     case heavy
 }
 
 protocol FontSchema {
-    var smallBold: UIFont { get }
-    var small: UIFont { get }
-    var regular: UIFont { get }
-    var regularBold: UIFont { get }
-    var regularMedium: UIFont { get }
-    var medium: UIFont { get }
-    var mediumMedium: UIFont { get }
-    var mediumBold: UIFont { get }
-    var large: UIFont { get }
-    var extraLargeMedium: UIFont { get }
-    var largeMedium: UIFont { get }
-    var navBarTitle: UIFont { get }
-    var labelHeaderText: UIFont { get }
-    var signupButtonText: UIFont { get }
-    var signupTitleText: UIFont { get }
-    var signupTextFieldInput: UIFont { get }
-    var chatChannelInputTextViewFont: UIFont { get }
-    var emojiSendButtonFont: UIFont { get }
-    var priceBoldFont: UIFont { get }
-    var statusTitleFont: UIFont { get }
-    var expandableDetailDescriptionFont: UIFont { get }
-    var expandableDescriptionTruncationTokenFont: UIFont { get }
-    var timelineTitleFont: UIFont { get }
+    /* Basic fonts */
+    var regular10: UIFont { get }
+    var regular12: UIFont { get }
+    var regular14: UIFont { get }
+    var regular16: UIFont { get }
+    var regular18: UIFont { get }
+    var regular24: UIFont { get }
+    var medium10: UIFont { get }
+    var medium12: UIFont { get }
+    var medium13: UIFont { get }
+    var medium14: UIFont { get }
+    var medium15: UIFont { get }
+    var medium16: UIFont { get }
+    var medium18: UIFont { get }
+    var medium24: UIFont { get }
+    var semiBold12: UIFont { get }
+    var semiBold14: UIFont { get }
+    var semiBold16: UIFont { get }
+    var semiBold17: UIFont { get }
+    var semiBold42: UIFont { get }
+    var bold12: UIFont { get }
+    var bold14: UIFont { get }
+    var bold16: UIFont { get }
+    var bold18: UIFont { get }
+    var bold20: UIFont { get }
+    var bold24: UIFont { get }
+    var bold30: UIFont { get }
+    var bold32: UIFont { get }
+    var bold40: UIFont { get }
+    var heavy12: UIFont { get }
+    var heavy18: UIFont { get }
+
+    /* Font templates */
+    var titleRegular: UIFont { get }
+    var agreementLabelFont: UIFont { get }
 }
 
 struct DefaultFontSchema: FontSchema {
-
-    var smallBold: UIFont {
-        return font(style: .bold, size: .small)
+    /* Basic fonts */
+    var regular10: UIFont {
+        return font(size: 10)
     }
 
-    var small: UIFont {
-        return font(size: .small)
+    var regular12: UIFont {
+        return font(size: 12)
     }
 
-    var regular: UIFont {
-        return font(size: .regular)
+    var regular14: UIFont {
+        return font(size: 14)
     }
 
-    var regularMedium: UIFont {
-        return font(style: .medium, size: .regular)
+    var regular16: UIFont {
+        return font(size: 16)
     }
 
-    var regularBold: UIFont {
-        return font(style: .bold, size: .regular)
+    var regular18: UIFont {
+        return font(size: 18)
     }
 
-    var medium: UIFont {
-        return font(size: .medium)
+    var regular24: UIFont {
+        return font(size: 24)
     }
 
-    var mediumMedium: UIFont {
-        return font(style: .medium, size: .medium)
+    var medium10: UIFont {
+        return font(style: .medium, size: 10)
     }
 
-    var mediumBold: UIFont {
-        return font(style: .bold, size: .medium)
+    var medium12: UIFont {
+        return font(style: .medium, size: 12)
     }
 
-    var large: UIFont {
-        return font(size: .large)
+    var medium13: UIFont {
+        return font(style: .medium, size: 13)
     }
 
-    var extraLargeMedium: UIFont {
-        return font(style: .medium, size: .custom(size: 22))
+    var medium14: UIFont {
+        return font(style: .medium, size: 14)
     }
 
-    var largeMedium: UIFont {
-        return font(style: .medium, size: .custom(size: 18))
+    var medium15: UIFont {
+        return font(style: .medium, size: 15)
+    }
+    
+    var medium16: UIFont {
+        return font(style: .medium, size: 16)
     }
 
-    var priceBoldFont: UIFont {
-        return font(style: .bold, size: .custom(size: 19))
+    var medium18: UIFont {
+        return font(style: .medium, size: 18)
     }
 
-    var navBarTitle: UIFont {
-        return font(size: .medium)
+    var medium24: UIFont {
+        return font(style: .medium, size: 24)
     }
 
-    var signupButtonText: UIFont {
-        return font(size: .custom(size: 14.0))
+    var semiBold12: UIFont {
+        return font(style: .semiBold, size: 12)
     }
 
-    var labelHeaderText: UIFont {
-        return font(size: .custom(size: 14.0))
+    var semiBold14: UIFont {
+        return font(style: .semiBold, size: 14)
     }
 
-    var signupTitleText: UIFont {
-        return font(size: .custom(size: 24.0))
+    var semiBold16: UIFont {
+        return font(style: .semiBold, size: 16)
     }
 
-    var signupTextFieldInput: UIFont {
-        return font(size: .custom(size: 20.0))
+    var semiBold17: UIFont {
+        return font(style: .semiBold, size: 17)
+    }
+    
+    var semiBold42: UIFont {
+        return font(style: .semiBold, size: 42)
     }
 
-    var continueButtonText: UIFont {
-        return font(size: .custom(size: 15.0))
+    var bold12: UIFont {
+        return font(style: .bold, size: 12)
     }
 
-    var chatChannelInputTextViewFont: UIFont {
-        return font(size: .custom(size: 17.0))
+    var bold14: UIFont {
+        return font(style: .bold, size: 14)
     }
 
-    var emojiSendButtonFont: UIFont {
-        return font(size: .custom(size: 14.0))
+    var bold16: UIFont {
+        return font(style: .bold, size: 16)
     }
 
-    var statusTitleFont: UIFont {
-        return font(style: .medium, size: .custom(size: 20))
+    var bold18: UIFont {
+        return font(style: .bold, size: 18)
     }
 
-    var expandableDetailDescriptionFont: UIFont {
-        return font(size: .custom(size: 15))
+    var bold20: UIFont {
+        return font(style: .bold, size: 20)
     }
 
-    var expandableDescriptionTruncationTokenFont: UIFont {
-        return font(size: .custom(size: 14))
+    var bold24: UIFont {
+        return font(style: .bold, size: 24)
     }
 
-    var timelineTitleFont: UIFont {
-        return font(style: .regular, size: .custom(size: 15))
+    var bold30: UIFont {
+        return font(style: .bold, size: 30)
     }
 
-    private func font(size: FontSize) -> UIFont {
+    var bold32: UIFont {
+        return font(style: .bold, size: 32)
+    }
+
+    var bold40: UIFont {
+        return font(style: .bold, size: 40)
+    }
+
+    var heavy12: UIFont {
+        return font(style: .heavy, size: 12)
+    }
+
+    var heavy18: UIFont {
+        return font(style: .heavy, size: 18)
+    }
+
+    /* Font templates */
+    var titleRegular: UIFont {
+        return bold24
+    }
+
+    var agreementLabelFont: UIFont {
+        return font(style: .medium, size: 13.2)
+    }
+
+    private func font(size: CGFloat) -> UIFont {
         return font(style: .regular, size: size)
     }
 
-    private func font(style: FontStyle, size: FontSize) -> UIFont {
+    private func font(style: FontStyle, size: CGFloat) -> UIFont {
         var weight: UIFont.Weight
         switch style {
         case .bold:
@@ -163,23 +201,11 @@ struct DefaultFontSchema: FontSchema {
             weight = .medium
         case .light:
             weight = .light
+        case .semiBold:
+            weight = .semibold
         case .heavy:
             weight = .heavy
         }
-
-        var fontSize: CGFloat
-        switch size {
-        case .small:
-            fontSize = 10.0
-        case .regular:
-            fontSize = 12.6
-        case .medium:
-            fontSize = 16.0
-        case .large:
-            fontSize = 19
-        case .custom(let size):
-            fontSize = size
-        }
-        return UIFont.systemFont(ofSize: fontSize, weight: weight)
+        return UIFont.systemFont(ofSize: size, weight: weight)
     }
 }

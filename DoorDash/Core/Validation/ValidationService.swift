@@ -98,7 +98,7 @@ extension ValidationServiceType where Value == String {
         guard let trimmedString = maybeTrimmedString, !trimmedString.isEmpty else {
             return .failed(message: NSLocalizedString("password_validation_failed", comment: ""))
         }
-        guard trimmedString.count >= 6 else {
+        guard trimmedString.count >= 8 else {
             return .failed(message: NSLocalizedString("password_validation_failed", comment: ""))
         }
 
@@ -174,3 +174,42 @@ func ==(lhs: AccountValidationResult, rhs: AccountValidationResult) -> Bool {
         return false
     }
 }
+
+
+final class EmailValidationService: ValidationServiceType {
+
+    func validate(_ value: String?, completion: @escaping (ValidationResult<String>) -> ()) {
+        guard let notNilValue = value, !notNilValue.isEmpty else {
+            completion(.empty)
+            return
+        }
+
+        guard !notNilValue.containsWhitespace else {
+            completion(.failed(message: NSLocalizedString("email_validation_failed", comment: "")))
+            return
+        }
+
+        guard notNilValue.components(separatedBy: "@").count <= 2 else {
+            completion(.failed(message: NSLocalizedString("email_validation_failed", comment: "")))
+            return
+        }
+        // swiftlint:disable line_length
+        let regex = "[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$" // Just do a simple client validation
+        // swiftlint:enable line_length
+        guard NSPredicate(format: "SELF MATCHES %@", regex).evaluate(with: notNilValue) else {
+            completion(.failed(message: NSLocalizedString("email_validation_failed", comment: "")))
+            return
+        }
+
+        completion(.ok(""))
+    }
+}
+
+final class PasswordValidationService: ValidationServiceType {
+
+    func validate(_ value: String?, completion: @escaping (ValidationResult<String>) -> ()) {
+        completion(validatePassword(value))
+    }
+}
+
+

@@ -15,7 +15,7 @@ final class ApplicationDependency {
 
     let theme = Theme()
     lazy var coordinator: AppCoordinator = {
-        let navigationController = MainNavigationController()
+        let navigationController = DoorDashNavigationController()
         let router = Router(navigationController: navigationController)
         return AppCoordinator(navigationController: navigationController,
                               router: router)

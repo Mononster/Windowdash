@@ -40,6 +40,7 @@ struct Environment {
     let mainBundle: BundleType
     let authToken: AuthTokenType?
     var currentUser: User?
+    let networkConfig: NetworkConfigurationType
 
     init(type: EnvironmentType,
          googleMapsAPIKey: String,
@@ -48,6 +49,7 @@ struct Environment {
          dataStore: DataStoreType = DataStore(),
          mainBundle: BundleType = Bundle.main,
          authToken: AuthTokenType? = nil,
+         networkConfig: NetworkConfigurationType,
          currentUser: User? = nil) {
 
         self.type = type
@@ -57,15 +59,22 @@ struct Environment {
         self.securityStorage = securityStorage
         self.mainBundle = mainBundle
         self.authToken = authToken
+        self.networkConfig = networkConfig
         self.currentUser = currentUser
     }
 
-    static let production: Environment = Environment(type: .production,
-                                                     googleMapsAPIKey: APIConstants.GoogleMapsKey.release.rawValue)
+    static let production: Environment = Environment(
+        type: .production,
+        googleMapsAPIKey: Constants.GoogleMapsKey.release.rawValue,
+        networkConfig: NetworkConfiguration.production
+    )
 
     // TODO: Change to debug key when debug key is set up
-    static let latest: Environment = Environment(type: .latest,
-                                                 googleMapsAPIKey: APIConstants.GoogleMapsKey.release.rawValue)
+    static let latest: Environment = Environment(
+        type: .latest,
+        googleMapsAPIKey: Constants.GoogleMapsKey.release.rawValue,
+        networkConfig: NetworkConfiguration.latest
+    )
 
     public static let `default`: Environment = .production
 
@@ -88,6 +97,7 @@ struct Environment {
                            dataStore: dataStore,
                            mainBundle: mainBundle,
                            authToken: token,
+                           networkConfig: networkConfig,
                            currentUser: currentUser)
     }
 
@@ -99,6 +109,7 @@ struct Environment {
                            dataStore: dataStore,
                            mainBundle: mainBundle,
                            authToken: nil,
+                           networkConfig: networkConfig,
                            currentUser: nil)
     }
 

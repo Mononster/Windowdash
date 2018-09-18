@@ -8,15 +8,15 @@
 
 import UIKit
 
-class ContentCoordinator: Coordinator {
+final class ContentCoordinator: Coordinator {
 
     let router: Router
     var coordinators: [Coordinator] = []
-    var tabConfigs: [TabConfig] = []
-    let appTracker: AppTracker
 
-    let numOfChildren = 5
-    let childrenTitle = ["Home", "Match", "Post", "Chat", "Me"]
+    private var tabConfigs: [TabConfig] = []
+    private let appTracker: AppTracker
+    private let numOfChildren = 5
+    private let childrenTitle = ["Food", "Drinks", "Search", "Orders", "Account"]
 
     var tabBarController: MainTabBarController? {
         return self.router.rootViewController as? MainTabBarController
@@ -40,88 +40,82 @@ class ContentCoordinator: Coordinator {
 
 extension ContentCoordinator {
 
-    func setupTabConfigs() {
+    private func setupTabConfigs() {
         let imageTheme = ApplicationDependency.manager.theme.imageAssets
-        tabConfigs.append((BounceContentView(), childrenTitle[0], imageTheme.tabBarHomeNormal, imageTheme.tabBarHomeSelected))
-        tabConfigs.append((BounceContentView(), childrenTitle[1], imageTheme.tabBarDiscoverNormal, imageTheme.tabBarDiscoverSelected))
-        tabConfigs.append((IrregularityContentView(), childrenTitle[2], imageTheme.tabBarComposeAddIcon, imageTheme.tabBarComposeAddIcon))
-        tabConfigs.append((BounceContentView(), childrenTitle[3], imageTheme.tabBarMessageNormal, imageTheme.tabBarMessageSelected))
-        tabConfigs.append((BounceContentView(), childrenTitle[4], imageTheme.tabBarProfileNormal, imageTheme.tabBarProfileSelected))
+        for (i, title) in childrenTitle.enumerated() {
+            tabConfigs.append((title, imageTheme.tabbarImages[i]))
+        }
     }
 
-    func setupTabbar() {
-        let v1 = HomeViewController()
-        let v2 = DiscoverViewController()
+    private func setupTabbar() {
+        let v1 = BrowseFoodViewController()
+        let v2 = UIViewController()
         let v3 = UIViewController()
-        let v4 = MessageViewController()
-        let v5 = ProfileHomeViewController()
+        let v4 = UIViewController()
+        let v5 = UIViewController()
         let controllers = [v1, v2, v3, v4, v5]
-
         for (index, vc) in controllers.enumerated(){
             let config = tabConfigs[index]
-            vc.tabBarItem = ESTabBarItem.init(config.0, title: config.1, image: config.2, selectedImage: config.3)
-            vc.tabBarItem.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -3)
-            vc.navigationItem.title = config.1
+            vc.navigationItem.title = config.0
+            vc.tabBarItem.image = config.1
+            vc.tabBarItem.title = config.0
+            vc.tabBarItem.setTitleTextAttributes(
+                [NSAttributedString.Key.font: ApplicationDependency.manager.theme.fontSchema.regular10,
+                 NSAttributedString.Key.foregroundColor:
+                    ApplicationDependency.manager.theme.colors.doorDashGray
+                ],
+                for: .normal
+            )
+            vc.tabBarItem.setTitleTextAttributes(
+                [NSAttributedString.Key.font: ApplicationDependency.manager.theme.fontSchema.medium16,
+                 NSAttributedString.Key.foregroundColor:
+                    ApplicationDependency.manager.theme.colors.doorDashRed
+                ],
+                for: .selected
+            )
         }
 
-        let homeTabCoordinator = HomeTabCoordinator(
+        let browseFoodTabCoordinator = BrowseFoodTabCoordinator(
             rootViewController: v1,
             router: Router()
         )
-        homeTabCoordinator.start()
-        addCoordinator(homeTabCoordinator)
-
-        let discoverTabCoordinator = DiscoverTabCoordinator(
-            rootViewController: v2,
-            router: Router()
-        )
-        discoverTabCoordinator.start()
-        addCoordinator(discoverTabCoordinator)
-
-        let messageTabCoordinator = MessageTabCoordinator(
-            rootViewController: v4,
-            router: Router()
-        )
-        messageTabCoordinator.start()
-        addCoordinator(messageTabCoordinator)
-
-        let profileTabCoordinator = ProfileTabCoordinator(
-            rootViewController: v5,
-            router: Router()
-        )
-        profileTabCoordinator.start()
-        addCoordinator(profileTabCoordinator)
+        browseFoodTabCoordinator.start()
+        addCoordinator(browseFoodTabCoordinator)
+//
+//        let discoverTabCoordinator = DiscoverTabCoordinator(
+//            rootViewController: v2,
+//            router: Router()
+//        )
+//        discoverTabCoordinator.start()
+//        addCoordinator(discoverTabCoordinator)
+//
+//        let messageTabCoordinator = MessageTabCoordinator(
+//            rootViewController: v4,
+//            router: Router()
+//        )
+//        messageTabCoordinator.start()
+//        addCoordinator(messageTabCoordinator)
+//
+//        let profileTabCoordinator = ProfileTabCoordinator(
+//            rootViewController: v5,
+//            router: Router()
+//        )
+//        profileTabCoordinator.start()
+//        addCoordinator(profileTabCoordinator)
 
         let tabBarController = MainTabBarController()
         tabBarController.tabBarDelegate = self
         tabBarController.viewControllers = [
-            homeTabCoordinator.toPresentable(),
-            discoverTabCoordinator.toPresentable(),
+            browseFoodTabCoordinator.toPresentable(),
+            v2,
             v3,
-            messageTabCoordinator.toPresentable(),
-            profileTabCoordinator.toPresentable()
+            v4,
+            v5
         ]
-
         self.router.setRootModule(tabBarController, hideBar: true)
     }
 }
 
 extension ContentCoordinator: MainTabBarControllerDelegate {
 
-    func startPostingCoordinator() {
-        let postTabCoordinator = PostTabCoordinator(
-            rootViewController: PostStatusMainViewController(),
-            router: Router()
-        )
-        postTabCoordinator.delegate = self
-        postTabCoordinator.start()
-        addCoordinator(postTabCoordinator)
-        self.router.present(postTabCoordinator, animated: true)
-    }
-}
-
-extension ContentCoordinator: PostTabCoordinatorDelegate {
-    func didCancel(in coordinator: PostTabCoordinator) {
-        removeCoordinator(coordinator)
-    }
 }

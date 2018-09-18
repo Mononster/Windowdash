@@ -12,10 +12,9 @@ struct Theme {
     let colors: ColorSchema
     let imageAssets: ImageAsset
     let fontSchema: FontSchema
-
     let navigationBarHeight: CGFloat
     let tabBarHeight: CGFloat
-
+    
     init(colors: ColorSchema = DefaultColors(),
          imageAssets: ImageAsset = DefaultImageAsset(),
          fontSchema: FontSchema = DefaultFontSchema()) {
@@ -23,17 +22,16 @@ struct Theme {
         self.imageAssets = imageAssets
         self.fontSchema = fontSchema
 
-        let device = Device()
-        self.navigationBarHeight = device == .iPhoneX ? 88 : 64
-        self.tabBarHeight = device == .iPhoneX ? 83 : 49
+        self.navigationBarHeight = UIDevice.current.hasNotch ? 88 : 64
+        self.tabBarHeight = UIDevice.current.hasNotch ? 83 : 49
     }
 }
 
 extension Theme {
 
-    func navigationBarAppearance(type: MainNavigationController.NavigationBarStyle) {
+    func navigationBarAppearance(type: DoorDashNavigationController.NavigationBarStyle) {
         let appearance = UINavigationBar.appearance()
-        appearance.barTintColor = colors.uwLifeRed
+        appearance.barTintColor = colors.doorDashRed
         var titleColor: UIColor
         switch type {
         case .mainTheme:
@@ -41,7 +39,7 @@ extension Theme {
             titleColor = colors.white
             appearance.isTranslucent = false
         case .transparent:
-            appearance.tintColor = colors.uwLifeRed
+            appearance.tintColor = colors.doorDashRed
             titleColor = UIColor.clear
             appearance.isTranslucent = true
         case .white:
@@ -49,6 +47,6 @@ extension Theme {
             titleColor = colors.darkGray
             appearance.isTranslucent = false
         }
-        appearance.titleTextAttributes = [NSAttributedStringKey.foregroundColor: titleColor, NSAttributedStringKey.font: fontSchema.navBarTitle]
+        appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: titleColor, NSAttributedString.Key.font: fontSchema.medium14]
     }
 }

@@ -15,17 +15,23 @@ PODS:
     - IGListKit/Diffing
   - IGListKit/Diffing (3.4.0)
   - KeychainAccess (3.1.1)
+  - Moya (11.0.2):
+    - Moya/Core (= 11.0.2)
+  - Moya/Core (11.0.2):
+    - Alamofire (~> 4.1)
+    - Result (~> 3.0)
   - ObjcExceptionBridging (1.0.1):
     - ObjcExceptionBridging/ObjcExceptionBridging (= 1.0.1)
   - ObjcExceptionBridging/ObjcExceptionBridging (1.0.1)
+  - Result (3.2.4)
   - SDWebImage (4.4.2):
     - SDWebImage/Core (= 4.4.2)
   - SDWebImage/Core (4.4.2)
   - SnapKit (4.0.0)
   - SwiftyJSON (4.1.0)
-  - XCGLogger (6.0.4):
-    - XCGLogger/Core (= 6.0.4)
-  - XCGLogger/Core (6.0.4):
+  - XCGLogger (6.1.0):
+    - XCGLogger/Core (= 6.1.0)
+  - XCGLogger/Core (6.1.0):
     - ObjcExceptionBridging
 
 DEPENDENCIES:
@@ -36,6 +42,7 @@ DEPENDENCIES:
   - GooglePlaces
   - IGListKit
   - KeychainAccess
+  - Moya (~> 11.0)
   - SDWebImage (~> 4.0)
   - SnapKit
   - SwiftyJSON
@@ -50,7 +57,9 @@ SPEC REPOS:
     - GooglePlaces
     - IGListKit
     - KeychainAccess
+    - Moya
     - ObjcExceptionBridging
+    - Result
     - SDWebImage
     - SnapKit
     - SwiftyJSON
@@ -64,12 +73,14 @@ SPEC CHECKSUMS:
   GooglePlaces: 3d06e6c99654545b4738ce49648745779c25f2ef
   IGListKit: 7a5d788e9fb746bcd402baa8e8b24bc3bd2a5a07
   KeychainAccess: 7bd430028059754a3debab3cfc0bd1fc7fb85df3
+  Moya: a725035953bc1c0eb1be505ab903984501d82440
   ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
+  Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
-  XCGLogger: 4fc1bc0bdd5828cb8dc8da7a843536cda1bea8f3
+  XCGLogger: 7f7f43f15dfe3a305fa1342b7dc29af656289abd
 
-PODFILE CHECKSUM: af0f2fb057a8ad7b68d66f965c8b4c6a5c6c433f
+PODFILE CHECKSUM: 6ed54eed37016021c9dd38357e868129f18d5028
 
 COCOAPODS: 1.5.3

@@ -1,5 +1,5 @@
 //
-//  MainNavigationController.swift
+//  DoorDashNavigationController.swift
 //  UWLife
 //
 //  Created by Marvin Zhan on 2018-03-03.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainNavigationController: UINavigationController {
+class DoorDashNavigationController: UINavigationController {
 
     enum NavigationBarStyle {
         case mainTheme
@@ -37,26 +37,17 @@ class MainNavigationController: UINavigationController {
             case .mainTheme:
                 self.navigationBar.setBackgroundImage(nil, for: .default)
                 self.navigationBar.shadowImage = nil
-                self.navigationBar.tintColor = theme.colors.uwLifeRed
+                self.navigationBar.tintColor = theme.colors.doorDashRed
                 self.navigationBar.isTranslucent = false
-                self.navigationBar.barTintColor = theme.colors.black
-                titleColor = theme.colors.white
+                self.navigationBar.barTintColor = theme.colors.white
+                titleColor = theme.colors.black
             }
-            self.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: titleColor, NSAttributedStringKey.font: theme.fontSchema.navBarTitle]
+            self.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: titleColor, NSAttributedString.Key.font: theme.fontSchema.medium14]
         }
     }
 
-//    override var preferredStatusBarStyle: UIStatusBarStyle {
-//        switch navigationBarStyle {
-//        case .mainTheme:
-//            return .lightContent
-//        case .transparent, .white:
-//            return .default
-//        }
-//    }
-
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
-        if childViewControllers.count > 0 {
+        if children.count > 0 {
             viewController.hidesBottomBarWhenPushed = true
         }
 
