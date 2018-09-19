@@ -31,6 +31,7 @@ final class SignInputFormSectionController: ListSectionController {
     static let formLabelWidthRatio: CGFloat = 0.24
 
     var inputResults: [SignInputFieldType: String] = [:]
+    var userFinishInputing: (() -> ())?
 
     override func sizeForItem(at index: Int) -> CGSize {
         return CGSize(width: collectionContext?.containerSize.width ?? 0, height: InputFormCell.height)
@@ -72,5 +73,9 @@ extension SignInputFormSectionController: InputFormCellDelegate {
                 cell.inputField.becomeFirstResponder()
             }
         }
+    }
+
+    func completeInputing() {
+        self.userFinishInputing?()
     }
 }

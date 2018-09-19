@@ -35,6 +35,37 @@
 		8754BB7221516FFF008D9E1C /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BB6921516FFE008D9E1C /* Colors.swift */; };
 		8754BB7421517C88008D9E1C /* SignupButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BB7321517C88008D9E1C /* SignupButtonCell.swift */; };
 		8754BB7621517E2B008D9E1C /* SignupButtonSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BB7521517E2B008D9E1C /* SignupButtonSectionController.swift */; };
+		8754BB782151A725008D9E1C /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BB772151A725008D9E1C /* LoadingIndicator.swift */; };
+		8754BB7B2151B2A8008D9E1C /* User+Persistent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BB7A2151B2A8008D9E1C /* User+Persistent.swift */; };
+		8754BB7E2151B30F008D9E1C /* DoorDash.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8754BB7C2151B30F008D9E1C /* DoorDash.xcdatamodeld */; };
+		8754BB982151BB37008D9E1C /* PSUser+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BB962151BB37008D9E1C /* PSUser+CoreDataProperties.swift */; };
+		8754BB992151BB37008D9E1C /* PSUser+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BB972151BB37008D9E1C /* PSUser+CoreDataClass.swift */; };
+		8754BB9F2151BB63008D9E1C /* DelieveryAddress+Persistent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BB9E2151BB63008D9E1C /* DelieveryAddress+Persistent.swift */; };
+		8754BBA22151BC65008D9E1C /* PSDeliveryAddress+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BBA02151BC64008D9E1C /* PSDeliveryAddress+CoreDataClass.swift */; };
+		8754BBA32151BC65008D9E1C /* PSDeliveryAddress+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BBA12151BC64008D9E1C /* PSDeliveryAddress+CoreDataProperties.swift */; };
+		8754BBA72151BE14008D9E1C /* PSDistrict+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BBA52151BE14008D9E1C /* PSDistrict+CoreDataProperties.swift */; };
+		8754BBA82151BE14008D9E1C /* PSDistrict+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BBA62151BE14008D9E1C /* PSDistrict+CoreDataClass.swift */; };
+		8754BBAA2151BE37008D9E1C /* District+Persistent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BBA92151BE37008D9E1C /* District+Persistent.swift */; };
+		8754BC052152B442008D9E1C /* NVActivityIndicatorAnimationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BBFE2152B442008D9E1C /* NVActivityIndicatorAnimationDelegate.swift */; };
+		8754BC062152B442008D9E1C /* NVActivityIndicatorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BC002152B442008D9E1C /* NVActivityIndicatorPresenter.swift */; };
+		8754BC072152B442008D9E1C /* NVActivityIndicatorViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BC012152B442008D9E1C /* NVActivityIndicatorViewable.swift */; };
+		8754BC082152B442008D9E1C /* NVActivityIndicatorShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BC022152B442008D9E1C /* NVActivityIndicatorShape.swift */; };
+		8754BC092152B442008D9E1C /* NVActivityIndicatorAnimationCircleStrokeSpin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BC032152B442008D9E1C /* NVActivityIndicatorAnimationCircleStrokeSpin.swift */; };
+		8754BC0A2152B442008D9E1C /* NVActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BC042152B442008D9E1C /* NVActivityIndicatorView.swift */; };
+		8754BC0C2152B743008D9E1C /* LaunchLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BC0B2152B743008D9E1C /* LaunchLoadingViewController.swift */; };
+		876319EF2152D7F900475074 /* GMPrediction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876319EE2152D7F900475074 /* GMPrediction.swift */; };
+		876319F12152D95800475074 /* GooglePlaceAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876319F02152D95800475074 /* GooglePlaceAPIService.swift */; };
+		876319F52152EB8500475074 /* SelectAddressCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876319F42152EB8500475074 /* SelectAddressCoordinator.swift */; };
+		876319F72152EBC300475074 /* SelectAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876319F62152EBC300475074 /* SelectAddressViewController.swift */; };
+		876319FA2152EC3F00475074 /* HeaderTextLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876319F92152EC3F00475074 /* HeaderTextLabelView.swift */; };
+		876319FD2152ECA600475074 /* SelectAddressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876319FC2152ECA600475074 /* SelectAddressViewModel.swift */; };
+		876319FF2152ED6200475074 /* UIView+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876319FE2152ED6200475074 /* UIView+Border.swift */; };
+		87631A022152EF7400475074 /* EnterAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87631A012152EF7400475074 /* EnterAddressCell.swift */; };
+		87631A052152F0C300475074 /* EnterAddressSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87631A042152F0C300475074 /* EnterAddressSectionController.swift */; };
+		87631A072152F15B00475074 /* AddressTextLabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87631A062152F15B00475074 /* AddressTextLabelCell.swift */; };
+		87631A092152F17400475074 /* AddressTextLabelSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87631A082152F17400475074 /* AddressTextLabelSectionController.swift */; };
+		87631A0C2152F40B00475074 /* GMAutoCompleteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87631A0B2152F40B00475074 /* GMAutoCompleteManager.swift */; };
+		87631A0E2152F47D00475074 /* GlobalFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87631A0D2152F47D00475074 /* GlobalFunctions.swift */; };
 		8776F5F02148886200ABAA71 /* PersistentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8776F5EA2148886200ABAA71 /* PersistentModel.swift */; };
 		8776F5F22148886200ABAA71 /* CoreModelVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8776F5EE2148886200ABAA71 /* CoreModelVersion.swift */; };
 		8776F5F32148886200ABAA71 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8776F5EF2148886200ABAA71 /* DataStore.swift */; };
@@ -77,8 +108,6 @@
 		8782956B214ED2FA00AB56B2 /* SessionManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8782956A214ED2FA00AB56B2 /* SessionManager+Extension.swift */; };
 		8782956D214ED33300AB56B2 /* NetworkConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8782956C214ED33300AB56B2 /* NetworkConfiguration.swift */; };
 		8782956F214ED4D500AB56B2 /* AuthenticateRequestAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8782956E214ED4D500AB56B2 /* AuthenticateRequestAdapter.swift */; };
-		87829581214F074B00AB56B2 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87829577214F074B00AB56B2 /* LoginViewModel.swift */; };
-		87829582214F074B00AB56B2 /* CreateAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87829578214F074B00AB56B2 /* CreateAccountViewModel.swift */; };
 		87829583214F074B00AB56B2 /* SignupHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87829579214F074B00AB56B2 /* SignupHomeViewModel.swift */; };
 		87829584214F074B00AB56B2 /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8782957B214F074B00AB56B2 /* OnboardingCoordinator.swift */; };
 		87829588214F074B00AB56B2 /* LoginComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87829580214F074B00AB56B2 /* LoginComponentView.swift */; };
@@ -124,6 +153,37 @@
 		8754BB6921516FFE008D9E1C /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		8754BB7321517C88008D9E1C /* SignupButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupButtonCell.swift; sourceTree = "<group>"; };
 		8754BB7521517E2B008D9E1C /* SignupButtonSectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupButtonSectionController.swift; sourceTree = "<group>"; };
+		8754BB772151A725008D9E1C /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
+		8754BB7A2151B2A8008D9E1C /* User+Persistent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+Persistent.swift"; sourceTree = "<group>"; };
+		8754BB7D2151B30F008D9E1C /* DoorDash.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DoorDash.xcdatamodel; sourceTree = "<group>"; };
+		8754BB962151BB37008D9E1C /* PSUser+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PSUser+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8754BB972151BB37008D9E1C /* PSUser+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PSUser+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8754BB9E2151BB63008D9E1C /* DelieveryAddress+Persistent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DelieveryAddress+Persistent.swift"; sourceTree = "<group>"; };
+		8754BBA02151BC64008D9E1C /* PSDeliveryAddress+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PSDeliveryAddress+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8754BBA12151BC64008D9E1C /* PSDeliveryAddress+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PSDeliveryAddress+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8754BBA52151BE14008D9E1C /* PSDistrict+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PSDistrict+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8754BBA62151BE14008D9E1C /* PSDistrict+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PSDistrict+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8754BBA92151BE37008D9E1C /* District+Persistent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "District+Persistent.swift"; sourceTree = "<group>"; };
+		8754BBFE2152B442008D9E1C /* NVActivityIndicatorAnimationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NVActivityIndicatorAnimationDelegate.swift; sourceTree = "<group>"; };
+		8754BC002152B442008D9E1C /* NVActivityIndicatorPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NVActivityIndicatorPresenter.swift; sourceTree = "<group>"; };
+		8754BC012152B442008D9E1C /* NVActivityIndicatorViewable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NVActivityIndicatorViewable.swift; sourceTree = "<group>"; };
+		8754BC022152B442008D9E1C /* NVActivityIndicatorShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NVActivityIndicatorShape.swift; sourceTree = "<group>"; };
+		8754BC032152B442008D9E1C /* NVActivityIndicatorAnimationCircleStrokeSpin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NVActivityIndicatorAnimationCircleStrokeSpin.swift; sourceTree = "<group>"; };
+		8754BC042152B442008D9E1C /* NVActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NVActivityIndicatorView.swift; sourceTree = "<group>"; };
+		8754BC0B2152B743008D9E1C /* LaunchLoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchLoadingViewController.swift; sourceTree = "<group>"; };
+		876319EE2152D7F900475074 /* GMPrediction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMPrediction.swift; sourceTree = "<group>"; };
+		876319F02152D95800475074 /* GooglePlaceAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooglePlaceAPIService.swift; sourceTree = "<group>"; };
+		876319F42152EB8500475074 /* SelectAddressCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAddressCoordinator.swift; sourceTree = "<group>"; };
+		876319F62152EBC300475074 /* SelectAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAddressViewController.swift; sourceTree = "<group>"; };
+		876319F92152EC3F00475074 /* HeaderTextLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTextLabelView.swift; sourceTree = "<group>"; };
+		876319FC2152ECA600475074 /* SelectAddressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAddressViewModel.swift; sourceTree = "<group>"; };
+		876319FE2152ED6200475074 /* UIView+Border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Border.swift"; sourceTree = "<group>"; };
+		87631A012152EF7400475074 /* EnterAddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterAddressCell.swift; sourceTree = "<group>"; };
+		87631A042152F0C300475074 /* EnterAddressSectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterAddressSectionController.swift; sourceTree = "<group>"; };
+		87631A062152F15B00475074 /* AddressTextLabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTextLabelCell.swift; sourceTree = "<group>"; };
+		87631A082152F17400475074 /* AddressTextLabelSectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTextLabelSectionController.swift; sourceTree = "<group>"; };
+		87631A0B2152F40B00475074 /* GMAutoCompleteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMAutoCompleteManager.swift; sourceTree = "<group>"; };
+		87631A0D2152F47D00475074 /* GlobalFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalFunctions.swift; sourceTree = "<group>"; };
 		8776F5EA2148886200ABAA71 /* PersistentModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentModel.swift; sourceTree = "<group>"; };
 		8776F5EE2148886200ABAA71 /* CoreModelVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreModelVersion.swift; sourceTree = "<group>"; };
 		8776F5EF2148886200ABAA71 /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
@@ -166,8 +226,6 @@
 		8782956A214ED2FA00AB56B2 /* SessionManager+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionManager+Extension.swift"; sourceTree = "<group>"; };
 		8782956C214ED33300AB56B2 /* NetworkConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfiguration.swift; sourceTree = "<group>"; };
 		8782956E214ED4D500AB56B2 /* AuthenticateRequestAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticateRequestAdapter.swift; sourceTree = "<group>"; };
-		87829577214F074B00AB56B2 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		87829578214F074B00AB56B2 /* CreateAccountViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountViewModel.swift; sourceTree = "<group>"; };
 		87829579214F074B00AB56B2 /* SignupHomeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupHomeViewModel.swift; sourceTree = "<group>"; };
 		8782957B214F074B00AB56B2 /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
 		87829580214F074B00AB56B2 /* LoginComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginComponentView.swift; sourceTree = "<group>"; };
@@ -222,9 +280,11 @@
 		8731A54A214884D1005B7CFF /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				87631A0A2152F3F200475074 /* GooglePlace */,
 				8754BB5F21516FE7008D9E1C /* Venders */,
 				87829557214C6C3900AB56B2 /* CustomizedView */,
 				8731A54E214884E7005B7CFF /* IGListKitComponents */,
+				87631A0D2152F47D00475074 /* GlobalFunctions.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -233,7 +293,6 @@
 			isa = PBXGroup;
 			children = (
 				8731A57321488655005B7CFF /* Constants.swift */,
-				878295252148D4C500AB56B2 /* AppCoordinator.swift */,
 				878295242148D4C500AB56B2 /* ApplicationDependency.swift */,
 				8731A5722148862B005B7CFF /* Endpoints */,
 				8731A5522148858A005B7CFF /* DataStorage */,
@@ -289,6 +348,7 @@
 			children = (
 				8782951121488AF300AB56B2 /* User.swift */,
 				878295152148CCC300AB56B2 /* DeliveryAddress.swift */,
+				876319EE2152D7F900475074 /* GMPrediction.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -370,6 +430,7 @@
 		8754BB5F21516FE7008D9E1C /* Venders */ = {
 			isa = PBXGroup;
 			children = (
+				8754BBFD2152B442008D9E1C /* NVActivityIndicatorView */,
 				8754BB6021516FFE008D9E1C /* SwiftRichString */,
 			);
 			path = Venders;
@@ -391,6 +452,135 @@
 			path = SwiftRichString;
 			sourceTree = "<group>";
 		};
+		8754BB792151B290008D9E1C /* PersistentDataStore */ = {
+			isa = PBXGroup;
+			children = (
+				8754BB842151B463008D9E1C /* Extensions */,
+				8754BBA42151BE14008D9E1C /* PSDistrict */,
+				8754BB952151BAEB008D9E1C /* PSDeliveryAddress */,
+				8754BB832151B45F008D9E1C /* PSUser */,
+			);
+			path = PersistentDataStore;
+			sourceTree = "<group>";
+		};
+		8754BB832151B45F008D9E1C /* PSUser */ = {
+			isa = PBXGroup;
+			children = (
+				8754BB972151BB37008D9E1C /* PSUser+CoreDataClass.swift */,
+				8754BB962151BB37008D9E1C /* PSUser+CoreDataProperties.swift */,
+			);
+			path = PSUser;
+			sourceTree = "<group>";
+		};
+		8754BB842151B463008D9E1C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8754BB7A2151B2A8008D9E1C /* User+Persistent.swift */,
+				8754BB9E2151BB63008D9E1C /* DelieveryAddress+Persistent.swift */,
+				8754BBA92151BE37008D9E1C /* District+Persistent.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		8754BB952151BAEB008D9E1C /* PSDeliveryAddress */ = {
+			isa = PBXGroup;
+			children = (
+				8754BBA02151BC64008D9E1C /* PSDeliveryAddress+CoreDataClass.swift */,
+				8754BBA12151BC64008D9E1C /* PSDeliveryAddress+CoreDataProperties.swift */,
+			);
+			path = PSDeliveryAddress;
+			sourceTree = "<group>";
+		};
+		8754BBA42151BE14008D9E1C /* PSDistrict */ = {
+			isa = PBXGroup;
+			children = (
+				8754BBA52151BE14008D9E1C /* PSDistrict+CoreDataProperties.swift */,
+				8754BBA62151BE14008D9E1C /* PSDistrict+CoreDataClass.swift */,
+			);
+			name = PSDistrict;
+			path = DoorDash/PersistentDataStore/PSDistrict;
+			sourceTree = SOURCE_ROOT;
+		};
+		8754BBFD2152B442008D9E1C /* NVActivityIndicatorView */ = {
+			isa = PBXGroup;
+			children = (
+				8754BBFE2152B442008D9E1C /* NVActivityIndicatorAnimationDelegate.swift */,
+				8754BBFF2152B442008D9E1C /* Presenter */,
+				8754BC022152B442008D9E1C /* NVActivityIndicatorShape.swift */,
+				8754BC032152B442008D9E1C /* NVActivityIndicatorAnimationCircleStrokeSpin.swift */,
+				8754BC042152B442008D9E1C /* NVActivityIndicatorView.swift */,
+			);
+			path = NVActivityIndicatorView;
+			sourceTree = "<group>";
+		};
+		8754BBFF2152B442008D9E1C /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				8754BC002152B442008D9E1C /* NVActivityIndicatorPresenter.swift */,
+				8754BC012152B442008D9E1C /* NVActivityIndicatorViewable.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		876319F22152EB6100475074 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				876319F62152EBC300475074 /* SelectAddressViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		876319F32152EB6F00475074 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				876319F42152EB8500475074 /* SelectAddressCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		876319F82152EC3400475074 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				87631A002152EF6B00475074 /* Cells */,
+				876319F92152EC3F00475074 /* HeaderTextLabelView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		876319FB2152EC9A00475074 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				876319FC2152ECA600475074 /* SelectAddressViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		87631A002152EF6B00475074 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				87631A012152EF7400475074 /* EnterAddressCell.swift */,
+				87631A062152F15B00475074 /* AddressTextLabelCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		87631A032152F0B500475074 /* Presenters */ = {
+			isa = PBXGroup;
+			children = (
+				87631A042152F0C300475074 /* EnterAddressSectionController.swift */,
+				87631A082152F17400475074 /* AddressTextLabelSectionController.swift */,
+			);
+			path = Presenters;
+			sourceTree = "<group>";
+		};
+		87631A0A2152F3F200475074 /* GooglePlace */ = {
+			isa = PBXGroup;
+			children = (
+				87631A0B2152F40B00475074 /* GMAutoCompleteManager.swift */,
+			);
+			path = GooglePlace;
+			sourceTree = "<group>";
+		};
 		8776F5E92148886200ABAA71 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
@@ -405,6 +595,7 @@
 		8776F5EB2148886200ABAA71 /* Schema */ = {
 			isa = PBXGroup;
 			children = (
+				8754BB7C2151B30F008D9E1C /* DoorDash.xcdatamodeld */,
 			);
 			path = Schema;
 			sourceTree = "<group>";
@@ -436,6 +627,7 @@
 		878295182148D49400AB56B2 /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				878295252148D4C500AB56B2 /* AppCoordinator.swift */,
 				878295192148D49400AB56B2 /* ContentCoordinator.swift */,
 			);
 			path = Coordinators;
@@ -479,6 +671,7 @@
 			children = (
 				8782953F214A09C500AB56B2 /* UIColor+Gradient+Hex.swift */,
 				87829542214A0A3D00AB56B2 /* UIBarButtonItem+Empty.swift */,
+				876319FE2152ED6200475074 /* UIView+Border.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -566,6 +759,11 @@
 		87829554214C624000AB56B2 /* Address */ = {
 			isa = PBXGroup;
 			children = (
+				87631A032152F0B500475074 /* Presenters */,
+				876319FB2152EC9A00475074 /* ViewModel */,
+				876319F82152EC3400475074 /* Views */,
+				876319F32152EB6F00475074 /* Coordinator */,
+				876319F22152EB6100475074 /* ViewController */,
 				87829555214C628300AB56B2 /* NavigationAddressHeaderView.swift */,
 			);
 			path = Address;
@@ -576,6 +774,7 @@
 			children = (
 				87829558214C6C4300AB56B2 /* Separator.swift */,
 				87E63D48214F3FEC00387D9C /* IconedButton.swift */,
+				8754BB772151A725008D9E1C /* LoadingIndicator.swift */,
 			);
 			path = CustomizedView;
 			sourceTree = "<group>";
@@ -601,6 +800,7 @@
 			children = (
 				87829565214EBF3100AB56B2 /* DoorDashAPIService.swift */,
 				87829567214EBF4500AB56B2 /* UserAPIService.swift */,
+				876319F02152D95800475074 /* GooglePlaceAPIService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -620,8 +820,6 @@
 		87829576214F074B00AB56B2 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				87829577214F074B00AB56B2 /* LoginViewModel.swift */,
-				87829578214F074B00AB56B2 /* CreateAccountViewModel.swift */,
 				87829579214F074B00AB56B2 /* SignupHomeViewModel.swift */,
 				8782958C214F103A00AB56B2 /* OnboardingViewModel.swift */,
 			);
@@ -651,6 +849,7 @@
 			children = (
 				87829589214F085F00AB56B2 /* OnboardingViewController.swift */,
 				87829598214F26A100AB56B2 /* SignupHomeViewController.swift */,
+				8754BC0B2152B743008D9E1C /* LaunchLoadingViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -709,6 +908,7 @@
 				878295172148D49400AB56B2 /* Main */,
 				878295342149DBF200AB56B2 /* Coordinator */,
 				8731A54F2148850D005B7CFF /* Classes */,
+				8754BB792151B290008D9E1C /* PersistentDataStore */,
 				8731A54C214884DC005B7CFF /* Testing */,
 				87C7A4F3214863490040A7CD /* AppDelegate.swift */,
 				87C7A4FF2148634B0040A7CD /* Info.plist */,
@@ -846,6 +1046,7 @@
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjcExceptionBridging/ObjcExceptionBridging.framework",
+				"${BUILT_PRODUCTS_DIR}/PhoneNumberKit/PhoneNumberKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
@@ -861,6 +1062,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjcExceptionBridging.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PhoneNumberKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
@@ -880,35 +1082,47 @@
 			buildActionMask = 2147483647;
 			files = (
 				8782954C214B12D000AB56B2 /* BrowseFoodTabCoordinator.swift in Sources */,
+				876319FD2152ECA600475074 /* SelectAddressViewModel.swift in Sources */,
 				8754BB7621517E2B008D9E1C /* SignupButtonSectionController.swift in Sources */,
 				878295162148CCC300AB56B2 /* DeliveryAddress.swift in Sources */,
+				8754BB982151BB37008D9E1C /* PSUser+CoreDataProperties.swift in Sources */,
 				873D5FFC21500EC500F37F8D /* SignInputFormSectionController.swift in Sources */,
 				8731A5792148868E005B7CFF /* SignupTempAccount.swift in Sources */,
 				8782953E2149DBF200AB56B2 /* Coordinator.swift in Sources */,
+				876319F12152D95800475074 /* GooglePlaceAPIService.swift in Sources */,
 				8754BB7021516FFF008D9E1C /* FontNames.swift in Sources */,
 				8782958A214F085F00AB56B2 /* OnboardingViewController.swift in Sources */,
 				87829552214C61DA00AB56B2 /* DynamicHeightNavigationBar.swift in Sources */,
 				87829540214A09C500AB56B2 /* UIColor+Gradient+Hex.swift in Sources */,
+				8754BC072152B442008D9E1C /* NVActivityIndicatorViewable.swift in Sources */,
+				876319FA2152EC3F00475074 /* HeaderTextLabelView.swift in Sources */,
 				8754BB6C21516FFF008D9E1C /* AttributedString+Extension.swift in Sources */,
 				878295202148D49500AB56B2 /* MainTabBarController.swift in Sources */,
 				87829595214F172300AB56B2 /* OnboardingItemCell.swift in Sources */,
-				87829581214F074B00AB56B2 /* LoginViewModel.swift in Sources */,
 				8782950E21488AAC00AB56B2 /* CacheKeys.swift in Sources */,
 				8754BB6B21516FFF008D9E1C /* MarkupString.swift in Sources */,
 				8782953B2149DBF200AB56B2 /* Router.swift in Sources */,
 				87829559214C6C4300AB56B2 /* Separator.swift in Sources */,
+				876319F52152EB8500475074 /* SelectAddressCoordinator.swift in Sources */,
+				87631A0C2152F40B00475074 /* GMAutoCompleteManager.swift in Sources */,
 				8776F5F22148886200ABAA71 /* CoreModelVersion.swift in Sources */,
 				8782953D2149DBF200AB56B2 /* InteractivePopRecognizer.swift in Sources */,
 				87E63D49214F3FEC00387D9C /* IconedButton.swift in Sources */,
 				878295232148D49500AB56B2 /* BaseViewController.swift in Sources */,
+				8754BB782151A725008D9E1C /* LoadingIndicator.swift in Sources */,
 				8731A57621488655005B7CFF /* Error.swift in Sources */,
+				8754BB7B2151B2A8008D9E1C /* User+Persistent.swift in Sources */,
 				8731A571214885FE005B7CFF /* ApplicationEnvironment.swift in Sources */,
 				8782952D2148D50000AB56B2 /* AppImage.swift in Sources */,
 				8754BB6D21516FFF008D9E1C /* Imports.swift in Sources */,
+				87631A092152F17400475074 /* AddressTextLabelSectionController.swift in Sources */,
 				8754BB7421517C88008D9E1C /* SignupButtonCell.swift in Sources */,
 				8782952E2148D50000AB56B2 /* AppColor.swift in Sources */,
 				8776F5F32148886200ABAA71 /* DataStore.swift in Sources */,
+				8754BBA32151BC65008D9E1C /* PSDeliveryAddress+CoreDataProperties.swift in Sources */,
+				8754BC052152B442008D9E1C /* NVActivityIndicatorAnimationDelegate.swift in Sources */,
 				8731A56D214885FE005B7CFF /* AuthToken.swift in Sources */,
+				87631A052152F0C300475074 /* EnterAddressSectionController.swift in Sources */,
 				8782955C214C72E700AB56B2 /* BrowseFoodSectionController.swift in Sources */,
 				8782952F2148D50000AB56B2 /* AppTheme.swift in Sources */,
 				8754BB5C21509EEE008D9E1C /* SignupAgreementCell.swift in Sources */,
@@ -917,8 +1131,10 @@
 				8782953C2149DBF200AB56B2 /* AppTracker.swift in Sources */,
 				87829543214A0A3D00AB56B2 /* UIBarButtonItem+Empty.swift in Sources */,
 				8782951F2148D49500AB56B2 /* ContentCoordinator.swift in Sources */,
+				8754BB7E2151B30F008D9E1C /* DoorDash.xcdatamodeld in Sources */,
 				87829568214EBF4500AB56B2 /* UserAPIService.swift in Sources */,
 				8776F5FF214888B200ABAA71 /* Device.generated.swift in Sources */,
+				8754BBA22151BC65008D9E1C /* PSDeliveryAddress+CoreDataClass.swift in Sources */,
 				8731A56F214885FE005B7CFF /* Logger.swift in Sources */,
 				8776F5FC214888B200ABAA71 /* Foundation+.swift in Sources */,
 				8782951021488AAC00AB56B2 /* KeyValueStoreType.swift in Sources */,
@@ -926,39 +1142,54 @@
 				87829599214F26A100AB56B2 /* SignupHomeViewController.swift in Sources */,
 				8754BB6F21516FFF008D9E1C /* String+Extension.swift in Sources */,
 				8731A56E214885FE005B7CFF /* ValidationService.swift in Sources */,
+				876319FF2152ED6200475074 /* UIView+Border.swift in Sources */,
 				873D6000215013E400F37F8D /* Collection+SafeAccess.swift in Sources */,
-				87829582214F074B00AB56B2 /* CreateAccountViewModel.swift in Sources */,
 				8731A57521488655005B7CFF /* Constants.swift in Sources */,
 				8776F5F02148886200ABAA71 /* PersistentModel.swift in Sources */,
+				8754BC092152B442008D9E1C /* NVActivityIndicatorAnimationCircleStrokeSpin.swift in Sources */,
 				87829583214F074B00AB56B2 /* SignupHomeViewModel.swift in Sources */,
 				87C7A4F4214863490040A7CD /* AppDelegate.swift in Sources */,
+				8754BBA72151BE14008D9E1C /* PSDistrict+CoreDataProperties.swift in Sources */,
 				8754BB5E21516DFE008D9E1C /* SignupAgreementSectionController.swift in Sources */,
 				87829592214F164400AB56B2 /* OnboardingItemSectionController.swift in Sources */,
 				87829566214EBF3100AB56B2 /* DoorDashAPIService.swift in Sources */,
+				8754BC082152B442008D9E1C /* NVActivityIndicatorShape.swift in Sources */,
 				8754BB6A21516FFF008D9E1C /* StringScanner.swift in Sources */,
 				8782951221488AF400AB56B2 /* User.swift in Sources */,
+				8754BC062152B442008D9E1C /* NVActivityIndicatorPresenter.swift in Sources */,
 				8782954F214B130900AB56B2 /* BrowseFoodViewController.swift in Sources */,
 				878295222148D49500AB56B2 /* BaseUserTableViewController.swift in Sources */,
+				87631A072152F15B00475074 /* AddressTextLabelCell.swift in Sources */,
+				876319EF2152D7F900475074 /* GMPrediction.swift in Sources */,
 				87829588214F074B00AB56B2 /* LoginComponentView.swift in Sources */,
+				87631A022152EF7400475074 /* EnterAddressCell.swift in Sources */,
+				8754BBA82151BE14008D9E1C /* PSDistrict+CoreDataClass.swift in Sources */,
 				873D600421502CF700F37F8D /* SocialLoginCell.swift in Sources */,
 				8782956F214ED4D500AB56B2 /* AuthenticateRequestAdapter.swift in Sources */,
+				8754BB992151BB37008D9E1C /* PSUser+CoreDataClass.swift in Sources */,
 				8754BB7121516FFF008D9E1C /* Style.swift in Sources */,
+				8754BB9F2151BB63008D9E1C /* DelieveryAddress+Persistent.swift in Sources */,
 				8782956B214ED2FA00AB56B2 /* SessionManager+Extension.swift in Sources */,
 				87829584214F074B00AB56B2 /* OnboardingCoordinator.swift in Sources */,
 				8782956D214ED33300AB56B2 /* NetworkConfiguration.swift in Sources */,
+				876319F72152EBC300475074 /* SelectAddressViewController.swift in Sources */,
 				8754BB7221516FFF008D9E1C /* Colors.swift in Sources */,
 				873D60022150234B00F37F8D /* SocialLoginSectionController.swift in Sources */,
 				87829597214F19F800AB56B2 /* HorizontalScrollCollectionViewCell.swift in Sources */,
 				87829514214893E300AB56B2 /* ApplicationCache.swift in Sources */,
 				8776F5FE214888B200ABAA71 /* Bundle+.swift in Sources */,
 				878295302148D50000AB56B2 /* AppFont.swift in Sources */,
+				8754BBAA2151BE37008D9E1C /* District+Persistent.swift in Sources */,
 				878295262148D4C600AB56B2 /* ApplicationDependency.swift in Sources */,
 				8782955F214C735300AB56B2 /* SubletStatusTitleCell.swift in Sources */,
 				8782958D214F103A00AB56B2 /* OnboardingViewModel.swift in Sources */,
+				87631A0E2152F47D00475074 /* GlobalFunctions.swift in Sources */,
 				878295212148D49500AB56B2 /* DoorDashNavigationController.swift in Sources */,
 				87829556214C628300AB56B2 /* NavigationAddressHeaderView.swift in Sources */,
+				8754BC0C2152B743008D9E1C /* LaunchLoadingViewController.swift in Sources */,
 				8731A56C214885FE005B7CFF /* Authentication.swift in Sources */,
 				8754BB6E21516FFF008D9E1C /* Extensions.swift in Sources */,
+				8754BC0A2152B442008D9E1C /* NVActivityIndicatorView.swift in Sources */,
 				8782953A2149DBF200AB56B2 /* CustomNavigationBar.swift in Sources */,
 				8782959D214F2F4800AB56B2 /* SignupHomeNavigationBar.swift in Sources */,
 				873D5FFE21500FEF00F37F8D /* InputFormCell.swift in Sources */,
@@ -1156,6 +1387,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		8754BB7C2151B30F008D9E1C /* DoorDash.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				8754BB7D2151B30F008D9E1C /* DoorDash.xcdatamodel */,
+			);
+			currentVersion = 8754BB7D2151B30F008D9E1C /* DoorDash.xcdatamodel */;
+			path = DoorDash.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 87C7A4E8214863490040A7CD /* Project object */;
 }

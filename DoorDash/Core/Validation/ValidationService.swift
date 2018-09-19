@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PhoneNumberKit
 
 protocol ValidationResultPresentable {
     var message: String? { get }
@@ -80,7 +81,7 @@ enum ValidationError: Error {
 protocol ValidationServiceType {
     associatedtype Result
     associatedtype Value
-    func validate(_ value: Value?, completion: @escaping (Result) -> ())
+    func validate(_ value: Value?) -> Result
 }
 
 extension ValidationServiceType where Value == String {
@@ -92,23 +93,11 @@ extension ValidationServiceType where Value == String {
         }
         return .ok(value.unwrap())
     }
-
-    func validatePassword(_ value: String?) -> ValidationResult<String> {
-        let maybeTrimmedString = value?.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard let trimmedString = maybeTrimmedString, !trimmedString.isEmpty else {
-            return .failed(message: NSLocalizedString("password_validation_failed", comment: ""))
-        }
-        guard trimmedString.count >= 8 else {
-            return .failed(message: NSLocalizedString("password_validation_failed", comment: ""))
-        }
-
-        return .ok(trimmedString)
-    }
 }
 
 final class CharacterOnlyValidationService: ValidationServiceType {
-    func validate(_ value: String?, completion: @escaping (ValidationResult<String>) -> ()) {
-        completion(charactersAndSpaceOnly(value))
+    func validate(_ value: String?) -> ValidationResult<String> {
+        return charactersAndSpaceOnly(value)
     }
 }
 
@@ -178,38 +167,56 @@ func ==(lhs: AccountValidationResult, rhs: AccountValidationResult) -> Bool {
 
 final class EmailValidationService: ValidationServiceType {
 
-    func validate(_ value: String?, completion: @escaping (ValidationResult<String>) -> ()) {
+    func validate(_ value: String?) -> ValidationResult<String> {
         guard let notNilValue = value, !notNilValue.isEmpty else {
-            completion(.empty)
-            return
+            return .empty
         }
 
         guard !notNilValue.containsWhitespace else {
-            completion(.failed(message: NSLocalizedString("email_validation_failed", comment: "")))
-            return
+            return .failed(message: NSLocalizedString("Invalid email address", comment: ""))
         }
 
         guard notNilValue.components(separatedBy: "@").count <= 2 else {
-            completion(.failed(message: NSLocalizedString("email_validation_failed", comment: "")))
-            return
+            return .failed(message: NSLocalizedString("Invalid email address", comment: ""))
         }
         // swiftlint:disable line_length
         let regex = "[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$" // Just do a simple client validation
         // swiftlint:enable line_length
         guard NSPredicate(format: "SELF MATCHES %@", regex).evaluate(with: notNilValue) else {
-            completion(.failed(message: NSLocalizedString("email_validation_failed", comment: "")))
-            return
+            return .failed(message: NSLocalizedString("Invalid email address", comment: ""))
         }
 
-        completion(.ok(""))
+        return .ok("")
     }
 }
 
 final class PasswordValidationService: ValidationServiceType {
 
-    func validate(_ value: String?, completion: @escaping (ValidationResult<String>) -> ()) {
-        completion(validatePassword(value))
+    func validate(_ value: String?) -> ValidationResult<String> {
+        let maybeTrimmedString = value?.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let trimmedString = maybeTrimmedString, !trimmedString.isEmpty else {
+            return .failed(message: NSLocalizedString("password_validation_failed", comment: ""))
+        }
+        guard trimmedString.count >= 8 else {
+            return .failed(message: NSLocalizedString("Passwords must be at least 8 characters.", comment: ""))
+        }
+        return .ok(trimmedString)
     }
 }
 
+final class PhoneNumberValidationService: ValidationServiceType {
 
+    func validate(_ value: String?) -> ValidationResult<String> {
+        guard let notNilValue = value, !notNilValue.isEmpty else {
+            return .empty
+        }
+        let phoneNumberKit = PhoneNumberKit()
+        let errorMsg = "Please enter a valid, 10 digit US phone number"
+        do {
+            let _ = try phoneNumberKit.parse(notNilValue, ignoreType: true)
+        } catch  {
+            return .failed(message: errorMsg)
+        }
+        return .ok("")
+    }
+}

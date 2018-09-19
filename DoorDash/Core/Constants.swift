@@ -17,8 +17,17 @@ enum Constants {
         }
     }
 
+    public enum GooglePlaceAPI: String {
+        case autocomplete = "https://maps.googleapis.com/maps/api/place/autocomplete/"
+    }
+
     enum GoogleMapsKey: String {
         case release = "AIzaSyCuMvN-uULAK0AGqUyfqwzAD78t5trETOo"
         case debug = "AIzaSyCuMvN-uULAK0AGqUyfqwzAD78t5trETOo1"
+    }
+
+    enum GooglePlaceKey: String {
+        case release = "AIzaSyCD6SNm_AZKTI1fbQW2jdzcQQvHJ8bmNj4"
+        case debug = "TODO"
     }
 }

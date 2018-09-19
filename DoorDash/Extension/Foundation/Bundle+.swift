@@ -17,8 +17,8 @@ protocol BundleType {
 }
 
 enum UWLifeBundleIdentifier: String {
-    case internalApp = "com.UWLife.internal"
-    case releaseApp = "com.UWLife"
+    case internalApp = "com.DoorDash.internal"
+    case releaseApp = "com.DoorDash"
 }
 
 extension BundleType {

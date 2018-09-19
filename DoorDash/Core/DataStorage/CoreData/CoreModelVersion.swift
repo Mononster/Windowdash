@@ -1,6 +1,6 @@
 //
 //  CoreModelVersion.swift
-//  UWLife
+//  DoorDash
 //
 //  Created by Marvin Zhan on 2018-03-20.
 //  Copyright © 2018 Monster. All rights reserved.
@@ -9,7 +9,7 @@
 import CoreData
 
 public enum CoreModelVersion: String {
-    case version1 = "UWLife"
+    case version1 = "DoorDash"
 }
 
 extension CoreModelVersion {
@@ -20,7 +20,7 @@ extension CoreModelVersion {
     }
 
     var modelDirectoryName: String {
-        return "UWLife.momd"
+        return "DoorDash.momd"
     }
 
     func managedObjectModel() -> NSManagedObjectModel {

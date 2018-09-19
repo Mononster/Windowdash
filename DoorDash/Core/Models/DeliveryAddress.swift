@@ -114,7 +114,7 @@ public struct DeliveryAddress {
     public let shortName: String
     public let latitude: CLLocationDegrees
     public let longitude: CLLocationDegrees
-    public let driverInstructions: String
+    public let driverInstructions: String?
     public let zipCode: String
     public let printableAddress: String
     public let district: District?
@@ -126,7 +126,7 @@ public struct DeliveryAddress {
                 shortName: String,
                 latitude: CLLocationDegrees,
                 longitude: CLLocationDegrees,
-                driverInstructions: String,
+                driverInstructions: String?,
                 zipCode: String,
                 printableAddress: String,
                 district: District?) {
@@ -156,7 +156,7 @@ extension DeliveryAddress: Codable {
         let longitudeDouble: Double = (try? values.decode(Double.self, forKey: .longitude)) ?? 0
         let latitude: CLLocationDegrees = CLLocationDegrees(latitudeDouble)
         let longitude: CLLocationDegrees = CLLocationDegrees(longitudeDouble)
-        let driverInstructions: String = (try? values.decode(String.self, forKey: .id)) ?? ""
+        let driverInstructions: String? = try? values.decode(String.self, forKey: .id)
         let printableAddress: String = (try? values.decode(String.self, forKey: .printableAddress)) ?? ""
         let zipCode: String = try values.decode(String.self, forKey: .zipCode)
         let district: District? = try? values.decode(District.self, forKey: .district)

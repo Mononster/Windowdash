@@ -20,4 +20,5 @@ target 'DoorDash' do
   pod 'FLAnimatedImage', '~> 1.0'
   pod 'GoogleMaps'
   pod 'GooglePlaces'
+  pod 'PhoneNumberKit', '~> 2.1'
 end

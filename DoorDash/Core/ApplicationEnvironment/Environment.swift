@@ -39,6 +39,7 @@ struct Environment {
     let securityStorage: SecurityStorageType
     let mainBundle: BundleType
     let authToken: AuthTokenType?
+    let passwordToken: AuthTokenType?
     var currentUser: User?
     let networkConfig: NetworkConfigurationType
 
@@ -49,6 +50,7 @@ struct Environment {
          dataStore: DataStoreType = DataStore(),
          mainBundle: BundleType = Bundle.main,
          authToken: AuthTokenType? = nil,
+         passwordToken: AuthTokenType? = nil,
          networkConfig: NetworkConfigurationType,
          currentUser: User? = nil) {
 
@@ -59,6 +61,7 @@ struct Environment {
         self.securityStorage = securityStorage
         self.mainBundle = mainBundle
         self.authToken = authToken
+        self.passwordToken = passwordToken
         self.networkConfig = networkConfig
         self.currentUser = currentUser
     }
@@ -89,14 +92,17 @@ struct Environment {
         }
     }
 
-    func login(token: AuthTokenType, currentUser: User?) -> Environment {
+    func login(currentUser: User?,
+               passwordToken: AuthTokenType,
+               authToken: AuthTokenType?) -> Environment {
         return Environment(type: type,
                            googleMapsAPIKey: googleMapsAPIKey,
                            userDefaults: userDefaults,
                            securityStorage: securityStorage,
                            dataStore: dataStore,
                            mainBundle: mainBundle,
-                           authToken: token,
+                           authToken: authToken,
+                           passwordToken: passwordToken,
                            networkConfig: networkConfig,
                            currentUser: currentUser)
     }
@@ -109,6 +115,7 @@ struct Environment {
                            dataStore: dataStore,
                            mainBundle: mainBundle,
                            authToken: nil,
+                           passwordToken: nil,
                            networkConfig: networkConfig,
                            currentUser: nil)
     }

@@ -10,6 +10,7 @@ import UIKit
 
 protocol ImageAsset {
     var logoImage: UIImage { get }
+    var logoNoText: UIImage { get }
     var facebook: UIImage { get }
     var google: UIImage { get }
     var onboardingImages: [UIImage] { get }
@@ -20,6 +21,10 @@ struct DefaultImageAsset: ImageAsset {
 
     var logoImage: UIImage {
         return #imageLiteral(resourceName: "doordash_logo")
+    }
+
+    var logoNoText: UIImage {
+        return #imageLiteral(resourceName: "logo_no_text")
     }
 
     var facebook: UIImage {

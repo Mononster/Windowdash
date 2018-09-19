@@ -22,6 +22,7 @@ protocol FontSchema {
     var regular10: UIFont { get }
     var regular12: UIFont { get }
     var regular14: UIFont { get }
+    var regular15: UIFont { get }
     var regular16: UIFont { get }
     var regular18: UIFont { get }
     var regular24: UIFont { get }
@@ -67,6 +68,10 @@ struct DefaultFontSchema: FontSchema {
 
     var regular14: UIFont {
         return font(size: 14)
+    }
+
+    var regular15: UIFont {
+        return font(size: 15)
     }
 
     var regular16: UIFont {

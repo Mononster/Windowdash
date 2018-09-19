@@ -65,6 +65,7 @@ class UserAPIService: DoorDashAPIService {
     enum UserAPITarget: TargetType {
         case login(email: String, password: String)
         case register(account: Account)
+        case fetchUserProfile(authToken: AuthToken)
 
         var baseURL: URL {
             return ApplicationEnvironment.current.networkConfig.hostURL
@@ -74,6 +75,8 @@ class UserAPIService: DoorDashAPIService {
             switch self {
             case .login:
                 return "v2/auth/token/"
+            case .fetchUserProfile:
+                return "v2/consumer/me/"
             case .register:
                 return "v2/consumer/"
             }
@@ -85,8 +88,11 @@ class UserAPIService: DoorDashAPIService {
                 return .post
             case .register:
                 return .post
+            case .fetchUserProfile:
+                return .get
             }
         }
+
         var task: Task {
             switch self {
             case .login(let email, let password):
@@ -99,6 +105,8 @@ class UserAPIService: DoorDashAPIService {
                     parameters: account.convertToRequest(),
                     encoding: JSONEncoding.default
                 )
+            case .fetchUserProfile:
+                return .requestPlain
             }
         }
 
@@ -109,14 +117,39 @@ class UserAPIService: DoorDashAPIService {
                     .data(using: String.Encoding.utf8)!
             case .register(let account):
                 return "{\"email\": \"\(account.accountIdentifier.email)\", \"phone_number\": \"\(account.accountIdentifier.phoneNumber)\", \"password\": \"\(account.password ?? "")\", \"last_name\": \"\(account.accountIdentifier.lastName)\", \"last_name\": \"\(account.accountIdentifier.lastName)\"}".data(using: String.Encoding.utf8)!
+            case .fetchUserProfile:
+                return Data()
             }
         }
 
         var headers: [String : String]? {
-            return ["Content-Type": "application/json",
-                    "User-Agent": "DoordashConsumer/3.0.90 (iPhone; iOS 11.4.1; Scale/3.00)",
-                    "Accept": "application/json"
-            ]
+            switch self {
+            case .fetchUserProfile(let token):
+                return ["Authorization": "JWT \(token.tokenStr)"]
+            default:
+                return nil
+            }
+        }
+    }
+}
+
+extension UserAPIService {
+    func handleLoginErrors(response: Response) -> Error {
+        if let json = try? JSON(data: response.data),
+            let errorMsgs = json["non_field_errors"].array,
+            let urlResponse = response.response {
+            return self.error(urlResponse, errorMsgs.first?.string ?? "")
+        } else {
+            return NSError(domain: "", code: response.statusCode, userInfo: nil)
+        }
+    }
+
+    func handleRegisterErrors(response: Response) -> Error {
+        if let json = try? JSON(data: response.data),
+            let urlResponse = response.response {
+            return self.error(urlResponse, json["email"].string ?? "")
+        } else {
+            return NSError(domain: "", code: response.statusCode, userInfo: nil)
         }
     }
 }
@@ -139,7 +172,7 @@ extension UserAPIService {
             case .success(let response):
                 do {
                     guard response.statusCode == 201 else {
-                        let error = self.handleError(response: response)
+                        let error = self.handleRegisterErrors(response: response)
                         completion(nil, error)
                         return
                     }
@@ -162,7 +195,7 @@ extension UserAPIService {
             case .success(let response):
                 do {
                     guard response.statusCode == 200 else {
-                        let error = self.handleError(response: response)
+                        let error = self.handleLoginErrors(response: response)
                         completion(nil, error)
                         return
                     }
@@ -172,6 +205,27 @@ extension UserAPIService {
                     } else {
                         completion(nil, DefaultError.notAuthorized)
                     }
+                } catch(let error) {
+                    completion(nil, error)
+                }
+            case .failure(let error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    func fetchUserProfile(token: AuthToken, completion: @escaping (User?, Error?) -> ()) {
+        userAPIProvider.request(.fetchUserProfile(authToken: token)) { (result) in
+            switch result {
+            case .success(let response):
+                do {
+                    guard response.statusCode == 200 else {
+                        let error = self.handleError(response: response)
+                        completion(nil, error)
+                        return
+                    }
+                    let user = try response.map(User.self)
+                    completion(user, nil)
                 } catch(let error) {
                     completion(nil, error)
                 }

@@ -17,8 +17,10 @@ typealias KeyboardInfo = (
 class BaseViewController: UIViewController {
 
     let theme = ApplicationDependency.manager.theme
+    let loadingIndicator: LoadingIndicator
 
     init() {
+        loadingIndicator = LoadingIndicator(frame: .zero)
         super.init(nibName: nil, bundle: nil)
         self.navigationItem.backBarButtonItem = UIBarButtonItem.empty
     }
@@ -30,6 +32,12 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ApplicationDependency.manager.theme.colors.white
+        self.view.addSubview(loadingIndicator)
+        loadingIndicator.isHidden = true
+        loadingIndicator.snp.makeConstraints { (make) in
+            make.centerX.centerY.equalToSuperview()
+            make.width.height.equalTo(60)
+        }
     }
 
     @objc func adjustViewWhenKeyboardShow(notification: NSNotification) {

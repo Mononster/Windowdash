@@ -12,6 +12,7 @@ import SnapKit
 protocol InputFormCellDelegate: class {
     func updateInputResult(type: SignInputFieldType, value: String)
     func wakeUpInputField(type: SignInputFieldType)
+    func completeInputing()
 }
 
 final class InputFormCell: UICollectionViewCell {
@@ -52,12 +53,17 @@ final class InputFormCell: UICollectionViewCell {
         self.isLastInputField = isLastInputField
         if type == .phoneNumber {
             self.inputField.keyboardType = .numberPad
+        } else if type == .email {
+            self.inputField.keyboardType = .emailAddress
+        } else {
+            self.inputField.keyboardType = .default
         }
 
         if type == .password {
             self.inputField.isSecureTextEntry = true
             self.inputField.placeholder = "at least 8 characters"
         } else {
+            self.inputField.isSecureTextEntry = false
             self.inputField.placeholder = nil
         }
 
@@ -148,6 +154,8 @@ extension InputFormCell: UITextFieldDelegate {
         textField.resignFirstResponder()
         if let type = nextType {
             self.delegate?.wakeUpInputField(type: type)
+        } else {
+            self.delegate?.completeInputing()
         }
         return true
     }

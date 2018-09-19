@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6EB22AA1205663B76E91646483191AC9"
+               BlueprintIdentifier = "AC79B1AEE6698AB47A6100660B126581"
                BuildableName = "Pods_DoorDash.framework"
                BlueprintName = "Pods-DoorDash"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6EB22AA1205663B76E91646483191AC9"
+            BlueprintIdentifier = "AC79B1AEE6698AB47A6100660B126581"
             BuildableName = "Pods_DoorDash.framework"
             BlueprintName = "Pods-DoorDash"
             ReferencedContainer = "container:Pods.xcodeproj">

@@ -23,6 +23,8 @@ enum SignInputFieldType: String {
     case password = "Password"
 }
 
+extension SignInputFieldType: CaseIterable {}
+
 final class SignupHomeViewModel {
     static let socailLoginIdentifier = "Social log in"
     private let userAPI: UserAPIService
@@ -54,44 +56,97 @@ final class SignupHomeViewModel {
             ]
         }
     }
-//
-//    func fbLogin(permissions: [String],
-//                 from viewController: UIViewController,
-//                 completion: @escaping (AuthenticationState) -> ()) {
-//        fbLoginManager.logIn(withReadPermissions: permissions, from: viewController)
-//        { (loginResult, error) in
-//            if let error = error {
-//                log.info("Facebook login failed \(error)")
-//                completion(AuthenticationState.notAuthenticated)
-//                return
-//            }
-//            guard let result = loginResult,
-//                let token = result.token,
-//                let uid = token.userID else {
-//                completion(AuthenticationState.notAuthenticated)
-//                return
-//            }
-//
-//            self.userAPI.thirdPartySignup(partnerName: "Facebook",
-//                                          partnerSideId: uid,
-//                                          authToken: token.tokenString,
-//                                          completion:
-//            { (user, token, error) in
-//                guard let user = user, error == nil else {
-//                    log.info("Facebool login failed, when connected to backend signup")
-//                    completion(AuthenticationState.notAuthenticated)
-//                    return
-//                }
-//
-//                ApplicationEnvironment.login(
-//                    credentials: Credentials(
-//                        account: user.email!,
-//                        token: AuthToken(token!)),
-//                    currentUser: user)
-//
-//                try? user.savePersistently(to: self.dataStore)
-//                completion(AuthenticationState.authenticated)
-//            })
-//        }
-//    }
+
+    func validateRegisterInputs(results: [SignInputFieldType: String]) -> (String, String)? {
+        let baseErrorMsg = "Please add a "
+        let baseErrorSubTitle = "Enter your "
+        for type in SignInputFieldType.allCases {
+            if results[type] == nil {
+                // mising this type of inputs
+                return (baseErrorMsg + type.rawValue.lowercased() + ".",
+                        baseErrorSubTitle + type.rawValue.lowercased() + ".")
+            }
+        }
+        let emailValidation = EmailValidationService() .validate(results[.email])
+        if !emailValidation.isValid {
+            return (emailValidation.message ?? "", "re-enter your email address.")
+        }
+        let phoneValidation = PhoneNumberValidationService().validate(results[.phoneNumber])
+        if !phoneValidation.isValid {
+            return ("We need a different phone number", phoneValidation.message ?? "")
+        }
+        let passwordValidation = PasswordValidationService().validate(results[.password])
+        if !passwordValidation.isValid {
+            return (passwordValidation.message ?? "", "Please re-enter your password")
+        }
+        return nil
+    }
+
+    func validateLoginInputs(results: [SignInputFieldType: String]) -> (String, String)? {
+        if results[.email] == nil {
+            return ("Oops", "We need your email!")
+        }
+        if results[.password] == nil {
+            return ("Hey", "What's your password?")
+        }
+        return nil
+    }
+
+    func register(inputs: [SignInputFieldType: String],
+                  completion: @escaping (String?) -> ()) {
+        guard let firstName = inputs[.firstName],
+            let lastName = inputs[.lastName],
+            let phoneNumber = inputs[.phoneNumber],
+            let email = inputs[.email],
+            let password = inputs[.password] else {
+            // Something is really wrong.
+            fatalError()
+        }
+
+        let signupAcc = SignupTempAccount(
+            type: .email,
+            firstName: firstName,
+            lastName: lastName,
+            phoneNumber: phoneNumber,
+            email: email
+        )
+
+        userAPI.register(signupAcc, password: password) { (user, error) in
+            if let error = error as? UserAPIError {
+                completion(error.errorMessage)
+                return
+            }
+            
+            self.login(email: email, password: password, completion: completion)
+        }
+    }
+
+    func login(email: String,
+               password: String,
+               completion: @escaping (String?) -> ()) {
+        userAPI.login(email: email, password: password) { (token, error) in
+            if let error = error as? UserAPIError {
+                completion(error.errorMessage)
+                return
+            }
+            guard let token = token else {
+                completion("Can't find auth token")
+                return
+            }
+            self.userAPI.fetchUserProfile(token: AuthToken(token), completion: { (user, error) in
+                if let user = user {
+                    ApplicationEnvironment.login(
+                        credentials: Credentials(
+                            account: email,
+                            token: AuthToken(password)),
+                        currentUser: user,
+                        authToken: AuthToken(token))
+                    try? user.savePersistently(to: self.dataStore)
+                    completion(nil)
+                } else {
+                    completion("v2-consumer-me, error when fetching user profile.")
+                }
+            })
+        }
+    }
 }

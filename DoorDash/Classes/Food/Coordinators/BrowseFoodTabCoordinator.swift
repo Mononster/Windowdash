@@ -20,7 +20,7 @@ class BrowseFoodTabCoordinator: Coordinator {
     }
 
     func start() {
-        self.router.setRootModule(rootViewController)
+        self.router.setRootModule(rootViewController, hideBar: true)
         self.router.setNavigationBarStyle(style: .mainTheme)
     }
 

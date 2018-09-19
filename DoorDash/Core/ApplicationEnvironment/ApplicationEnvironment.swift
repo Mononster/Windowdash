@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftyJSON
+import Alamofire
 
 struct ApplicationEnvironment {
     internal static let currentEnvironmentStorageKey = "com.DoorDash.AppEnvironment.current"
@@ -18,6 +19,8 @@ struct ApplicationEnvironment {
         return internalEnvironmentStack.last
     }
 
+    static private(set) var sessionManager: SessionManager = SessionManager.authSession
+
     static func replaceCurrentEnvironment(_ env: Environment) {
         pushEnvironment(env)
         internalEnvironmentStack.remove(at: internalEnvironmentStack.count - 2)
@@ -25,12 +28,15 @@ struct ApplicationEnvironment {
 
     public static func replaceCurrentEnvironment(
         authToken: AuthTokenType? = ApplicationEnvironment.current.authToken,
+        passwordToken: AuthTokenType? = ApplicationEnvironment.current.passwordToken,
         currentUser: User? = ApplicationEnvironment.current.currentUser,
+        networkConfig: NetworkConfigurationType = ApplicationEnvironment.current.networkConfig,
         userDefaults: KeyValueStoreType = ApplicationEnvironment.current.userDefaults,
         securityStorage: SecurityStorageType = ApplicationEnvironment.current.securityStorage,
         dataStore: DataStoreType = ApplicationEnvironment.current.dataStore,
         mainBundle: BundleType = ApplicationEnvironment.current.mainBundle) {
         let currentActiveUser = ApplicationEnvironment.current.currentUser
+        let currentNetworkConfig = ApplicationEnvironment.current.networkConfig
 
         let newEnv = Environment(
             type: ApplicationEnvironment.current.type,
@@ -40,13 +46,21 @@ struct ApplicationEnvironment {
             dataStore: dataStore,
             mainBundle: mainBundle,
             authToken: authToken,
+            passwordToken: passwordToken,
             networkConfig: ApplicationEnvironment.current.networkConfig ,
             currentUser: currentUser)
 
         if currentUser != currentActiveUser {
-            //try? newEnv.userDefaults.set(currentUser?.toJSON(), forKey: currentUserStorageKey)
+            if let encodedUser = try? JSONEncoder().encode(currentUser) {
+                newEnv.userDefaults.set(encodedUser, forKey: currentUserStorageKey)
+            }
         }
         replaceCurrentEnvironment(newEnv)
+
+        if !(networkConfig == currentNetworkConfig) {
+            sessionManager.session.invalidateAndCancel()
+            sessionManager = SessionManager.authSession
+        }
     }
 
     static func pushEnvironment(_ env: Environment) {
@@ -64,7 +78,9 @@ struct ApplicationEnvironment {
     static func saveEnvironment(_ env: Environment = ApplicationEnvironment.current, userDefaults: KeyValueStoreType) {
         userDefaults.set(env.type.rawValue, forKey: currentEnvironmentStorageKey)
         if let user = env.currentUser {
-            //try? userDefaults.set(user.toJSON(), forKey: currentUserStorageKey)
+            if let encodedUser = try? JSONEncoder().encode(user) {
+                userDefaults.set(encodedUser, forKey: currentUserStorageKey)
+            }
         }
         userDefaults.synchronize()
     }
@@ -81,11 +97,12 @@ struct ApplicationEnvironment {
         }
 
         var user: User? = nil
-        if let userDictionary = storage.dictionary(forKey: currentUserStorageKey) {
-            //user = try? User.from(JSON(userDictionary))
+        if let userData = storage.object(forKey: currentUserStorageKey) as? Data {
+            let decoder = JSONDecoder()
+            user = try? decoder.decode(User.self, from: userData)
         }
 
-        return env.login(token: credentials.token, currentUser: user)
+        return env.login(currentUser: user, passwordToken: credentials.token, authToken: nil)
     }
 
     static func updateCurrentUser(updatedUser: User) {
@@ -94,10 +111,10 @@ struct ApplicationEnvironment {
         self.saveEnvironment(userDefaults: UserDefaults.standard)
     }
 
-    static func login(credentials: Credentials, currentUser: User) {
+    static func login(credentials: Credentials, currentUser: User, authToken: AuthTokenType) {
         let authController = AuthenticationController(serviceName: current.mainBundle.identifier)
         if authController.storeCredentials(credentials.account, token: credentials.token.tokenStr) {
-            replaceCurrentEnvironment(current.login(token: credentials.token, currentUser: currentUser))
+            replaceCurrentEnvironment(current.login(currentUser: currentUser, passwordToken: credentials.token, authToken: authToken))
         }
     }
 

@@ -73,7 +73,7 @@ public struct NetworkConfiguration: NetworkConfigurationType {
     }
 
     public static let latest: NetworkConfiguration = NetworkConfiguration(
-        hostURL: URL(string: Constants.API.Endpoint.latest.rawValue)!)
+        hostURL: URL(string: Constants.API.Endpoint.production.rawValue)!)
 
     public static let production: NetworkConfiguration = NetworkConfiguration(
         hostURL: URL(string: Constants.API.Endpoint.production.rawValue)!)

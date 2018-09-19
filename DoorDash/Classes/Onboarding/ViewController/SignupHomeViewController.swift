@@ -47,6 +47,11 @@ final class SignupHomeViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        bindModels()
+    }
+
+    func bindModels() {
+        self.inputSectionController.userFinishInputing = signButtonTapped
     }
 }
 
@@ -111,12 +116,57 @@ extension SignupHomeViewController: ListAdapterDataSource {
 }
 
 extension SignupHomeViewController {
+
     func signButtonTapped() {
         if self.mode == .register {
-            print(inputSectionController.inputResults)
+            if let validation = self.viewModel.validateRegisterInputs(results: inputSectionController.inputResults) {
+                presentAlertView(title: validation.0, message: validation.1)
+                return
+            }
+            registerUser()
         } else {
-
+            if let validation = self.viewModel.validateLoginInputs(results: inputSectionController.inputResults) {
+                presentAlertView(title: validation.0, message: validation.1)
+                return
+            }
+            loginUser()
         }
+    }
+
+    func registerUser() {
+        self.view.isUserInteractionEnabled = false
+        loadingIndicator.show()
+        viewModel.register(inputs: inputSectionController.inputResults) { (errorMsg) in
+            self.loadingIndicator.hide()
+            self.view.isUserInteractionEnabled = true
+            if let errorMsg = errorMsg {
+                self.presentAlertView(title: "Whoops", message: errorMsg)
+                return
+            }
+        }
+    }
+
+    func loginUser() {
+        guard let email = inputSectionController.inputResults[.email],
+            let password = inputSectionController.inputResults[.password] else {
+            fatalError()
+        }
+        self.view.isUserInteractionEnabled = false
+        loadingIndicator.show()
+        viewModel.login(email: email, password: password) { (errorMsg) in
+            self.loadingIndicator.hide()
+            self.view.isUserInteractionEnabled = true
+            if let errorMsg = errorMsg {
+                self.presentAlertView(title: "Whoops", message: errorMsg)
+                return
+            }
+        }
+    }
+
+    func presentAlertView(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+        self.present(alert, animated: true, completion: nil)
     }
 }
 

@@ -23,6 +23,12 @@ PODS:
   - ObjcExceptionBridging (1.0.1):
     - ObjcExceptionBridging/ObjcExceptionBridging (= 1.0.1)
   - ObjcExceptionBridging/ObjcExceptionBridging (1.0.1)
+  - PhoneNumberKit (2.1.0):
+    - PhoneNumberKit/PhoneNumberKitCore (= 2.1.0)
+    - PhoneNumberKit/UIKit (= 2.1.0)
+  - PhoneNumberKit/PhoneNumberKitCore (2.1.0)
+  - PhoneNumberKit/UIKit (2.1.0):
+    - PhoneNumberKit/PhoneNumberKitCore
   - Result (3.2.4)
   - SDWebImage (4.4.2):
     - SDWebImage/Core (= 4.4.2)
@@ -43,6 +49,7 @@ DEPENDENCIES:
   - IGListKit
   - KeychainAccess
   - Moya (~> 11.0)
+  - PhoneNumberKit (~> 2.1)
   - SDWebImage (~> 4.0)
   - SnapKit
   - SwiftyJSON
@@ -59,6 +66,7 @@ SPEC REPOS:
     - KeychainAccess
     - Moya
     - ObjcExceptionBridging
+    - PhoneNumberKit
     - Result
     - SDWebImage
     - SnapKit
@@ -75,12 +83,13 @@ SPEC CHECKSUMS:
   KeychainAccess: 7bd430028059754a3debab3cfc0bd1fc7fb85df3
   Moya: a725035953bc1c0eb1be505ab903984501d82440
   ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
+  PhoneNumberKit: 62003f40ff75315fd3738286558bc365365ac222
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
   XCGLogger: 7f7f43f15dfe3a305fa1342b7dc29af656289abd
 
-PODFILE CHECKSUM: 6ed54eed37016021c9dd38357e868129f18d5028
+PODFILE CHECKSUM: 6c46f312ddd0f60ceeb1fa140d7e12d6495e9fb9
 
 COCOAPODS: 1.5.3

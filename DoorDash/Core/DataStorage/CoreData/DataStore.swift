@@ -1,6 +1,6 @@
 //
 //  DataStore.swift
-//  UWLife
+//  DoorDash
 //
 //  Created by Marvin Zhan on 2018-03-20.
 //  Copyright © 2018 Monster. All rights reserved.
@@ -44,7 +44,7 @@ public final class DataStore: DataStoreType {
     private static var maxRetry = 2
 
     private lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "UWLife", managedObjectModel: CoreModelVersion.current.managedObjectModel())
+        let container = NSPersistentContainer(name: "DoorDash", managedObjectModel: CoreModelVersion.current.managedObjectModel())
 
         let description = NSPersistentStoreDescription(url: self.storeURL)
         description.shouldMigrateStoreAutomatically = false
@@ -57,7 +57,7 @@ public final class DataStore: DataStoreType {
             fatalError("Cannot find directory for data store")
         }
 
-        let storeURL = URL(fileURLWithPath: rootDirectory).appendingPathComponent("UWLife.sqlite")
+        let storeURL = URL(fileURLWithPath: rootDirectory).appendingPathComponent("DoorDash.sqlite")
         return storeURL
     }
 

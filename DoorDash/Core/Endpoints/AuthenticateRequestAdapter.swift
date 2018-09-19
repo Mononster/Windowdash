@@ -10,8 +10,11 @@ import Alamofire
 
 struct AuthenticatedRequestAdapter: RequestAdapter {
 
-    private static var excludedApiRequestsURL: Set<String> {
-        return []
+    static var excludedApiRequestsURL: Set<String> {
+        return [
+            "/v2/auth/token",
+            "/v2/consumer/me"
+        ]
     }
 
     func adapt(_ urlRequest: URLRequest) throws -> URLRequest {
@@ -22,14 +25,17 @@ struct AuthenticatedRequestAdapter: RequestAdapter {
 //        let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") ?? "0"
 //        request.addValue("\(appVersion)", forHTTPHeaderField: "App-Version")
 //
-//        if let url = request.url, AuthenticatedRequestAdapter.excludedApiRequestsURL.contains(url.relativePath) {
-//            return request
-//        }
-//        guard let authToken = ApplicationEnvironment.current.authToken, !authToken.isEmpty else {
-//            return request
-//        }
-//
-//        request.addValue("Bearer \(authToken.tokenStr)", forHTTPHeaderField: "Authorization")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("DoordashConsumer/3.0.90 (iPhone; iOS 11.4.1; Scale/3.00)", forHTTPHeaderField: "User-Agent")
+        if let url = request.url, AuthenticatedRequestAdapter.excludedApiRequestsURL.contains(url.relativePath) {
+            return request
+        }
+
+        guard let authToken = ApplicationEnvironment.current.authToken, !authToken.isEmpty else {
+            return request
+        }
+
+        request.addValue("JWT \(authToken.tokenStr)", forHTTPHeaderField: "Authorization")
         return request
     }
 }

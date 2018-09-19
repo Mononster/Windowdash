@@ -38,23 +38,11 @@ class BrowseFoodViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        let service = UserAPIService()
-        let email = "marvin.zhan.9@gmail.com"
-        let password = "eiawy1016"
-        service.register(SignupTempAccount(type: .email, firstName: "marvin", lastName: "zhan", phoneNumber: "4158665357", email: email), password: password) { (user, error) in
-            if let apiError = error as? UserAPIError {
-                print(apiError.errorMessage)
-                return
-            }
-            if let user = user {
-                service.login(email: email, password: password, completion: { (token, error) in
-                    if let apiError = error as? UserAPIError {
-                        print(apiError.errorMessage)
-                        return
-                    } else {
-                        print(token)
-                    }
-                })
+
+        let apiService = GooglePlaceAPIService()
+        apiService.fetchPredictions(input: "730 7") { (predictions) in
+            for prediction in predictions {
+                print(prediction.description)
             }
         }
     }
