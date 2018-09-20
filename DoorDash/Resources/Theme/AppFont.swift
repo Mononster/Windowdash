@@ -206,21 +206,37 @@ struct DefaultFontSchema: FontSchema {
     }
 
     private func font(style: FontStyle, size: CGFloat) -> UIFont {
-        var weight: UIFont.Weight
+        var name: String
         switch style {
         case .bold:
-            weight = .bold
+            name = "TTNorms-Bold"
         case .regular:
-            weight = .regular
-        case .medium:
-            weight = .medium
-        case .light:
-            weight = .light
+            name = "TTNorms-Regular"
         case .semiBold:
-            weight = .semibold
+            name = "TTNorms-Bold"
+        case .medium:
+            name = "TTNorms-Medium"
+        case .light:
+            name = "TTNorms-Light"
         case .heavy:
-            weight = .heavy
+            name = "TTNorms-Black"
         }
-        return UIFont.systemFont(ofSize: size, weight: weight)
+        return UIFont(name: name, size: size)!
+//        var weight: UIFont.Weight
+//        switch style {
+//        case .bold:
+//            weight = .bold
+//        case .regular:
+//            weight = .regular
+//        case .medium:
+//            weight = .medium
+//        case .light:
+//            weight = .light
+//        case .semiBold:
+//            weight = .semibold
+//        case .heavy:
+//            weight = .heavy
+//        }
+//        return UIFont.systemFont(ofSize: size, weight: weight)
     }
 }

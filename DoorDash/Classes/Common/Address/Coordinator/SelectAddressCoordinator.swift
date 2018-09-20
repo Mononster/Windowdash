@@ -17,6 +17,7 @@ final class SelectAddressCoordinator: Coordinator {
         let controller = SelectAddressViewController()
         controller.didSelectAddress = { location in
             print(location.address)
+            self.toConfirmAdressViewController(location: location)
         }
         return controller
     }()
@@ -34,7 +35,8 @@ final class SelectAddressCoordinator: Coordinator {
         return self.router.navigationController
     }
 
-    func completeOnboarding() {
-        self.router.dismissModule()
+    func toConfirmAdressViewController(location: GMDetailLocation) {
+        let confirmAddressViewController = ConfirmAddressViewController(location: location)
+        self.router.push(confirmAddressViewController)
     }
 }

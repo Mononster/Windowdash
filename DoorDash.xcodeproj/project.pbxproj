@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		5611ABEA1FC00C63B46301AC /* Pods_DoorDash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADFE9795CC67CF842B0A8B0E /* Pods_DoorDash.framework */; };
+		6AFCC6DA21543912004D6600 /* TTNorms-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6AFCC6D521543911004D6600 /* TTNorms-Black.otf */; };
+		6AFCC6DB21543912004D6600 /* TTNorms-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6AFCC6D621543912004D6600 /* TTNorms-Medium.otf */; };
+		6AFCC6DC21543912004D6600 /* TTNorms-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6AFCC6D721543912004D6600 /* TTNorms-Light.otf */; };
+		6AFCC6DD21543912004D6600 /* TTNorms-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6AFCC6D821543912004D6600 /* TTNorms-Bold.otf */; };
+		6AFCC6DE21543912004D6600 /* TTNorms-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6AFCC6D921543912004D6600 /* TTNorms-Regular.otf */; };
 		8731A56C214885FE005B7CFF /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8731A560214885FE005B7CFF /* Authentication.swift */; };
 		8731A56D214885FE005B7CFF /* AuthToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8731A561214885FE005B7CFF /* AuthToken.swift */; };
 		8731A56E214885FE005B7CFF /* ValidationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8731A563214885FE005B7CFF /* ValidationService.swift */; };
@@ -129,6 +134,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6AFCC6D521543911004D6600 /* TTNorms-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TTNorms-Black.otf"; sourceTree = "<group>"; };
+		6AFCC6D621543912004D6600 /* TTNorms-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TTNorms-Medium.otf"; sourceTree = "<group>"; };
+		6AFCC6D721543912004D6600 /* TTNorms-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TTNorms-Light.otf"; sourceTree = "<group>"; };
+		6AFCC6D821543912004D6600 /* TTNorms-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TTNorms-Bold.otf"; sourceTree = "<group>"; };
+		6AFCC6D921543912004D6600 /* TTNorms-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "TTNorms-Regular.otf"; path = "../../../../../../Downloads/Fonts/TTNorms-Regular.otf"; sourceTree = "<group>"; };
 		8731A560214885FE005B7CFF /* Authentication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Authentication.swift; sourceTree = "<group>"; };
 		8731A561214885FE005B7CFF /* AuthToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthToken.swift; sourceTree = "<group>"; };
 		8731A563214885FE005B7CFF /* ValidationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidationService.swift; sourceTree = "<group>"; };
@@ -274,6 +284,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		6AFCC6BA2154079D004D6600 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				6AFCC6D521543911004D6600 /* TTNorms-Black.otf */,
+				6AFCC6D821543912004D6600 /* TTNorms-Bold.otf */,
+				6AFCC6D721543912004D6600 /* TTNorms-Light.otf */,
+				6AFCC6D621543912004D6600 /* TTNorms-Medium.otf */,
+				6AFCC6D921543912004D6600 /* TTNorms-Regular.otf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		8731A549214884BE005B7CFF /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -342,6 +364,7 @@
 		8731A55021488521005B7CFF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6AFCC6BA2154079D004D6600 /* Fonts */,
 				878295282148D50000AB56B2 /* Theme */,
 				87C7A4FA2148634B0040A7CD /* Assets.xcassets */,
 				87C7A4FC2148634B0040A7CD /* LaunchScreen.storyboard */,
@@ -897,7 +920,9 @@
 				DDF59160DD85B64291A15862 /* Pods */,
 				27AA99D6845B258A087AAA79 /* Frameworks */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
 		};
 		87C7A4F1214863490040A7CD /* Products */ = {
 			isa = PBXGroup;
@@ -995,8 +1020,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6AFCC6DA21543912004D6600 /* TTNorms-Black.otf in Resources */,
+				6AFCC6DC21543912004D6600 /* TTNorms-Light.otf in Resources */,
 				87C7A4FE2148634B0040A7CD /* LaunchScreen.storyboard in Resources */,
+				6AFCC6DD21543912004D6600 /* TTNorms-Bold.otf in Resources */,
+				6AFCC6DE21543912004D6600 /* TTNorms-Regular.otf in Resources */,
 				87C7A4FB2148634B0040A7CD /* Assets.xcassets in Resources */,
+				6AFCC6DB21543912004D6600 /* TTNorms-Medium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
