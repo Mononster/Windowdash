@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import IGListKit
 
-enum NavigationBarButtonStyle {
+enum EnterAddressState {
     case disable
     case enable
     case hide
@@ -26,8 +26,12 @@ final class SelectAddressViewController: BaseViewController {
 
     private let collectionView: UICollectionView
     private let headerView: HeaderTextLabelView
+    private let inputApartmentView: InputApartmentView
+    private let saveAddressButon: UIButton
     private let rightNavBarButton: UIBarButtonItem
     private let viewModel: SelectAddressViewModel
+
+    var didSelectAddress: ((GMDetailLocation) -> ())?
 
     private var contentSize: CGFloat {
         return collectionView.collectionViewLayout.collectionViewContentSize.height
@@ -36,11 +40,13 @@ final class SelectAddressViewController: BaseViewController {
     override init() {
         viewModel = SelectAddressViewModel()
         headerView = HeaderTextLabelView(text: selectAddressHeader)
-        rightNavBarButton = UIBarButtonItem(title: "Next", style: .plain, target: nil, action: #selector(rightNavBarButtonTapped))
+        rightNavBarButton = UIBarButtonItem(title: "Next", style: .done, target: nil, action: #selector(rightNavBarButtonTapped))
         collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout()
         )
+        inputApartmentView = InputApartmentView()
+        saveAddressButon = UIButton()
         super.init()
         adapter.dataSource = self
     }
@@ -59,20 +65,18 @@ final class SelectAddressViewController: BaseViewController {
         self.view.layoutIfNeeded()
         collectionView.setBorder(.all, color: theme.colors.separatorGray, borderWidth: 0.5)
     }
-
-    @objc
-    func rightNavBarButtonTapped() {
-
-    }
 }
 
 extension SelectAddressViewController {
 
     private func setupUI() {
         self.view.backgroundColor = theme.colors.backgroundGray
-        self.setNavBarButtonStyle(style: .disable)
+        self.navigationItem.title = "Enter Address"
+        self.setCurrentStyle(style: .disable)
         setupHeaderView()
         setupCollectionView()
+        setupInputApartmentView()
+        setupSaveAddressButton()
         setupConstraints()
     }
 
@@ -87,6 +91,23 @@ extension SelectAddressViewController {
         self.view.addSubview(headerView)
     }
 
+    private func setupInputApartmentView() {
+        inputApartmentView.isHidden = true
+        self.view.addSubview(inputApartmentView)
+        inputApartmentView.setBorder(.all, color: theme.colors.separatorGray, borderWidth: 0.5)
+    }
+
+    private func setupSaveAddressButton() {
+        self.view.addSubview(saveAddressButon)
+        saveAddressButon.isHidden = true
+        saveAddressButon.setTitle("Save Address", for: .normal)
+        saveAddressButon.setTitleColor(theme.colors.white, for: .normal)
+        saveAddressButon.titleLabel?.font = theme.fontSchema.medium18
+        saveAddressButon.backgroundColor = theme.colors.doorDashRed
+        saveAddressButon.layer.cornerRadius = 4
+        saveAddressButon.addTarget(self, action: #selector(saveAddressButtonTapped), for: .touchUpInside)
+    }
+
     private func setupConstraints() {
         headerView.snp.makeConstraints { (make) in
             make.leading.trailing.equalToSuperview().inset(20)
@@ -99,29 +120,63 @@ extension SelectAddressViewController {
             make.height.equalTo(contentSize)
             make.top.equalTo(headerView.snp.bottom)
         }
+
+        inputApartmentView.snp.makeConstraints { (make) in
+            make.leading.trailing.equalTo(collectionView)
+            make.height.equalTo(InputApartmentView.height)
+            make.top.equalTo(collectionView.snp.bottom).offset(12)
+        }
+
+        saveAddressButon.snp.makeConstraints { (make) in
+            make.top.equalTo(inputApartmentView.snp.bottom).offset(20)
+            make.leading.trailing.equalTo(inputApartmentView).inset(32)
+            make.height.equalTo(55)
+        }
     }
 
-    private func setNavBarButtonStyle(style: NavigationBarButtonStyle) {
+    private func setCurrentStyle(style: EnterAddressState) {
         self.navigationItem.setRightBarButton(rightNavBarButton, animated: false)
         switch style {
         case .disable:
             self.navigationItem.rightBarButtonItem?.isEnabled = false
-            self.navigationItem.rightBarButtonItem?.setTitleTextAttributes(
-                [NSAttributedString.Key.foregroundColor : theme.colors.lightGray,
-                 NSAttributedString.Key.font : theme.fontSchema.medium14],
-                for: [.normal, .highlighted]
-            )
             self.navigationItem.rightBarButtonItem?.tintColor = theme.colors.lightGray
+            self.inputApartmentView.isHidden = true
+            self.saveAddressButon.isHidden = true
         case .enable:
             self.navigationItem.rightBarButtonItem?.isEnabled = true
-            self.navigationItem.rightBarButtonItem?.setTitleTextAttributes(
-                [NSAttributedString.Key.foregroundColor : theme.colors.doorDashRed,
-                 NSAttributedString.Key.font : theme.fontSchema.medium14],
-                for: [.normal, .highlighted]
-            )
-            self.navigationItem.rightBarButtonItem?.tintColor = theme.colors.doorDashRed
+            self.navigationItem.rightBarButtonItem?.tintColor = theme.colors.darkGray
+            self.inputApartmentView.isHidden = false
+            self.saveAddressButon.isHidden = false
         case .hide:
             self.navigationItem.setRightBarButton(nil, animated: false)
+        }
+    }
+}
+
+extension SelectAddressViewController {
+
+    @objc
+    func saveAddressButtonTapped() {
+        obtainDetailPlace()
+    }
+
+    @objc
+    func rightNavBarButtonTapped() {
+        obtainDetailPlace()
+    }
+
+    func obtainDetailPlace() {
+        guard let prediction = viewModel.geoLocation else {
+            return
+        }
+        self.loadingIndicator.show()
+        viewModel.fetchDetailLocationInfo(prediction: prediction) { (location) in
+            self.loadingIndicator.hide()
+            guard let location = location else {
+                print("Error: location does not exist")
+                return
+            }
+            self.didSelectAddress?(location)
         }
     }
 }
@@ -143,7 +198,7 @@ extension SelectAddressViewController: ListAdapterDataSource {
                 self.viewModel.confirmSelection(prediction: prediction)
                 self.adapter.reloadData(completion: { _ in
                     self.updateCollectionViewHeight()
-                    self.setNavBarButtonStyle(style: .enable)
+                    self.setCurrentStyle(style: .enable)
                 })
             }
             return labelPresenter
@@ -163,13 +218,11 @@ extension SelectAddressViewController: EnterAddressCellDelegate {
         self.collectionView.snp.updateConstraints { (make) in
             make.height.equalTo(self.viewModel.contentHeight)
         }
-        UIView.animate(withDuration: 0.3, animations: {
-            self.view.layoutIfNeeded()
-        })
+        self.view.layoutIfNeeded()
     }
 
     func userDidEdited(text: String) {
-        self.setNavBarButtonStyle(style: .disable)
+        self.setCurrentStyle(style: .disable)
         self.viewModel.searchAddress(query: text, completion: {
             self.adapter.performUpdates(animated: false, completion: { _ in
                 self.updateCollectionViewHeight()

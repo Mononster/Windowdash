@@ -18,7 +18,7 @@ enum Constants {
     }
 
     public enum GooglePlaceAPI: String {
-        case autocomplete = "https://maps.googleapis.com/maps/api/place/autocomplete/"
+        case base = "https://maps.googleapis.com/maps/api/place/"
     }
 
     enum GoogleMapsKey: String {

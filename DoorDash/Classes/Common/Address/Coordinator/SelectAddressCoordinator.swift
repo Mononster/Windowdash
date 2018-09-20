@@ -15,6 +15,9 @@ final class SelectAddressCoordinator: Coordinator {
 
     lazy var rootViewController: SelectAddressViewController = {
         let controller = SelectAddressViewController()
+        controller.didSelectAddress = { location in
+            print(location.address)
+        }
         return controller
     }()
 

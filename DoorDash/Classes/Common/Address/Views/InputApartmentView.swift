@@ -1,5 +1,5 @@
 //
-//  EnterAddressCell.swift
+//  InputApartmentView.swift
 //  DoorDash
 //
 //  Created by Marvin Zhan on 2018-09-19.
@@ -7,23 +7,17 @@
 //
 
 import UIKit
+import SnapKit
 
-protocol EnterAddressCellDelegate: class {
-    func userDidEdited(text: String)
-}
-
-final class EnterAddressCell: UICollectionViewCell {
-
+final class InputApartmentView: UIView {
+    
     private let topLabel: UILabel
-    let separator: Separator
     let textField: UITextField
-    weak var delegate: EnterAddressCellDelegate?
 
     static let height: CGFloat = 70
 
     override init(frame: CGRect) {
         textField = UITextField()
-        separator = Separator.create()
         topLabel = UILabel()
         super.init(frame: frame)
         setupUI()
@@ -34,24 +28,18 @@ final class EnterAddressCell: UICollectionViewCell {
     }
 }
 
-extension EnterAddressCell {
+extension InputApartmentView {
 
     private func setupUI() {
+        self.backgroundColor = ApplicationDependency.manager.theme.colors.white
         setupTopLabel()
         setupTextField()
-        setupSeparator()
         setupConstraints()
-    }
-
-    private func setupSeparator() {
-        separator.isHidden = true
-        separator.backgroundColor = ApplicationDependency.manager.theme.colors.separatorGray
-        addSubview(separator)
     }
 
     private func setupTopLabel() {
         addSubview(topLabel)
-        topLabel.text = "STREET ADDRESS"
+        topLabel.text = "APARTMENT#(OPTIONAL)"
         topLabel.backgroundColor = .clear
         topLabel.numberOfLines = 1
         topLabel.font = ApplicationDependency.manager.theme.fontSchema.heavy12
@@ -66,7 +54,6 @@ extension EnterAddressCell {
         textField.clearButtonMode = .whileEditing
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
-        textField.delegate = self
     }
 
     private func setupConstraints() {
@@ -82,35 +69,5 @@ extension EnterAddressCell {
             make.bottom.equalToSuperview().offset(-4)
             make.trailing.equalToSuperview().offset(-4)
         }
-
-        separator.snp.makeConstraints { (make) in
-            make.height.equalTo(0.4)
-            make.bottom.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
-        }
     }
 }
-
-extension EnterAddressCell: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if let oldText = textField.text {
-            var finalString = ""
-            if string.count > 0 {
-                finalString = oldText + string
-            } else if oldText.count > 0 {
-                finalString = String(oldText.dropLast())
-            }
-            delegate?.userDidEdited(text: finalString)
-        }
-        return true
-    }
-
-    func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        textField.text = ""
-        textField.resignFirstResponder()
-        delegate?.userDidEdited(text: "")
-        return false
-    }
-}
-
-

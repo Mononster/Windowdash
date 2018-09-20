@@ -28,7 +28,7 @@ final class EnterAddressSectionController: ListSectionController {
             fatalError()
         }
         cell.delegate = cellDelegate
-        //cell.textField.bind(with: viewModel.userAddress)
+        cell.textField.text = viewModel.userAddress
         return cell
     }
 }

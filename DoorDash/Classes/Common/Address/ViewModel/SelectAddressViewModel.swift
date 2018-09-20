@@ -36,8 +36,9 @@ final class SelectAddressViewModel {
     }
 
     func searchAddress(query: String, completion: @escaping () -> ()) {
+        self.userAddress = query
         GMAutoCompleteManager.shared.decode(query) { (predictions) in
-            guard let predictions = predictions, predictions.count > 0 else {
+            guard let predictions = predictions else {
                 return
             }
             self.queries = QueriedAddresses(predictions: predictions.prefix(4).uniqueElements)
@@ -47,6 +48,18 @@ final class SelectAddressViewModel {
                 self.data[1] = self.queries
             }
             completion()
+        }
+    }
+
+    func fetchDetailLocationInfo(prediction: GMPrediction,
+                                 completion: @escaping (GMDetailLocation?) -> ()) {
+        guard let refID = prediction.referenceID else {
+            print("RefID does not exist")
+            return
+        }
+        let service = GooglePlaceAPIService()
+        service.fetchDetailPlace(referenceID: refID) { (location) in
+            completion(location)
         }
     }
 }

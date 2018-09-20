@@ -33,11 +33,13 @@ protocol FontSchema {
     var medium15: UIFont { get }
     var medium16: UIFont { get }
     var medium18: UIFont { get }
+    var medium20: UIFont { get }
     var medium24: UIFont { get }
     var semiBold12: UIFont { get }
     var semiBold14: UIFont { get }
     var semiBold16: UIFont { get }
     var semiBold17: UIFont { get }
+    var semiBold20: UIFont { get }
     var semiBold42: UIFont { get }
     var bold12: UIFont { get }
     var bold14: UIFont { get }
@@ -114,6 +116,10 @@ struct DefaultFontSchema: FontSchema {
         return font(style: .medium, size: 18)
     }
 
+    var medium20: UIFont {
+        return font(style: .medium, size: 20)
+    }
+
     var medium24: UIFont {
         return font(style: .medium, size: 24)
     }
@@ -132,6 +138,10 @@ struct DefaultFontSchema: FontSchema {
 
     var semiBold17: UIFont {
         return font(style: .semiBold, size: 17)
+    }
+
+    var semiBold20: UIFont {
+        return font(style: .semiBold, size: 20)
     }
     
     var semiBold42: UIFont {

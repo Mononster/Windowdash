@@ -66,6 +66,9 @@
 		87631A092152F17400475074 /* AddressTextLabelSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87631A082152F17400475074 /* AddressTextLabelSectionController.swift */; };
 		87631A0C2152F40B00475074 /* GMAutoCompleteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87631A0B2152F40B00475074 /* GMAutoCompleteManager.swift */; };
 		87631A0E2152F47D00475074 /* GlobalFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87631A0D2152F47D00475074 /* GlobalFunctions.swift */; };
+		87631A1021530B7500475074 /* InputApartmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87631A0F21530B7500475074 /* InputApartmentView.swift */; };
+		87631A122154037800475074 /* ConfirmAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87631A112154037800475074 /* ConfirmAddressViewController.swift */; };
+		87631A142154043100475074 /* ConfirmAddressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87631A132154043100475074 /* ConfirmAddressViewModel.swift */; };
 		8776F5F02148886200ABAA71 /* PersistentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8776F5EA2148886200ABAA71 /* PersistentModel.swift */; };
 		8776F5F22148886200ABAA71 /* CoreModelVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8776F5EE2148886200ABAA71 /* CoreModelVersion.swift */; };
 		8776F5F32148886200ABAA71 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8776F5EF2148886200ABAA71 /* DataStore.swift */; };
@@ -184,6 +187,9 @@
 		87631A082152F17400475074 /* AddressTextLabelSectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTextLabelSectionController.swift; sourceTree = "<group>"; };
 		87631A0B2152F40B00475074 /* GMAutoCompleteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMAutoCompleteManager.swift; sourceTree = "<group>"; };
 		87631A0D2152F47D00475074 /* GlobalFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalFunctions.swift; sourceTree = "<group>"; };
+		87631A0F21530B7500475074 /* InputApartmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputApartmentView.swift; sourceTree = "<group>"; };
+		87631A112154037800475074 /* ConfirmAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmAddressViewController.swift; sourceTree = "<group>"; };
+		87631A132154043100475074 /* ConfirmAddressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmAddressViewModel.swift; sourceTree = "<group>"; };
 		8776F5EA2148886200ABAA71 /* PersistentModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentModel.swift; sourceTree = "<group>"; };
 		8776F5EE2148886200ABAA71 /* CoreModelVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreModelVersion.swift; sourceTree = "<group>"; };
 		8776F5EF2148886200ABAA71 /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
@@ -526,6 +532,7 @@
 			isa = PBXGroup;
 			children = (
 				876319F62152EBC300475074 /* SelectAddressViewController.swift */,
+				87631A112154037800475074 /* ConfirmAddressViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -543,6 +550,7 @@
 			children = (
 				87631A002152EF6B00475074 /* Cells */,
 				876319F92152EC3F00475074 /* HeaderTextLabelView.swift */,
+				87631A0F21530B7500475074 /* InputApartmentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -551,6 +559,7 @@
 			isa = PBXGroup;
 			children = (
 				876319FC2152ECA600475074 /* SelectAddressViewModel.swift */,
+				87631A132154043100475074 /* ConfirmAddressViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1093,6 +1102,7 @@
 				8754BB7021516FFF008D9E1C /* FontNames.swift in Sources */,
 				8782958A214F085F00AB56B2 /* OnboardingViewController.swift in Sources */,
 				87829552214C61DA00AB56B2 /* DynamicHeightNavigationBar.swift in Sources */,
+				87631A1021530B7500475074 /* InputApartmentView.swift in Sources */,
 				87829540214A09C500AB56B2 /* UIColor+Gradient+Hex.swift in Sources */,
 				8754BC072152B442008D9E1C /* NVActivityIndicatorViewable.swift in Sources */,
 				876319FA2152EC3F00475074 /* HeaderTextLabelView.swift in Sources */,
@@ -1104,6 +1114,7 @@
 				8782953B2149DBF200AB56B2 /* Router.swift in Sources */,
 				87829559214C6C4300AB56B2 /* Separator.swift in Sources */,
 				876319F52152EB8500475074 /* SelectAddressCoordinator.swift in Sources */,
+				87631A122154037800475074 /* ConfirmAddressViewController.swift in Sources */,
 				87631A0C2152F40B00475074 /* GMAutoCompleteManager.swift in Sources */,
 				8776F5F22148886200ABAA71 /* CoreModelVersion.swift in Sources */,
 				8782953D2149DBF200AB56B2 /* InteractivePopRecognizer.swift in Sources */,
@@ -1115,6 +1126,7 @@
 				8731A571214885FE005B7CFF /* ApplicationEnvironment.swift in Sources */,
 				8782952D2148D50000AB56B2 /* AppImage.swift in Sources */,
 				8754BB6D21516FFF008D9E1C /* Imports.swift in Sources */,
+				87631A142154043100475074 /* ConfirmAddressViewModel.swift in Sources */,
 				87631A092152F17400475074 /* AddressTextLabelSectionController.swift in Sources */,
 				8754BB7421517C88008D9E1C /* SignupButtonCell.swift in Sources */,
 				8782952E2148D50000AB56B2 /* AppColor.swift in Sources */,

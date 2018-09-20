@@ -27,21 +27,24 @@ class GooglePlaceAPIService: DoorDashAPIService {
 
     enum GooglePlaceAPITarget: TargetType {
         case predict(input: String)
+        case fetchDetail(referenceID: String)
 
         var baseURL: URL {
-            return URL(string: Constants.GooglePlaceAPI.autocomplete.rawValue)!
+            return URL(string: Constants.GooglePlaceAPI.base.rawValue)!
         }
 
         var path: String {
             switch self {
             case .predict:
-                return "json"
+                return "autocomplete/json"
+            case .fetchDetail:
+                return "details/json"
             }
         }
 
         var method: Moya.Method {
             switch self {
-            case .predict:
+            case .predict, .fetchDetail:
                 return .get
             }
         }
@@ -50,7 +53,6 @@ class GooglePlaceAPIService: DoorDashAPIService {
             switch self {
             case .predict(let input):
                 var params: [String: Any] = [:]
-                //?input=\(input)&sensor=true&key=\(key)&channel=consumer_ios&radius=100.000000&language=en"
                 params["input"] = input
                 params["sensor"] = "true"
                 params["key"] = Constants.GooglePlaceKey.release.rawValue
@@ -58,12 +60,19 @@ class GooglePlaceAPIService: DoorDashAPIService {
                 params["radius"] = "100.000000"
                 params["language"] = "en"
                 return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
+            case .fetchDetail(let referenceID):
+                var params: [String: Any] = [:]
+                params["reference"] = referenceID
+                params["sensor"] = "true"
+                params["key"] = Constants.GooglePlaceKey.release.rawValue
+                params["language"] = "en"
+                return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
             }
         }
 
         var sampleData: Data {
             switch self {
-            case .predict:
+            case .predict, .fetchDetail:
                 return Data()
             }
         }
@@ -75,12 +84,6 @@ class GooglePlaceAPIService: DoorDashAPIService {
 }
 
 extension GooglePlaceAPIService {
-    /// Singup using email
-    ///
-    /// - Parameters:
-    ///   - account: user current temp account
-    ///   - password: password
-    ///   - completion: Current User, Token, Error
     func fetchPredictions(input: String,
                           completion: @escaping ([GMPrediction]) -> ()) -> Cancellable {
         return googlePlaceAPIProvider.request(.predict(input: input)) { (result) in
@@ -89,7 +92,7 @@ extension GooglePlaceAPIService {
                 guard response.statusCode == 200,
                     let dataJSON = JSON(response.data)["predictions"].array else {
                     let error = self.handleError(response: response)
-                    print(error)
+                    //print(error)
                     completion([])
                     return
                 }
@@ -101,8 +104,29 @@ extension GooglePlaceAPIService {
                 }
                 completion(predictions)
             case .failure(let error):
-                print(error)
+                //print(error)
                 completion([])
+            }
+        }
+    }
+
+    func fetchDetailPlace(referenceID: String,
+                          completion: @escaping (GMDetailLocation?) -> ()) {
+        googlePlaceAPIProvider.request(.fetchDetail(referenceID: referenceID)) { (result) in
+            switch result {
+            case .success(let response):
+                guard response.statusCode == 200 else {
+                    let error = self.handleError(response: response)
+                    print(error)
+                    completion(nil)
+                    return
+                }
+                let dataJSON = JSON(response.data)["result"]
+                let location = try? JSONDecoder().decode(GMDetailLocation.self, from: dataJSON.rawData())
+                completion(location)
+            case .failure(let error):
+                print(error)
+                completion(nil)
             }
         }
     }

@@ -46,7 +46,7 @@ extension AddressTextLabelCell {
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.black
 
         titleLabel.snp.makeConstraints { (make) in
-            make.leading.equalToSuperview().offset(18)
+            make.leading.equalToSuperview().offset(22)
             make.top.bottom.trailing.equalToSuperview()
         }
     }
@@ -55,7 +55,7 @@ extension AddressTextLabelCell {
         separator.backgroundColor = ApplicationDependency.manager.theme.colors.separatorGray
         addSubview(separator)
         separator.snp.makeConstraints { (make) in
-            make.height.equalTo(0.6)
+            make.height.equalTo(0.4)
             make.bottom.equalToSuperview()
             make.leading.equalTo(titleLabel)
             make.trailing.equalToSuperview()

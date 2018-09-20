@@ -11,7 +11,7 @@ import IGListKit
 
 final class AddressTextLabelSectionController: ListSectionController {
 
-    static let cellHeight: CGFloat = 45
+    static let cellHeight: CGFloat = 42
     private var predictions: [GMPrediction] = []
 
     var cellTapped: ((GMPrediction) -> ())?

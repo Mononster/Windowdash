@@ -9,8 +9,8 @@
 import UIKit
 import Moya
 
-private let kMinRequestDelay = 0.25
-private let kMinQueryLength = 2
+private let kMinRequestDelay = 0.2
+private let kMinQueryLength = 0
 
 final class GMAutoCompleteManager {
     static let shared = GMAutoCompleteManager()

@@ -33,7 +33,7 @@ class DoorDashNavigationController: UINavigationController {
                 self.navigationBar.tintColor = theme.colors.darkGray
                 self.navigationBar.isTranslucent = false
                 self.navigationBar.barTintColor = theme.colors.white
-                titleColor = theme.colors.darkGray
+                titleColor = theme.colors.black
             case .mainTheme:
                 self.navigationBar.setBackgroundImage(nil, for: .default)
                 self.navigationBar.shadowImage = nil
@@ -42,7 +42,7 @@ class DoorDashNavigationController: UINavigationController {
                 self.navigationBar.barTintColor = theme.colors.white
                 titleColor = theme.colors.black
             }
-            self.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: titleColor, NSAttributedString.Key.font: theme.fontSchema.medium14]
+            self.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: titleColor, NSAttributedString.Key.font: theme.fontSchema.medium18]
         }
     }
 
