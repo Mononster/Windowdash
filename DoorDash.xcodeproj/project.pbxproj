@@ -12,7 +12,6 @@
 		6AFCC6DB21543912004D6600 /* TTNorms-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6AFCC6D621543912004D6600 /* TTNorms-Medium.otf */; };
 		6AFCC6DC21543912004D6600 /* TTNorms-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6AFCC6D721543912004D6600 /* TTNorms-Light.otf */; };
 		6AFCC6DD21543912004D6600 /* TTNorms-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6AFCC6D821543912004D6600 /* TTNorms-Bold.otf */; };
-		6AFCC6DE21543912004D6600 /* TTNorms-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6AFCC6D921543912004D6600 /* TTNorms-Regular.otf */; };
 		8731A56C214885FE005B7CFF /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8731A560214885FE005B7CFF /* Authentication.swift */; };
 		8731A56D214885FE005B7CFF /* AuthToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8731A561214885FE005B7CFF /* AuthToken.swift */; };
 		8731A56E214885FE005B7CFF /* ValidationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8731A563214885FE005B7CFF /* ValidationService.swift */; };
@@ -74,6 +73,15 @@
 		87631A1021530B7500475074 /* InputApartmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87631A0F21530B7500475074 /* InputApartmentView.swift */; };
 		87631A122154037800475074 /* ConfirmAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87631A112154037800475074 /* ConfirmAddressViewController.swift */; };
 		87631A142154043100475074 /* ConfirmAddressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87631A132154043100475074 /* ConfirmAddressViewModel.swift */; };
+		876E7FD72154399900D235B5 /* TTNorms-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 876E7FD62154399800D235B5 /* TTNorms-Regular.otf */; };
+		876E7FD921544A4B00D235B5 /* ConfirmAddressSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876E7FD821544A4B00D235B5 /* ConfirmAddressSectionController.swift */; };
+		876E7FDB21544BA300D235B5 /* ConfirmAddressTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876E7FDA21544BA300D235B5 /* ConfirmAddressTitleCell.swift */; };
+		876E7FDD215451FA00D235B5 /* ConfirmAddressMapCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876E7FDC215451FA00D235B5 /* ConfirmAddressMapCell.swift */; };
+		876E7FDF215469F700D235B5 /* DasherInstructionsInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876E7FDE215469F700D235B5 /* DasherInstructionsInputCell.swift */; };
+		876E7FE1215495D300D235B5 /* RefineLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876E7FE0215495D300D235B5 /* RefineLocationViewController.swift */; };
+		876E7FE52154966600D235B5 /* RefineAddressSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876E7FE42154966600D235B5 /* RefineAddressSectionController.swift */; };
+		876E7FE72154972A00D235B5 /* RefineLocationTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876E7FE62154972A00D235B5 /* RefineLocationTitleCell.swift */; };
+		876E7FE92154980900D235B5 /* RefineAddressMapCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876E7FE82154980900D235B5 /* RefineAddressMapCell.swift */; };
 		8776F5F02148886200ABAA71 /* PersistentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8776F5EA2148886200ABAA71 /* PersistentModel.swift */; };
 		8776F5F22148886200ABAA71 /* CoreModelVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8776F5EE2148886200ABAA71 /* CoreModelVersion.swift */; };
 		8776F5F32148886200ABAA71 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8776F5EF2148886200ABAA71 /* DataStore.swift */; };
@@ -138,7 +146,6 @@
 		6AFCC6D621543912004D6600 /* TTNorms-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TTNorms-Medium.otf"; sourceTree = "<group>"; };
 		6AFCC6D721543912004D6600 /* TTNorms-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TTNorms-Light.otf"; sourceTree = "<group>"; };
 		6AFCC6D821543912004D6600 /* TTNorms-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TTNorms-Bold.otf"; sourceTree = "<group>"; };
-		6AFCC6D921543912004D6600 /* TTNorms-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "TTNorms-Regular.otf"; path = "../../../../../../Downloads/Fonts/TTNorms-Regular.otf"; sourceTree = "<group>"; };
 		8731A560214885FE005B7CFF /* Authentication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Authentication.swift; sourceTree = "<group>"; };
 		8731A561214885FE005B7CFF /* AuthToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthToken.swift; sourceTree = "<group>"; };
 		8731A563214885FE005B7CFF /* ValidationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidationService.swift; sourceTree = "<group>"; };
@@ -200,6 +207,15 @@
 		87631A0F21530B7500475074 /* InputApartmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputApartmentView.swift; sourceTree = "<group>"; };
 		87631A112154037800475074 /* ConfirmAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmAddressViewController.swift; sourceTree = "<group>"; };
 		87631A132154043100475074 /* ConfirmAddressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmAddressViewModel.swift; sourceTree = "<group>"; };
+		876E7FD62154399800D235B5 /* TTNorms-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TTNorms-Regular.otf"; sourceTree = "<group>"; };
+		876E7FD821544A4B00D235B5 /* ConfirmAddressSectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmAddressSectionController.swift; sourceTree = "<group>"; };
+		876E7FDA21544BA300D235B5 /* ConfirmAddressTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmAddressTitleCell.swift; sourceTree = "<group>"; };
+		876E7FDC215451FA00D235B5 /* ConfirmAddressMapCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmAddressMapCell.swift; sourceTree = "<group>"; };
+		876E7FDE215469F700D235B5 /* DasherInstructionsInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DasherInstructionsInputCell.swift; sourceTree = "<group>"; };
+		876E7FE0215495D300D235B5 /* RefineLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefineLocationViewController.swift; sourceTree = "<group>"; };
+		876E7FE42154966600D235B5 /* RefineAddressSectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefineAddressSectionController.swift; sourceTree = "<group>"; };
+		876E7FE62154972A00D235B5 /* RefineLocationTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefineLocationTitleCell.swift; sourceTree = "<group>"; };
+		876E7FE82154980900D235B5 /* RefineAddressMapCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefineAddressMapCell.swift; sourceTree = "<group>"; };
 		8776F5EA2148886200ABAA71 /* PersistentModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentModel.swift; sourceTree = "<group>"; };
 		8776F5EE2148886200ABAA71 /* CoreModelVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreModelVersion.swift; sourceTree = "<group>"; };
 		8776F5EF2148886200ABAA71 /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
@@ -291,7 +307,7 @@
 				6AFCC6D821543912004D6600 /* TTNorms-Bold.otf */,
 				6AFCC6D721543912004D6600 /* TTNorms-Light.otf */,
 				6AFCC6D621543912004D6600 /* TTNorms-Medium.otf */,
-				6AFCC6D921543912004D6600 /* TTNorms-Regular.otf */,
+				876E7FD62154399800D235B5 /* TTNorms-Regular.otf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -556,6 +572,7 @@
 			children = (
 				876319F62152EBC300475074 /* SelectAddressViewController.swift */,
 				87631A112154037800475074 /* ConfirmAddressViewController.swift */,
+				876E7FE0215495D300D235B5 /* RefineLocationViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -592,6 +609,11 @@
 			children = (
 				87631A012152EF7400475074 /* EnterAddressCell.swift */,
 				87631A062152F15B00475074 /* AddressTextLabelCell.swift */,
+				876E7FDA21544BA300D235B5 /* ConfirmAddressTitleCell.swift */,
+				876E7FDE215469F700D235B5 /* DasherInstructionsInputCell.swift */,
+				876E7FDC215451FA00D235B5 /* ConfirmAddressMapCell.swift */,
+				876E7FE82154980900D235B5 /* RefineAddressMapCell.swift */,
+				876E7FE62154972A00D235B5 /* RefineLocationTitleCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -601,6 +623,8 @@
 			children = (
 				87631A042152F0C300475074 /* EnterAddressSectionController.swift */,
 				87631A082152F17400475074 /* AddressTextLabelSectionController.swift */,
+				876E7FD821544A4B00D235B5 /* ConfirmAddressSectionController.swift */,
+				876E7FE42154966600D235B5 /* RefineAddressSectionController.swift */,
 			);
 			path = Presenters;
 			sourceTree = "<group>";
@@ -1024,8 +1048,8 @@
 				6AFCC6DC21543912004D6600 /* TTNorms-Light.otf in Resources */,
 				87C7A4FE2148634B0040A7CD /* LaunchScreen.storyboard in Resources */,
 				6AFCC6DD21543912004D6600 /* TTNorms-Bold.otf in Resources */,
-				6AFCC6DE21543912004D6600 /* TTNorms-Regular.otf in Resources */,
 				87C7A4FB2148634B0040A7CD /* Assets.xcassets in Resources */,
+				876E7FD72154399900D235B5 /* TTNorms-Regular.otf in Resources */,
 				6AFCC6DB21543912004D6600 /* TTNorms-Medium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1121,6 +1145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8782954C214B12D000AB56B2 /* BrowseFoodTabCoordinator.swift in Sources */,
+				876E7FE1215495D300D235B5 /* RefineLocationViewController.swift in Sources */,
 				876319FD2152ECA600475074 /* SelectAddressViewModel.swift in Sources */,
 				8754BB7621517E2B008D9E1C /* SignupButtonSectionController.swift in Sources */,
 				878295162148CCC300AB56B2 /* DeliveryAddress.swift in Sources */,
@@ -1135,10 +1160,12 @@
 				87631A1021530B7500475074 /* InputApartmentView.swift in Sources */,
 				87829540214A09C500AB56B2 /* UIColor+Gradient+Hex.swift in Sources */,
 				8754BC072152B442008D9E1C /* NVActivityIndicatorViewable.swift in Sources */,
+				876E7FE72154972A00D235B5 /* RefineLocationTitleCell.swift in Sources */,
 				876319FA2152EC3F00475074 /* HeaderTextLabelView.swift in Sources */,
 				8754BB6C21516FFF008D9E1C /* AttributedString+Extension.swift in Sources */,
 				878295202148D49500AB56B2 /* MainTabBarController.swift in Sources */,
 				87829595214F172300AB56B2 /* OnboardingItemCell.swift in Sources */,
+				876E7FDF215469F700D235B5 /* DasherInstructionsInputCell.swift in Sources */,
 				8782950E21488AAC00AB56B2 /* CacheKeys.swift in Sources */,
 				8754BB6B21516FFF008D9E1C /* MarkupString.swift in Sources */,
 				8782953B2149DBF200AB56B2 /* Router.swift in Sources */,
@@ -1147,6 +1174,7 @@
 				87631A122154037800475074 /* ConfirmAddressViewController.swift in Sources */,
 				87631A0C2152F40B00475074 /* GMAutoCompleteManager.swift in Sources */,
 				8776F5F22148886200ABAA71 /* CoreModelVersion.swift in Sources */,
+				876E7FDD215451FA00D235B5 /* ConfirmAddressMapCell.swift in Sources */,
 				8782953D2149DBF200AB56B2 /* InteractivePopRecognizer.swift in Sources */,
 				87E63D49214F3FEC00387D9C /* IconedButton.swift in Sources */,
 				878295232148D49500AB56B2 /* BaseViewController.swift in Sources */,
@@ -1156,7 +1184,9 @@
 				8731A571214885FE005B7CFF /* ApplicationEnvironment.swift in Sources */,
 				8782952D2148D50000AB56B2 /* AppImage.swift in Sources */,
 				8754BB6D21516FFF008D9E1C /* Imports.swift in Sources */,
+				876E7FE52154966600D235B5 /* RefineAddressSectionController.swift in Sources */,
 				87631A142154043100475074 /* ConfirmAddressViewModel.swift in Sources */,
+				876E7FE92154980900D235B5 /* RefineAddressMapCell.swift in Sources */,
 				87631A092152F17400475074 /* AddressTextLabelSectionController.swift in Sources */,
 				8754BB7421517C88008D9E1C /* SignupButtonCell.swift in Sources */,
 				8782952E2148D50000AB56B2 /* AppColor.swift in Sources */,
@@ -1184,6 +1214,7 @@
 				87829599214F26A100AB56B2 /* SignupHomeViewController.swift in Sources */,
 				8754BB6F21516FFF008D9E1C /* String+Extension.swift in Sources */,
 				8731A56E214885FE005B7CFF /* ValidationService.swift in Sources */,
+				876E7FDB21544BA300D235B5 /* ConfirmAddressTitleCell.swift in Sources */,
 				876319FF2152ED6200475074 /* UIView+Border.swift in Sources */,
 				873D6000215013E400F37F8D /* Collection+SafeAccess.swift in Sources */,
 				8731A57521488655005B7CFF /* Constants.swift in Sources */,
@@ -1207,6 +1238,7 @@
 				87631A022152EF7400475074 /* EnterAddressCell.swift in Sources */,
 				8754BBA82151BE14008D9E1C /* PSDistrict+CoreDataClass.swift in Sources */,
 				873D600421502CF700F37F8D /* SocialLoginCell.swift in Sources */,
+				876E7FD921544A4B00D235B5 /* ConfirmAddressSectionController.swift in Sources */,
 				8782956F214ED4D500AB56B2 /* AuthenticateRequestAdapter.swift in Sources */,
 				8754BB992151BB37008D9E1C /* PSUser+CoreDataClass.swift in Sources */,
 				8754BB7121516FFF008D9E1C /* Style.swift in Sources */,

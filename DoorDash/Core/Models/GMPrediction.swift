@@ -67,8 +67,8 @@ final class GMDetailLocation: NSObject, Codable {
 
     let address: String
     let placeID: String
-    let latitude: Double?
-    let longitude: Double?
+    var latitude: Double?
+    var longitude: Double?
 
     init(address: String,
          placeID: String,

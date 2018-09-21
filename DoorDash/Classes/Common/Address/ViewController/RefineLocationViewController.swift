@@ -1,5 +1,5 @@
 //
-//  ConfirmAddressViewController.swift
+//  RefineLocationViewController.swift
 //  DoorDash
 //
 //  Created by Marvin Zhan on 2018-09-20.
@@ -7,15 +7,10 @@
 //
 
 import UIKit
-import IGListKit
 import SnapKit
+import IGListKit
 
-protocol ConfirmAddressViewControllerDelegate: class {
-    func userTappedRefineLocation(viewModel: ConfirmAddressViewModel)
-    func userTappedConfirmButton()
-}
-
-final class ConfirmAddressViewController: BaseViewController {
+final class RefineLocationViewController: BaseViewController {
 
     lazy var adapter: ListAdapter = {
         return ListAdapter(updater: ListAdapterUpdater(), viewController: self)
@@ -25,22 +20,21 @@ final class ConfirmAddressViewController: BaseViewController {
     private let viewModel: ConfirmAddressViewModel
     private let confirmButton: UIButton
     private let separator: Separator
-    private let sectionController: ConfirmAddressSectionController
+    private let sectionController: RefineAddressSectionController
 
-    weak var delegate: ConfirmAddressViewControllerDelegate?
+    var didSaveAddress: (() -> ())?
 
-    init(location: GMDetailLocation) {
+    init(viewModel: ConfirmAddressViewModel) {
         collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout()
         )
-        confirmButton = UIButton()
         separator = Separator.create()
-        self.viewModel = ConfirmAddressViewModel(location: location)
-        sectionController = ConfirmAddressSectionController()
+        confirmButton = UIButton()
+        self.viewModel = viewModel
+        self.sectionController = RefineAddressSectionController()
         super.init()
         adapter.dataSource = self
-        sectionController.delegate = self
     }
 
     required convenience init?(coder aDecoder: NSCoder) {
@@ -51,16 +45,12 @@ final class ConfirmAddressViewController: BaseViewController {
         super.viewDidLoad()
         setupUI()
     }
-
-    func refreshUI() {
-        self.adapter.performUpdates(animated: true)
-    }
 }
 
-extension ConfirmAddressViewController {
+extension RefineLocationViewController {
 
     private func setupUI() {
-        self.navigationItem.title = "Confirm Address"
+        self.navigationItem.title = "Refine Address"
         self.navigationItem.backBarButtonItem?.tintColor = theme.colors.doorDashRed
         self.view.backgroundColor = theme.colors.backgroundGray
         setupCollectionView()
@@ -78,7 +68,7 @@ extension ConfirmAddressViewController {
     private func setupConfirmButton() {
         self.view.addSubview(separator)
         self.view.addSubview(confirmButton)
-        confirmButton.setTitle("Confirm Address", for: .normal)
+        confirmButton.setTitle("Save Address", for: .normal)
         confirmButton.setTitleColor(theme.colors.white, for: .normal)
         confirmButton.titleLabel?.font = theme.fontSchema.medium18
         confirmButton.backgroundColor = theme.colors.doorDashRed
@@ -107,15 +97,19 @@ extension ConfirmAddressViewController {
     }
 }
 
-extension ConfirmAddressViewController {
+extension RefineLocationViewController {
 
     @objc
     func confirmAddressButtonTapped() {
-
+        if let center = sectionController.getCurrentMapCenter() {
+            viewModel.location.latitude = center.0
+            viewModel.location.longitude = center.1
+        }
+        self.didSaveAddress?()
     }
 }
 
-extension ConfirmAddressViewController: ListAdapterDataSource {
+extension RefineLocationViewController: ListAdapterDataSource {
 
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
         return [viewModel.generatePresentingModel()]
@@ -130,9 +124,3 @@ extension ConfirmAddressViewController: ListAdapterDataSource {
     }
 }
 
-extension ConfirmAddressViewController: ConfirmAddressSectionControllerDelegate {
-
-    func userTappedRefineLocation() {
-        self.delegate?.userTappedRefineLocation(viewModel: viewModel)
-    }
-}

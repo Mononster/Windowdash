@@ -15,4 +15,21 @@ final class ConfirmAddressViewModel {
     init(location: GMDetailLocation) {
         self.location = location
     }
+
+    func generatePresentingModel() -> ConfirmAddressPresentModel {
+        let components = location.address.components(separatedBy: ",")
+        let title = components.first ?? ""
+        var subTitle = ""
+        for (i, component) in components.enumerated() {
+            if i == 0 {
+                continue
+            }
+            subTitle = subTitle + component + (i == components.count - 1 ? "" : ", ")
+        }
+
+        return ConfirmAddressPresentModel(addressTitle: title,
+                                          addressSubtitle: subTitle,
+                                          latitude: location.latitude ?? 0,
+                                          longitude: location.longitude ?? 0)
+    }
 }

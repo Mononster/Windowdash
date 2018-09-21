@@ -15,6 +15,7 @@ protocol ImageAsset {
     var google: UIImage { get }
     var onboardingImages: [UIImage] { get }
     var tabbarImages: [UIImage] { get }
+    var mapPinImage: UIImage { get }
 }
 
 struct DefaultImageAsset: ImageAsset {
@@ -40,5 +41,9 @@ struct DefaultImageAsset: ImageAsset {
     }
     var tabbarImages: [UIImage] {
         return [#imageLiteral(resourceName: "tabbar_1"), #imageLiteral(resourceName: "tabbar_2"), #imageLiteral(resourceName: "tabbar_3"), #imageLiteral(resourceName: "tabbar_4"), #imageLiteral(resourceName: "tabbar_5")]
+    }
+
+    var mapPinImage: UIImage {
+        return #imageLiteral(resourceName: "map_pin")
     }
 }

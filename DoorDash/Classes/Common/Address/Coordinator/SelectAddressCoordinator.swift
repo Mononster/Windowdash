@@ -22,6 +22,8 @@ final class SelectAddressCoordinator: Coordinator {
         return controller
     }()
 
+    var confirmAddressViewController: ConfirmAddressViewController?
+
     init(router: Router) {
         self.router = router
         self.router.setNavigationBarStyle(style: .white)
@@ -36,7 +38,28 @@ final class SelectAddressCoordinator: Coordinator {
     }
 
     func toConfirmAdressViewController(location: GMDetailLocation) {
-        let confirmAddressViewController = ConfirmAddressViewController(location: location)
-        self.router.push(confirmAddressViewController)
+        confirmAddressViewController = ConfirmAddressViewController(location: location)
+        confirmAddressViewController?.delegate = self
+        self.router.push(confirmAddressViewController!)
+    }
+
+    func toRefineLocationViewController(viewModel: ConfirmAddressViewModel) {
+        let refineLocationViewController = RefineLocationViewController(viewModel: viewModel)
+        refineLocationViewController.didSaveAddress = {
+            self.router.popModule()
+            self.confirmAddressViewController?.refreshUI()
+        }
+        self.router.push(refineLocationViewController)
+    }
+}
+
+extension SelectAddressCoordinator: ConfirmAddressViewControllerDelegate {
+    
+    func userTappedRefineLocation(viewModel: ConfirmAddressViewModel) {
+        toRefineLocationViewController(viewModel: viewModel)
+    }
+
+    func userTappedConfirmButton() {
+
     }
 }
