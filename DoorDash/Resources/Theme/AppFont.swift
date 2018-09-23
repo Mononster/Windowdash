@@ -222,21 +222,5 @@ struct DefaultFontSchema: FontSchema {
             name = "TTNorms-Black"
         }
         return UIFont(name: name, size: size)!
-//        var weight: UIFont.Weight
-//        switch style {
-//        case .bold:
-//            weight = .bold
-//        case .regular:
-//            weight = .regular
-//        case .medium:
-//            weight = .medium
-//        case .light:
-//            weight = .light
-//        case .semiBold:
-//            weight = .semibold
-//        case .heavy:
-//            weight = .heavy
-//        }
-//        return UIFont.systemFont(ofSize: size, weight: weight)
     }
 }

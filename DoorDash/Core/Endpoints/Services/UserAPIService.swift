@@ -65,7 +65,9 @@ class UserAPIService: DoorDashAPIService {
     enum UserAPITarget: TargetType {
         case login(email: String, password: String)
         case register(account: Account)
+        case guestSignup(password: String)
         case fetchUserProfile(authToken: AuthToken)
+        case updateDeliveryLocation(uid: String, location: GMDetailLocation)
 
         var baseURL: URL {
             return ApplicationEnvironment.current.networkConfig.hostURL
@@ -77,16 +79,16 @@ class UserAPIService: DoorDashAPIService {
                 return "v2/auth/token/"
             case .fetchUserProfile:
                 return "v2/consumer/me/"
-            case .register:
+            case .register, .guestSignup:
                 return "v2/consumer/"
+            case .updateDeliveryLocation(let uid, _):
+                return "v2/consumer/\(uid)/address/"
             }
         }
 
         var method: Moya.Method {
             switch self {
-            case .login:
-                return .post
-            case .register:
+            case .login, .register, .guestSignup, .updateDeliveryLocation:
                 return .post
             case .fetchUserProfile:
                 return .get
@@ -105,8 +107,31 @@ class UserAPIService: DoorDashAPIService {
                     parameters: account.convertToRequest(),
                     encoding: JSONEncoding.default
                 )
+            case .guestSignup(let password):
+                return .requestParameters(
+                    parameters: ["is_guest": 1,
+                                 "password": password],
+                    encoding: JSONEncoding.default)
             case .fetchUserProfile:
                 return .requestPlain
+            case .updateDeliveryLocation(_, let location):
+                var paramters: [String: Any] = [:]
+                if let lat = location.latitude {
+                    paramters["manual_lat"] = lat
+                }
+                if let lng = location.longitude {
+                    paramters["manual_lng"] = lng
+                }
+                if let instructions = location.dasherInstructions {
+                    paramters["driver_instructions"] = instructions
+                }
+                paramters["printable_address"] = location.address
+                paramters["subpremise"] = location.apartmentNumber ?? ""
+                paramters["google_place_id"] = location.placeID
+                return .requestParameters(
+                    parameters: paramters,
+                    encoding: JSONEncoding.default
+                )
             }
         }
 
@@ -117,7 +142,7 @@ class UserAPIService: DoorDashAPIService {
                     .data(using: String.Encoding.utf8)!
             case .register(let account):
                 return "{\"email\": \"\(account.accountIdentifier.email)\", \"phone_number\": \"\(account.accountIdentifier.phoneNumber)\", \"password\": \"\(account.password ?? "")\", \"last_name\": \"\(account.accountIdentifier.lastName)\", \"last_name\": \"\(account.accountIdentifier.lastName)\"}".data(using: String.Encoding.utf8)!
-            case .fetchUserProfile:
+            case .fetchUserProfile, .updateDeliveryLocation, .guestSignup:
                 return Data()
             }
         }
@@ -155,12 +180,7 @@ extension UserAPIService {
 }
 
 extension UserAPIService {
-    /// Singup using email
-    ///
-    /// - Parameters:
-    ///   - account: user current temp account
-    ///   - password: password
-    ///   - completion: Current User, Token, Error
+    
     func register(_ account: SignupTempAccount,
                   password: String,
                   completion: @escaping (User?, Error?) -> ()) {
@@ -168,6 +188,27 @@ extension UserAPIService {
             accountIdentifier: account,
             password: password)
         userAPIProvider.request(.register(account: apiAccount)) { (result) in
+            switch result {
+            case .success(let response):
+                do {
+                    guard response.statusCode == 201 else {
+                        let error = self.handleRegisterErrors(response: response)
+                        completion(nil, error)
+                        return
+                    }
+                    let user = try response.map(User.self)
+                    completion(user, nil)
+                } catch(let error) {
+                    completion(nil, error)
+                }
+            case .failure(let error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    func guestRegister(password: String, completion: @escaping (User?, Error?) -> ()) {
+        userAPIProvider.request(.guestSignup(password: password)) { (result) in
             switch result {
             case .success(let response):
                 do {
@@ -226,6 +267,29 @@ extension UserAPIService {
                     }
                     let user = try response.map(User.self)
                     completion(user, nil)
+                } catch(let error) {
+                    completion(nil, error)
+                }
+            case .failure(let error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    func postUserDeliveryInfo(uid: String,
+                              location: GMDetailLocation,
+                              completion: @escaping (DeliveryAddress?, Error?) -> ()) {
+        userAPIProvider.request(.updateDeliveryLocation(uid: uid, location: location)) { (result) in
+            switch result {
+            case .success(let response):
+                do {
+                    guard response.statusCode == 200 else {
+                        let error = self.handleError(response: response)
+                        completion(nil, error)
+                        return
+                    }
+                    let address = try response.map(DeliveryAddress.self)
+                    completion(address, nil)
                 } catch(let error) {
                     completion(nil, error)
                 }

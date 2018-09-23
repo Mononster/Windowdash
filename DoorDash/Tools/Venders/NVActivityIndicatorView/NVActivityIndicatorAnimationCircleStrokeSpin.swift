@@ -30,8 +30,8 @@ import UIKit
 class NVActivityIndicatorAnimationCircleStrokeSpin: NVActivityIndicatorAnimationDelegate {
 
     func setUpAnimation(in layer: CALayer, size: CGSize, color: UIColor) {
-        let strokeStartDuration: Double = 1.6
-        let strokeEndDuration: Double = 1.2
+        let strokeStartDuration: Double = 0.8
+        let strokeEndDuration: Double = 0.6
 
         let circle = NVActivityIndicatorShape.stroke.layerWith(size: size, color: color)
 
@@ -44,7 +44,7 @@ class NVActivityIndicatorAnimationCircleStrokeSpin: NVActivityIndicatorAnimation
         strokeEndAnimation.timingFunction = CAMediaTimingFunction(controlPoints: 0.4, 0.0, 0.2, 1.0)
         strokeEndAnimation.fromValue = 1
         strokeEndAnimation.toValue = 0
-        strokeEndAnimation.beginTime = strokeStartDuration
+        strokeEndAnimation.beginTime = strokeStartDuration + 0.2
 
         let strokeStartAnimation = CABasicAnimation(keyPath: "strokeStart")
         strokeStartAnimation.duration = strokeStartDuration
@@ -54,7 +54,7 @@ class NVActivityIndicatorAnimationCircleStrokeSpin: NVActivityIndicatorAnimation
 
         let groupAnimation = CAAnimationGroup()
         groupAnimation.animations = [rotationAnimation, strokeEndAnimation, strokeStartAnimation]
-        groupAnimation.duration = strokeStartDuration + strokeEndDuration - 0.2
+        groupAnimation.duration = strokeStartDuration + strokeEndDuration
         groupAnimation.repeatCount = .infinity
         groupAnimation.isRemovedOnCompletion = false
         groupAnimation.fillMode = .forwards

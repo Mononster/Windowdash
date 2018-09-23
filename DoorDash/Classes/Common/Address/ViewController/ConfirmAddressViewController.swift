@@ -36,7 +36,10 @@ final class ConfirmAddressViewController: BaseViewController {
         )
         confirmButton = UIButton()
         separator = Separator.create()
-        self.viewModel = ConfirmAddressViewModel(location: location)
+        self.viewModel = ConfirmAddressViewModel(
+            location: location,
+            dataStore: ApplicationEnvironment.current.dataStore
+        )
         sectionController = ConfirmAddressSectionController()
         super.init()
         adapter.dataSource = self
@@ -111,8 +114,17 @@ extension ConfirmAddressViewController {
 
     @objc
     func confirmAddressButtonTapped() {
-
-    }
+        self.viewModel.location.dasherInstructions = sectionController.dasherInstruction
+        self.loadingIndicator.show()
+        self.viewModel.sendUserLocation { (errorMsg) in
+            self.loadingIndicator.hide()
+            if let errorMsg = errorMsg {
+                log.error(errorMsg)
+                return
+            }
+            self.delegate?.userTappedConfirmButton()
+        }
+    }   
 }
 
 extension ConfirmAddressViewController: ListAdapterDataSource {

@@ -13,6 +13,8 @@ final class SelectAddressCoordinator: Coordinator {
     let router: Router
     var coordinators: [Coordinator] = []
 
+    var userDidFinishSelectingAddress: ((Coordinator) -> ())?
+
     lazy var rootViewController: SelectAddressViewController = {
         let controller = SelectAddressViewController()
         controller.didSelectAddress = { location in
@@ -60,6 +62,8 @@ extension SelectAddressCoordinator: ConfirmAddressViewControllerDelegate {
     }
 
     func userTappedConfirmButton() {
-
+        self.router.dismissModule(animated: true) {
+            self.userDidFinishSelectingAddress?(self)
+        }
     }
 }

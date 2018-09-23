@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-
+        //ApplicationEnvironment.logout()
         if let storedEnvironment
             = ApplicationEnvironment.restore(from: UserDefaults.standard) {
             ApplicationEnvironment.replaceCurrentEnvironment(storedEnvironment)

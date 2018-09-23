@@ -176,6 +176,7 @@ extension SelectAddressViewController {
                 print("Error: location does not exist")
                 return
             }
+            location.apartmentNumber = self.inputApartmentView.textField.text
             self.didSelectAddress?(location)
         }
     }

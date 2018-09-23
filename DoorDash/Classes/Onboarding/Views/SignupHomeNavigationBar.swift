@@ -19,6 +19,7 @@ final class SignupHomeNavigationBar: UIView {
     private let separator: Separator
     private let theme = ApplicationDependency.manager.theme
     weak var delegate: SignupHomeNavigationBarDelegate?
+    let skipButton: UIButton
     var mode: SignupMode
 
     init(mode: SignupMode) {
@@ -27,6 +28,7 @@ final class SignupHomeNavigationBar: UIView {
             items: ["Sign Up", "Sign In"]
         )
         separator = Separator.create()
+        skipButton = UIButton()
         super.init(frame: CGRect.zero)
         setupUI()
     }
@@ -41,6 +43,7 @@ extension SignupHomeNavigationBar {
     private func setupUI() {
         self.backgroundColor = theme.colors.white
         setupNavigationBar()
+        setupSkipButton()
         setupSeparator()
         setupConstraints()
     }
@@ -48,12 +51,21 @@ extension SignupHomeNavigationBar {
     private func setupNavigationBar() {
         self.addSubview(segmentedControl)
         segmentedControl.setTitleTextAttributes(
-            [NSAttributedString.Key.font: theme.fontSchema.semiBold12], for: .normal
+            [NSAttributedString.Key.font: theme.fontSchema.medium14], for: .normal
         )
         segmentedControl.tintColor = theme.colors.doorDashRed
         segmentedControl.backgroundColor = theme.colors.white
         segmentedControl.addTarget(self, action: #selector(toggleSwithed(_:)), for: .valueChanged)
         segmentedControl.selectedSegmentIndex = mode == .register ? 0 : 1
+    }
+
+    private func setupSkipButton() {
+        self.addSubview(skipButton)
+        skipButton.tintColor = theme.colors.doorDashRed
+        skipButton.backgroundColor = .clear
+        skipButton.setTitle("Skip", for: .normal)
+        skipButton.setTitleColor(theme.colors.doorDashRed, for: .normal)
+        skipButton.titleLabel?.font = theme.fontSchema.medium16
     }
 
     private func setupSeparator() {
@@ -66,6 +78,13 @@ extension SignupHomeNavigationBar {
             make.width.equalTo(180)
             make.height.equalTo(30)
             make.centerX.equalToSuperview()
+        }
+
+        skipButton.snp.makeConstraints { (make) in
+            make.trailing.equalToSuperview().offset(-16)
+            make.centerY.equalTo(segmentedControl).offset(3)
+            make.width.equalTo(50)
+            make.height.equalTo(segmentedControl)
         }
 
         separator.snp.makeConstraints { (make) in

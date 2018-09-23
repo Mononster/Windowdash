@@ -92,7 +92,7 @@ extension GooglePlaceAPIService {
                 guard response.statusCode == 200,
                     let dataJSON = JSON(response.data)["predictions"].array else {
                     let error = self.handleError(response: response)
-                    //print(error)
+                    print(error)
                     completion([])
                     return
                 }
@@ -104,7 +104,7 @@ extension GooglePlaceAPIService {
                 }
                 completion(predictions)
             case .failure(let error):
-                //print(error)
+                print(error)
                 completion([])
             }
         }

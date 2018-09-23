@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-@objc(PSDelieveryAddress)
+@objc(PSDeliveryAddress)
 public class PSDeliveryAddress: NSManagedObject {
 
 }

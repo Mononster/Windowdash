@@ -121,6 +121,22 @@ final class SignupHomeViewModel {
         }
     }
 
+    func guestRegister(completion: @escaping (String?) -> ()) {
+        let randomPassword = UUID().uuidString
+        userAPI.guestRegister(password: randomPassword) { (user, error) in
+            if let error = error as? UserAPIError {
+                completion(error.errorMessage)
+                return
+            }
+            guard let user = user else {
+                completion("No user found, WTF happend?")
+                return
+            }
+            let email = user.email
+            self.login(email: email, password: randomPassword, completion: completion)
+        }
+    }
+
     func login(email: String,
                password: String,
                completion: @escaping (String?) -> ()) {

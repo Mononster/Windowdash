@@ -31,6 +31,8 @@ extension DeliveryAddress: PersistentModel {
 
     public func insertOrUpdateTo(_ context: NSManagedObjectContext) -> PSDeliveryAddress {
         let deliveryAddress = PSDeliveryAddress(entity: PSDeliveryAddress.entity(), insertInto: context)
+        let psDistrict = district?.insertOrUpdateTo(context)
+        psDistrict?.deliveryAddress = deliveryAddress
         deliveryAddress.id = id
         deliveryAddress.city = city
         deliveryAddress.driverInstructions = driverInstructions
@@ -41,6 +43,7 @@ extension DeliveryAddress: PersistentModel {
         deliveryAddress.state = state
         deliveryAddress.zipCode = zipCode
         deliveryAddress.timezone = timezone
+        deliveryAddress.district = psDistrict
         return deliveryAddress
     }
 

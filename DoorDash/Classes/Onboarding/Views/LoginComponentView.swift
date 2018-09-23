@@ -60,7 +60,7 @@ extension LoginComponentView {
         facebookButton.setTitle("Continue with Facebook", for: .normal)
         facebookButton.titleLabel?.textAlignment = .center
         facebookButton.setTitleColor(theme.colors.white, for: .normal)
-        facebookButton.titleLabel?.font = theme.fontSchema.semiBold16
+        facebookButton.titleLabel?.font = theme.fontSchema.medium18
         facebookButton.addTarget(self, action: #selector(facebookButtonClicked), for: .touchUpInside)
     }
 
@@ -71,7 +71,7 @@ extension LoginComponentView {
         googleButton.setTitle("Continue with Google", for: .normal)
         googleButton.titleLabel?.textAlignment = .center
         googleButton.setTitleColor(theme.colors.white, for: .normal)
-        googleButton.titleLabel?.font = theme.fontSchema.semiBold16
+        googleButton.titleLabel?.font = theme.fontSchema.medium18
         googleButton.addTarget(self, action: #selector(googleButtonClicked), for: .touchUpInside)
     }
 

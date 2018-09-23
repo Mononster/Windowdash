@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="17G65" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="18A384a" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="PSDeliveryAddress" representedClassName="PSDeliveryAddress" syncable="YES">
         <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="driverInstructions" optional="YES" attributeType="String" syncable="YES"/>
@@ -11,6 +11,8 @@
         <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timezone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zipCode" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="district" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="PSDistrict" inverseName="deliveryAddress" inverseEntity="PSDistrict" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PSUser" inverseName="deliveryAddress" inverseEntity="PSUser" syncable="YES"/>
     </entity>
     <entity name="PSDistrict" representedClassName="PSDistrict" syncable="YES">
         <attribute name="firstDeliveryPrice" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
@@ -18,17 +20,20 @@
         <attribute name="isActive" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="shortName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="deliveryAddress" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PSDeliveryAddress" inverseName="district" inverseEntity="PSDeliveryAddress" syncable="YES"/>
     </entity>
     <entity name="PSUser" representedClassName="PSUser" syncable="YES">
+        <attribute name="defaultAddress" optional="YES" attributeType="Transformable" customClassName="DeliveryAddress" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="phoneNumber" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="deliveryAddress" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PSDeliveryAddress" inverseName="user" inverseEntity="PSDeliveryAddress" syncable="YES"/>
     </entity>
     <elements>
-        <element name="PSUser" positionX="-63" positionY="-18" width="128" height="120"/>
-        <element name="PSDistrict" positionX="-54" positionY="27" width="128" height="120"/>
-        <element name="PSDeliveryAddress" positionX="-36" positionY="63" width="128" height="195"/>
+        <element name="PSDeliveryAddress" positionX="-36" positionY="63" width="128" height="225"/>
+        <element name="PSDistrict" positionX="-54" positionY="27" width="128" height="135"/>
+        <element name="PSUser" positionX="-63" positionY="-18" width="128" height="150"/>
     </elements>
 </model>

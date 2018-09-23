@@ -27,4 +27,5 @@ extension PSDeliveryAddress {
     @NSManaged public var zipCode: String?
     @NSManaged public var printableAddress: String?
     @NSManaged public var district: PSDistrict?
+    @NSManaged public var user: PSUser?
 }

@@ -21,6 +21,6 @@ extension PSUser {
     @NSManaged public var lastName: String?
     @NSManaged public var firstName: String?
     @NSManaged public var email: String?
-    @NSManaged public var address: PSDeliveryAddress?
+    @NSManaged public var defaultAddress: PSDeliveryAddress?
 
 }

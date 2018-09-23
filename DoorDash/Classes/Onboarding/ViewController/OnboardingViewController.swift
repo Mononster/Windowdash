@@ -77,7 +77,7 @@ extension OnboardingViewController {
         signInButton.backgroundColor = theme.colors.white
         signInButton.setTitle("Sign In", for: .normal)
         signInButton.setTitleColor(theme.colors.doorDashDarkGray, for: .normal)
-        signInButton.titleLabel?.font = theme.fontSchema.semiBold17
+        signInButton.titleLabel?.font = theme.fontSchema.medium18
         signInButton.addTarget(self, action: #selector(signinButtonTapped), for: .touchUpInside)
 
         self.view.addSubview(getStartedButton)
@@ -85,7 +85,7 @@ extension OnboardingViewController {
         getStartedButton.backgroundColor = theme.colors.doorDashRed
         getStartedButton.setTitle("Get Started", for: .normal)
         getStartedButton.setTitleColor(theme.colors.white, for: .normal)
-        getStartedButton.titleLabel?.font = theme.fontSchema.semiBold17
+        getStartedButton.titleLabel?.font = theme.fontSchema.medium18
         getStartedButton.addTarget(self, action: #selector(getStartedButtonTapped), for: .touchUpInside)
 
     }
@@ -148,11 +148,3 @@ extension OnboardingViewController: ListAdapterDataSource {
         return nil
     }
 }
-
-extension OnboardingViewController: OnboardingCoordinatorDelegate {
-    
-    func didLoggedin(in coordinator: OnboardingCoordinator) {
-
-    }
-}
-

@@ -60,7 +60,7 @@ extension ContentCoordinator {
             vc.tabBarItem.image = config.1
             vc.tabBarItem.title = config.0
             vc.tabBarItem.setTitleTextAttributes(
-                [NSAttributedString.Key.font: ApplicationDependency.manager.theme.fontSchema.regular10,
+                [NSAttributedString.Key.font: ApplicationDependency.manager.theme.fontSchema.medium12,
                  NSAttributedString.Key.foregroundColor:
                     ApplicationDependency.manager.theme.colors.doorDashGray
                 ],

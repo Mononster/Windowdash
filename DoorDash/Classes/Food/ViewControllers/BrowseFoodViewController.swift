@@ -38,13 +38,6 @@ class BrowseFoodViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-
-        let apiService = GooglePlaceAPIService()
-        apiService.fetchPredictions(input: "730 7") { (predictions) in
-            for prediction in predictions {
-                print(prediction.description)
-            }
-        }
     }
 }
 

@@ -9,7 +9,7 @@
 import UIKit
 
 protocol OnboardingCoordinatorDelegate: class {
-    func didLoggedin(in coordinator: OnboardingCoordinator)
+    func didFinishOnboarding(in coordinator: OnboardingCoordinator)
 }
 
 class OnboardingCoordinator: Coordinator {
@@ -38,17 +38,18 @@ class OnboardingCoordinator: Coordinator {
     func toPresentable() -> UIViewController {
         return self.router.navigationController
     }
-
-    func completeOnboarding() {
-        self.router.dismissModule()
-        delegate?.didLoggedin(in: self)
-    }
 }
 
 extension OnboardingCoordinator: OnboardingViewControllerDelegate {
 
     func showLoginSignupViewController(mode: SignupMode) {
-        self.router.push(SignupHomeViewController(mode: mode))
+        let signupHomeViewController = SignupHomeViewController(mode: mode)
+        signupHomeViewController.userCanProceedToNextStep = { _ in
+            self.router.dismissModule(animated: true, completion: {
+                self.delegate?.didFinishOnboarding(in: self)
+            })
+        }
+        self.router.push(signupHomeViewController)
     }
 }
 

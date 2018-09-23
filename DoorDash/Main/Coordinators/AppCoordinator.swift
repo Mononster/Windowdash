@@ -23,6 +23,7 @@ class AppCoordinator: Coordinator {
         self.router = router
         self.navigationController = navigationController
         self.loadingVC = LaunchLoadingViewController()
+        self.navigationController.navigationBar.isHidden = true
     }
 
     func start(window: UIWindow) {
@@ -34,11 +35,12 @@ class AppCoordinator: Coordinator {
 
     func showContents() {
         let coordinator = ContentCoordinator(
-            router: router,
+            router: Router(),
             appTracker: appTracker
         )
         coordinator.start()
         addCoordinator(coordinator)
+        self.router.present(coordinator)
     }
 
     func showOnboarding() {
@@ -55,6 +57,10 @@ class AppCoordinator: Coordinator {
         )
         coordinator.start()
         addCoordinator(coordinator)
+        coordinator.userDidFinishSelectingAddress = { coordinator in
+            self.removeCoordinator(coordinator)
+            self.showContents()
+        }
         self.router.present(coordinator, animated: true)
     }
 
@@ -63,17 +69,13 @@ class AppCoordinator: Coordinator {
     }
 
     func dismissLaunchLoadingScreen() {
-        self.router.dismissModule()
+        self.router.dismissModule(animated: false)
     }
 
     func show() {
         guard let email = ApplicationEnvironment.current.currentUser?.email,
             let passwordToken = ApplicationEnvironment.current.passwordToken else {
             showOnboarding()
-            return
-        }
-        if ApplicationEnvironment.current.currentUser?.defaultAddress == nil {
-            showSelectAddress()
             return
         }
         let viewModel = SignupHomeViewModel(
@@ -118,7 +120,12 @@ extension AppCoordinator {
 }
 
 extension AppCoordinator: OnboardingCoordinatorDelegate {
-    func didLoggedin(in coordinator: OnboardingCoordinator) {
-        removeCoordinator(coordinator)
+    func didFinishOnboarding(in coordinator: OnboardingCoordinator) {
+        self.removeCoordinator(coordinator)
+        if ApplicationEnvironment.current.currentUser?.defaultAddress == nil {
+            self.showSelectAddress()
+            return
+        }
+        self.showContents()
     }
 }

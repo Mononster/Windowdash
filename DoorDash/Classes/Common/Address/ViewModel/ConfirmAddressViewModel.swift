@@ -11,9 +11,12 @@ import Foundation
 final class ConfirmAddressViewModel {
 
     let location: GMDetailLocation
+    let dataStore: DataStoreType
 
-    init(location: GMDetailLocation) {
+    init(location: GMDetailLocation,
+         dataStore: DataStoreType) {
         self.location = location
+        self.dataStore = dataStore
     }
 
     func generatePresentingModel() -> ConfirmAddressPresentModel {
@@ -31,5 +34,35 @@ final class ConfirmAddressViewModel {
                                           addressSubtitle: subTitle,
                                           latitude: location.latitude ?? 0,
                                           longitude: location.longitude ?? 0)
+    }
+
+    func sendUserLocation(completion: @escaping (String?) -> ()) {
+        guard let currentUser = ApplicationEnvironment.current.currentUser else {
+            completion("Error current user does not exist. WTF happend?")
+            return
+        }
+
+        let service = UserAPIService()
+        service.postUserDeliveryInfo(uid: String(currentUser.id), location: location) { (address, error) in
+            if let error = error as? UserAPIError {
+                completion(error.errorMessage)
+                return
+            }
+            guard let address = address else {
+                completion("Can't load address")
+                return
+            }
+            let updatedUser = User(
+                id: currentUser.id,
+                phoneNumber: currentUser.phoneNumber,
+                lastName: currentUser.lastName,
+                firstName: currentUser.firstName,
+                email: currentUser.email,
+                defaultAddress: address
+            )
+            ApplicationEnvironment.updateCurrentUser(updatedUser: updatedUser)
+            try? updatedUser.savePersistently(to: self.dataStore)
+            completion(nil)
+        }
     }
 }

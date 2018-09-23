@@ -63,14 +63,14 @@ public struct User {
     }
 
     public let id: Int64
-    public let phoneNumber: String
+    public let phoneNumber: String?
     public let lastName: String
     public let firstName: String
     public let email: String
     public let defaultAddress: DeliveryAddress?
 
     public init(id: Int64,
-                phoneNumber: String,
+                phoneNumber: String?,
                 lastName: String,
                 firstName: String,
                 email: String,
@@ -88,7 +88,7 @@ extension User: Codable {
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: UserCodingKeys.self)
         let id: Int64 = try values.decode(Int64.self, forKey: .id)
-        let phoneNumber: String = try values.decode(String.self, forKey: .phoneNumber)
+        let phoneNumber: String? = try values.decodeIfPresent(String.self, forKey: .phoneNumber)
         let firstName: String = try values.decode(String.self, forKey: .firstName)
         let lastName: String = try values.decode(String.self, forKey: .lastName)
         let email: String = try values.decode(String.self, forKey: .email)

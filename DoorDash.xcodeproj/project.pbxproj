@@ -807,6 +807,7 @@
 		87829553214C620E00AB56B2 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				87829555214C628300AB56B2 /* NavigationAddressHeaderView.swift */,
 				87829554214C624000AB56B2 /* Address */,
 			);
 			path = Common;
@@ -815,12 +816,11 @@
 		87829554214C624000AB56B2 /* Address */ = {
 			isa = PBXGroup;
 			children = (
+				876319F32152EB6F00475074 /* Coordinator */,
 				87631A032152F0B500475074 /* Presenters */,
 				876319FB2152EC9A00475074 /* ViewModel */,
 				876319F82152EC3400475074 /* Views */,
-				876319F32152EB6F00475074 /* Coordinator */,
 				876319F22152EB6100475074 /* ViewController */,
-				87829555214C628300AB56B2 /* NavigationAddressHeaderView.swift */,
 			);
 			path = Address;
 			sourceTree = "<group>";

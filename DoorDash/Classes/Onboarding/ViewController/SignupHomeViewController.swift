@@ -19,9 +19,9 @@ final class SignupHomeViewController: BaseViewController {
     private let customNavigationBar: SignupHomeNavigationBar
     private let collectionView: UICollectionView
     private let viewModel: SignupHomeViewModel
-
     private let inputSectionController: SignInputFormSectionController
 
+    var userCanProceedToNextStep: ((SignupMode) -> ())?
     var mode: SignupMode
 
     init(mode: SignupMode) {
@@ -67,6 +67,10 @@ extension SignupHomeViewController {
     private func setupNavigationBar() {
         self.view.addSubview(customNavigationBar)
         customNavigationBar.delegate = self
+        if mode == .register {
+            self.customNavigationBar.skipButton.isHidden = false
+        }
+        self.customNavigationBar.skipButton.addTarget(self, action: #selector(skipBarButtonTapped), for: .touchUpInside)
     }
 
     private func setupCollectionView() {
@@ -86,6 +90,14 @@ extension SignupHomeViewController {
             make.top.equalTo(customNavigationBar.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
         }
+    }
+}
+
+extension SignupHomeViewController {
+
+    @objc
+    func skipBarButtonTapped() {
+        guestLogin()
     }
 }
 
@@ -143,6 +155,7 @@ extension SignupHomeViewController {
                 self.presentAlertView(title: "Whoops", message: errorMsg)
                 return
             }
+            self.userCanProceedToNextStep?(self.mode)
         }
     }
 
@@ -160,6 +173,21 @@ extension SignupHomeViewController {
                 self.presentAlertView(title: "Whoops", message: errorMsg)
                 return
             }
+            self.userCanProceedToNextStep?(self.mode)
+        }
+    }
+
+    func guestLogin() {
+        self.view.isUserInteractionEnabled = false
+        loadingIndicator.show()
+        viewModel.guestRegister() { (errorMsg) in
+            self.loadingIndicator.hide()
+            self.view.isUserInteractionEnabled = true
+            if let errorMsg = errorMsg {
+                self.presentAlertView(title: "Whoops", message: errorMsg)
+                return
+            }
+            self.userCanProceedToNextStep?(self.mode)
         }
     }
 
@@ -174,5 +202,10 @@ extension SignupHomeViewController: SignupHomeNavigationBarDelegate {
     func userSwitched(mode: SignupMode) {
         self.mode = mode
         self.adapter.performUpdates(animated: false)
+        if mode == .login {
+            self.customNavigationBar.skipButton.isHidden = true
+        } else {
+            self.customNavigationBar.skipButton.isHidden = false
+        }
     }
 }
