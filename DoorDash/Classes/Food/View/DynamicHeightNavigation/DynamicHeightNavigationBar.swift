@@ -88,6 +88,7 @@ final class DynamicHeightNavigationBar: UIView {
 extension DynamicHeightNavigationBar {
 
     private func setupUI() {
+        self.backgroundColor = ApplicationDependency.manager.theme.colors.white
         addSubview(separator)
         separator.alpha = 0.6
         setupTitleLabel()

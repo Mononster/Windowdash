@@ -69,9 +69,9 @@ class BrowseFoodViewController: BaseViewController {
 extension BrowseFoodViewController {
 
     private func setupUI() {
-        setupNavigationBar()
         setupCollectionView()
         setupSkeletonLoadingView()
+        setupNavigationBar()
         setupConstraints()
     }
 
@@ -80,6 +80,12 @@ extension BrowseFoodViewController {
         adapter.collectionView = collectionView
         collectionView.backgroundColor = theme.colors.white
         collectionView.alwaysBounceVertical = true
+        let inset = UIEdgeInsets(
+            top: navigationBarHeight - UIDevice.current.statusBarHeight, left: 0,
+            bottom: 0, right: 0
+        )
+        collectionView.contentInset = inset
+        collectionView.scrollIndicatorInsets = inset
     }
 
     private func setupSkeletonLoadingView() {
@@ -92,8 +98,8 @@ extension BrowseFoodViewController {
 
     private func setupConstraints() {
         collectionView.snp.makeConstraints { (make) in
-            make.top.equalTo(navigationBar.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
+            //make.top.equalTo(navigationBar.snp.bottom)
+            make.top.leading.trailing.bottom.equalToSuperview()
         }
 
         skeletonLoadingView.snp.makeConstraints { (make) in
@@ -104,13 +110,11 @@ extension BrowseFoodViewController {
 
 extension BrowseFoodViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offsetY = scrollView.contentOffset.y
+        let topInset = navigationBarHeight
+        let offsetY = scrollView.contentOffset.y + topInset
         navigationBar.adjustBySrollView(offsetY: offsetY,
                                         previousOffset: previousOffset,
                                         navigattionBarMinHeight: navigattionBarMinHeight)
-        if offsetY <= navigattionBarMinHeight && offsetY > 0 {
-            collectionView.contentOffset = CGPoint(x: 0, y: -offsetY)
-        }
         previousOffset = offsetY
     }
 }
