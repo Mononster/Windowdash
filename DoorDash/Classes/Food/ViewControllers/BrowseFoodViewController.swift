@@ -108,6 +108,9 @@ extension BrowseFoodViewController: UIScrollViewDelegate {
         navigationBar.adjustBySrollView(offsetY: offsetY,
                                         previousOffset: previousOffset,
                                         navigattionBarMinHeight: navigattionBarMinHeight)
+        if offsetY <= navigattionBarMinHeight && offsetY > 0 {
+            collectionView.contentOffset = CGPoint(x: 0, y: -offsetY)
+        }
         previousOffset = offsetY
     }
 }
@@ -115,16 +118,24 @@ extension BrowseFoodViewController: UIScrollViewDelegate {
 extension BrowseFoodViewController: ListAdapterDataSource {
 
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
-        return viewModel.sectionData
+        //return viewModel.sectionData
+        var data: [ListDiffable] = []
+        for i in 0..<20 {
+            data.append(SubletTitleCellModel(title: "Test \(i)"))
+        }
+        return data
     }
 
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
-        switch object {
-        case is CuisinePages:
-            return CuisineCarouselSectionController()
-        default:
-            return CuisineCarouselSectionController()
-        }
+//        switch object {
+//        case is CuisinePages:
+//            return CuisineCarouselSectionController()
+//        case is StoreCarouselItems:
+//            return StoreCarouselSectionController()
+//        default:
+//            return CuisineCarouselSectionController()
+//        }
+        return BrowseFoodSectionController()
     }
 
     func emptyView(for listAdapter: ListAdapter) -> UIView? {

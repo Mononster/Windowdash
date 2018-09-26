@@ -39,6 +39,7 @@ extension Store: PersistentModel {
         store.nextOpenTime = nextOpenTime
         store.nextCloseTime = nextCloseTime
         store.priceRange = priceRange
+        store.headerImageURL = headerImageURL
         return store
     }
 
@@ -51,7 +52,8 @@ extension Store: PersistentModel {
             priceRange: persistent.priceRange,
             name: persistent.name ?? "",
             nextCloseTime: persistent.nextCloseTime ?? Date(),
-            nextOpenTime: persistent.nextOpenTime ?? Date()
+            nextOpenTime: persistent.nextOpenTime ?? Date(),
+            headerImageURL: persistent.headerImageURL
         )
     }
 }

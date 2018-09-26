@@ -24,4 +24,5 @@ extension PSStore {
     @NSManaged public var name: String?
     @NSManaged public var nextCloseTime: Date?
     @NSManaged public var nextOpenTime: Date?
+    @NSManaged public var headerImageURL: String?
 }

@@ -72,8 +72,8 @@ final class CuisineItemSectonController: ListSectionController {
     }
 
     override func sizeForItem(at index: Int) -> CGSize {
-        let width: CGFloat = collectionContext?.containerSize.width ?? 0
-        let itemWidth = BrowseFoodViewModel.UIConfigure.getCuisineItemSize(collectionViewWidth: width)
+        let width = collectionContext?.containerSize.width ?? 0
+        let itemWidth: CGFloat = BrowseFoodViewModel.UIConfigure.getCuisineItemSize(collectionViewWidth: width)
         return CGSize(width: itemWidth,
                       height: collectionContext?.containerSize.height ?? 0)
     }

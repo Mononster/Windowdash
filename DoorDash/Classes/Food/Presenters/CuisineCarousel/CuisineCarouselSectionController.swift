@@ -62,7 +62,7 @@ final class CuisineCarouselSectionController: ListSectionController, ListAdapter
     }
 }
 
-extension CuisineCarouselSectionController {
+extension CuisineCarouselSectionController: UICollectionViewDelegate {
 
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
         var diffableItems: [ListDiffable] = []

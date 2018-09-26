@@ -40,11 +40,15 @@ final class DynamicHeightNavigationBar: UIView {
 
     private func updateBy(offset: CGFloat) {
         let navBarHeight = ApplicationDependency.manager.theme.navigationBarHeight
-        self.frame = CGRect(
-            x: originFrame.minX,
-            y: originFrame.minY - offset,
-            width: originFrame.width,
-            height: originFrame.height
+//        self.frame = CGRect(
+//            x: originFrame.minX,
+//            y: originFrame.minY - offset,
+//            width: originFrame.width,
+//            height: originFrame.height
+//        )
+        self.transform = CGAffineTransform(
+            translationX: 0,
+            y: -offset
         )
 
         let filterOffsetMax: CGFloat = 8
@@ -54,11 +58,11 @@ final class DynamicHeightNavigationBar: UIView {
         )
 
         self.addressView.layer.opacity = Float(1 - offset / (navBarHeight - 10))
-        print(offset / navBarHeight / filterOffsetMax)
+        //print(offset / navBarHeight / filterOffsetMax)
         let scale = 0.35 - offset / originFrame.height
         self.titleLabel.transform = CGAffineTransform(translationX: 0, y: offset)
             .scaledBy(x: max(0.65, scale + 0.65), y: max(0.65, scale + 0.65))
-        print("scale == \(scale)")
+        //print("scale == \(scale)")
     }
 
     func adjustBySrollView(offsetY: CGFloat,

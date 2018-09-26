@@ -20,6 +20,7 @@ public struct Store {
         case name
         case nextCloseTime = "next_close_time"
         case nextOpenTime = "next_open_time"
+        case headerImageURL = "header_img_url"
     }
 
     public let id: Int64
@@ -30,6 +31,7 @@ public struct Store {
     public let name: String
     public let nextCloseTime: Date
     public let nextOpenTime: Date
+    public let headerImageURL: String?
 
     public init(id: Int64,
                 numRatings: Int64,
@@ -38,7 +40,8 @@ public struct Store {
                 priceRange: Int64,
                 name: String,
                 nextCloseTime: Date,
-                nextOpenTime: Date) {
+                nextOpenTime: Date,
+                headerImageURL: String?) {
         self.id = id
         self.numRatings = numRatings
         self.averageRating = averageRating
@@ -47,6 +50,7 @@ public struct Store {
         self.name = name
         self.nextCloseTime = nextCloseTime
         self.nextOpenTime = nextOpenTime
+        self.headerImageURL = headerImageURL
     }
 }
 
@@ -63,6 +67,7 @@ extension Store: Codable {
         let nextCloseTime = nextCloseTimeRaw.toISODate()?.date ?? Date()
         let nextOpenTimeRaw: String = try values.decodeIfPresent(String.self, forKey: .nextOpenTime) ?? ""
         let nextOpenTime = nextOpenTimeRaw.toISODate()?.date ?? Date()
+        let headerImageURL: String? = try values.decodeIfPresent(String.self, forKey: .headerImageURL)
         self.init(id: id,
                   numRatings: numRatings,
                   averageRating: averageRating,
@@ -70,7 +75,8 @@ extension Store: Codable {
                   priceRange: priceRange,
                   name: name,
                   nextCloseTime: nextCloseTime,
-                  nextOpenTime: nextOpenTime)
+                  nextOpenTime: nextOpenTime,
+                  headerImageURL: headerImageURL)
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -83,5 +89,6 @@ extension Store: Codable {
         try container.encode(name, forKey: .name)
         try container.encode(nextCloseTime, forKey: .nextCloseTime)
         try container.encode(nextOpenTime, forKey: .nextOpenTime)
+        try container.encodeIfPresent(headerImageURL, forKey: .headerImageURL)
     }
 }

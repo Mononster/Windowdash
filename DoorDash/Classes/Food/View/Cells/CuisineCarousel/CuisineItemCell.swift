@@ -72,7 +72,7 @@ extension CuisineItemCell {
 
         title.snp.makeConstraints { (make) in
             make.top.equalTo(cuisineImageView.snp.bottom).offset(10)
-            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
         }
     }
 }

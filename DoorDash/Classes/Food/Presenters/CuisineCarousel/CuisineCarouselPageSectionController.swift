@@ -22,16 +22,16 @@ final class CuisineCarouselPageSectionController: ListSectionController, ListAda
 
     override init() {
         super.init()
-        //self.inset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+        self.inset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
     }
-
+    
     override func numberOfItems() -> Int {
         return 1
     }
 
     override func sizeForItem(at index: Int) -> CGSize {
-        return CGSize(width: (collectionContext?.containerSize.width ?? 0) - BrowseFoodViewModel.UIConfigure.homePageLeadingSpace * 2,
-                      height: collectionContext?.containerSize.height ?? 0)
+        let width: CGFloat = (collectionContext?.containerSize.width ?? 0) - 2 * (BrowseFoodViewModel.UIConfigure.homePageLeadingSpace - 4)
+        return CGSize(width: width, height: collectionContext?.containerSize.height ?? 0)
     }
 
     override func cellForItem(at index: Int) -> UICollectionViewCell {
@@ -49,7 +49,6 @@ final class CuisineCarouselPageSectionController: ListSectionController, ListAda
         page = object as? CuisinePage
     }
 }
-
 
 extension CuisineCarouselPageSectionController {
 

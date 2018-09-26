@@ -24,6 +24,7 @@
     </entity>
     <entity name="PSStore" representedClassName="PSStore" syncable="YES">
         <attribute name="averageRating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="headerImageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nextCloseTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -45,7 +46,7 @@
     <elements>
         <element name="PSDeliveryAddress" positionX="-36" positionY="63" width="128" height="225"/>
         <element name="PSDistrict" positionX="-54" positionY="27" width="128" height="135"/>
-        <element name="PSStore" positionX="-45" positionY="117" width="128" height="165"/>
+        <element name="PSStore" positionX="-45" positionY="117" width="128" height="180"/>
         <element name="PSUser" positionX="-63" positionY="-18" width="128" height="165"/>
     </elements>
 </model>

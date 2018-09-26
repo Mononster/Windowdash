@@ -18,6 +18,7 @@ protocol ImageAsset {
     var mapPinImage: UIImage { get }
     var rightArrowImage: UIImage { get }
     var grayRoundBackground: UIImage { get }
+    var grayRectBackground: UIImage { get }
 }
 
 struct DefaultImageAsset: ImageAsset {
@@ -55,5 +56,9 @@ struct DefaultImageAsset: ImageAsset {
 
     var grayRoundBackground: UIImage {
         return #imageLiteral(resourceName: "gray_round_background")
+    }
+
+    var grayRectBackground: UIImage {
+        return #imageLiteral(resourceName: "gray_rect_background")
     }
 }
