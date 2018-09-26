@@ -9,6 +9,7 @@
 		<string>TTNorms-Light.otf</string>
 		<string>TTNorms-Medium.otf</string>
 		<string>TTNorms-Regular.otf</string>
+		<string>TTNorms-ExtraBold.otf</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>

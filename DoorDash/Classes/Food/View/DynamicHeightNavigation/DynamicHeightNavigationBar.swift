@@ -119,14 +119,18 @@ extension DynamicHeightNavigationBar {
 
     private func setupConstraints() {
         addressView.snp.makeConstraints { (make) in
-            make.leading.equalToSuperview().offset(24)
+            make.leading.equalToSuperview().offset(
+                BrowseFoodViewModel.UIConfigure.homePageLeadingSpace
+            )
             make.bottom.equalToSuperview().offset(-12)
             make.width.equalToSuperview().multipliedBy(0.33)
             make.height.equalToSuperview().offset(-12).multipliedBy(0.5)
         }
 
         separator.snp.makeConstraints { (make) in
-            make.leading.equalToSuperview().offset(24)
+            make.leading.equalToSuperview().offset(
+                BrowseFoodViewModel.UIConfigure.homePageLeadingSpace
+            )
             make.height.equalTo(0.6)
             make.trailing.equalToSuperview()
             make.bottom.equalToSuperview()

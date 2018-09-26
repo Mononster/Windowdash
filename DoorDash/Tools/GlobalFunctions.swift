@@ -43,3 +43,9 @@ func cancelPerformAfter(_ closure: PerformAfterClosure?) {
     }
 }
 
+class HelperManager {
+
+    static func uniqueID() -> String {
+        return UUID().uuidString.lowercased()
+    }
+}

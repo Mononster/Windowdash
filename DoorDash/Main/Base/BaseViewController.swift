@@ -18,9 +18,13 @@ class BaseViewController: UIViewController {
 
     let theme = ApplicationDependency.manager.theme
     let loadingIndicator: LoadingIndicator
+    let pageLoadingIndicator: LargeLoadingIndicator
+    let tableViewPlaceHolder: UITableView
 
     init() {
         loadingIndicator = LoadingIndicator(frame: .zero)
+        pageLoadingIndicator = LargeLoadingIndicator(frame: .zero)
+        tableViewPlaceHolder = UITableView(frame: .zero)
         super.init(nibName: nil, bundle: nil)
         self.navigationItem.backBarButtonItem = UIBarButtonItem.empty
     }
@@ -32,11 +36,31 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ApplicationDependency.manager.theme.colors.white
+        setupDefaultLoadingViews()
+        setupTableViewAsPlaceHolderView()
+    }
+
+    func setupDefaultLoadingViews() {
         self.view.addSubview(loadingIndicator)
         loadingIndicator.isHidden = true
         loadingIndicator.snp.makeConstraints { (make) in
             make.centerX.centerY.equalToSuperview()
             make.width.height.equalTo(60)
+        }
+        self.view.addSubview(pageLoadingIndicator)
+        pageLoadingIndicator.isHidden = true
+        pageLoadingIndicator.snp.makeConstraints { (make) in
+            make.centerX.centerY.equalToSuperview()
+            make.width.height.equalTo(80)
+        }
+    }
+
+    func setupTableViewAsPlaceHolderView() {
+        self.view.addSubview(tableViewPlaceHolder)
+        tableViewPlaceHolder.isHidden = true
+        tableViewPlaceHolder.separatorStyle = .singleLine
+        tableViewPlaceHolder.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
         }
     }
 

@@ -8,10 +8,15 @@
 
 import UIKit
 
+protocol ContentCoordinatorDelegate: class {
+    func restartApp(in coordinator: ContentCoordinator)
+}
+
 final class ContentCoordinator: Coordinator {
 
     let router: Router
     var coordinators: [Coordinator] = []
+    weak var delegate: ContentCoordinatorDelegate?
 
     private var tabConfigs: [TabConfig] = []
     private let appTracker: AppTracker
@@ -49,10 +54,10 @@ extension ContentCoordinator {
 
     private func setupTabbar() {
         let v1 = BrowseFoodViewController()
-        let v2 = UIViewController()
+        let v2 = BrowseDrinkViewController()
         let v3 = UIViewController()
         let v4 = UIViewController()
-        let v5 = UIViewController()
+        let v5 = UserAccountViewController()
         let controllers = [v1, v2, v3, v4, v5]
         for (index, vc) in controllers.enumerated(){
             let config = tabConfigs[index]
@@ -81,13 +86,13 @@ extension ContentCoordinator {
         )
         browseFoodTabCoordinator.start()
         addCoordinator(browseFoodTabCoordinator)
-//
-//        let discoverTabCoordinator = DiscoverTabCoordinator(
-//            rootViewController: v2,
-//            router: Router()
-//        )
-//        discoverTabCoordinator.start()
-//        addCoordinator(discoverTabCoordinator)
+
+        let browseDrinkCoordinator = BrowseDrinkCoordinator(
+            rootViewController: v2,
+            router: Router()
+        )
+        browseDrinkCoordinator.start()
+        addCoordinator(browseDrinkCoordinator)
 //
 //        let messageTabCoordinator = MessageTabCoordinator(
 //            rootViewController: v4,
@@ -96,21 +101,22 @@ extension ContentCoordinator {
 //        messageTabCoordinator.start()
 //        addCoordinator(messageTabCoordinator)
 //
-//        let profileTabCoordinator = ProfileTabCoordinator(
-//            rootViewController: v5,
-//            router: Router()
-//        )
-//        profileTabCoordinator.start()
-//        addCoordinator(profileTabCoordinator)
+        let userAccountTabCoordinator = UserAccountCoordinator(
+            rootViewController: v5,
+            router: Router()
+        )
+        userAccountTabCoordinator.start()
+        userAccountTabCoordinator.delegate = self
+        addCoordinator(userAccountTabCoordinator)
 
         let tabBarController = MainTabBarController()
         tabBarController.tabBarDelegate = self
         tabBarController.viewControllers = [
             browseFoodTabCoordinator.toPresentable(),
-            v2,
+            browseDrinkCoordinator.toPresentable(),
             v3,
             v4,
-            v5
+            userAccountTabCoordinator.toPresentable()
         ]
         self.router.setRootModule(tabBarController, hideBar: true)
     }
@@ -118,4 +124,12 @@ extension ContentCoordinator {
 
 extension ContentCoordinator: MainTabBarControllerDelegate {
 
+}
+
+extension ContentCoordinator: UserAccountCoordinatorDelegate {
+
+    func userLoggedOut() {
+        self.router.dismissModule(animated: true)
+        self.delegate?.restartApp(in: self)
+    }
 }

@@ -10,6 +10,7 @@ import UIKit
 
 enum FontStyle {
     case regular
+    case extraBold
     case bold
     case semiBold
     case medium
@@ -51,7 +52,10 @@ protocol FontSchema {
     var bold32: UIFont { get }
     var bold40: UIFont { get }
     var heavy12: UIFont { get }
+    var heavy16: UIFont { get }
     var heavy18: UIFont { get }
+    var extraBold16: UIFont { get }
+    var extraBold18: UIFont { get }
 
     /* Font templates */
     var titleRegular: UIFont { get }
@@ -188,8 +192,20 @@ struct DefaultFontSchema: FontSchema {
         return font(style: .heavy, size: 12)
     }
 
+    var heavy16: UIFont {
+        return font(style: .heavy, size: 16)
+    }
+
     var heavy18: UIFont {
         return font(style: .heavy, size: 18)
+    }
+
+    var extraBold16: UIFont {
+        return font(style: .extraBold, size: 16)
+    }
+
+    var extraBold18: UIFont {
+        return font(style: .extraBold, size: 18)
     }
 
     /* Font templates */
@@ -212,6 +228,8 @@ struct DefaultFontSchema: FontSchema {
             name = "TTNorms-Bold"
         case .regular:
             name = "TTNorms-Regular"
+        case .extraBold:
+            name = "TTNorms-ExtraBold"
         case .semiBold:
             name = "TTNorms-Bold"
         case .medium:

@@ -62,11 +62,34 @@ class UserAPIService: DoorDashAPIService {
         }
     }
 
+    struct TokenWrapper: Codable {
+        enum TokenCodingKeys: String, CodingKey {
+            case token
+            case isSecurePassword = "is_secure_password"
+        }
+        let token: String
+        let isSecurePassword: Bool
+        init(token: String, isSecurePassword: Bool) {
+            self.token = token
+            self.isSecurePassword = isSecurePassword
+        }
+        
+        init(from decoder: Decoder) throws {
+            let values = try decoder.container(keyedBy: TokenCodingKeys.self)
+            let token: String = try values.decode(String.self, forKey: .token)
+            let isSecurePassword: Bool = try values.decodeIfPresent(Bool.self, forKey: .isSecurePassword) ?? true
+            self.init(token: token, isSecurePassword: isSecurePassword)
+        }
+
+        func encode(to encoder: Encoder) throws { }
+    }
+
     enum UserAPITarget: TargetType {
         case login(email: String, password: String)
         case register(account: Account)
         case guestSignup(password: String)
         case fetchUserProfile(authToken: AuthToken)
+        case fetchUserAccount(uid: String)
         case updateDeliveryLocation(uid: String, location: GMDetailLocation)
 
         var baseURL: URL {
@@ -79,6 +102,8 @@ class UserAPIService: DoorDashAPIService {
                 return "v2/auth/token/"
             case .fetchUserProfile:
                 return "v2/consumer/me/"
+            case .fetchUserAccount(let uid):
+                return "v2/consumer/\(uid)/"
             case .register, .guestSignup:
                 return "v2/consumer/"
             case .updateDeliveryLocation(let uid, _):
@@ -90,7 +115,7 @@ class UserAPIService: DoorDashAPIService {
             switch self {
             case .login, .register, .guestSignup, .updateDeliveryLocation:
                 return .post
-            case .fetchUserProfile:
+            case .fetchUserProfile, .fetchUserAccount:
                 return .get
             }
         }
@@ -112,7 +137,7 @@ class UserAPIService: DoorDashAPIService {
                     parameters: ["is_guest": 1,
                                  "password": password],
                     encoding: JSONEncoding.default)
-            case .fetchUserProfile:
+            case .fetchUserProfile, .fetchUserAccount:
                 return .requestPlain
             case .updateDeliveryLocation(_, let location):
                 var paramters: [String: Any] = [:]
@@ -142,7 +167,7 @@ class UserAPIService: DoorDashAPIService {
                     .data(using: String.Encoding.utf8)!
             case .register(let account):
                 return "{\"email\": \"\(account.accountIdentifier.email)\", \"phone_number\": \"\(account.accountIdentifier.phoneNumber)\", \"password\": \"\(account.password ?? "")\", \"last_name\": \"\(account.accountIdentifier.lastName)\", \"last_name\": \"\(account.accountIdentifier.lastName)\"}".data(using: String.Encoding.utf8)!
-            case .fetchUserProfile, .updateDeliveryLocation, .guestSignup:
+            case .fetchUserProfile, .fetchUserAccount, .updateDeliveryLocation, .guestSignup:
                 return Data()
             }
         }
@@ -240,12 +265,8 @@ extension UserAPIService {
                         completion(nil, error)
                         return
                     }
-                    let tokenDict = try response.map([String: String].self)
-                    if let token = tokenDict["token"] {
-                        completion(token, nil)
-                    } else {
-                        completion(nil, DefaultError.notAuthorized)
-                    }
+                    let tokenDict = try response.map(TokenWrapper.self)
+                    completion(tokenDict.token, nil)
                 } catch(let error) {
                     completion(nil, error)
                 }
@@ -257,6 +278,27 @@ extension UserAPIService {
 
     func fetchUserProfile(token: AuthToken, completion: @escaping (User?, Error?) -> ()) {
         userAPIProvider.request(.fetchUserProfile(authToken: token)) { (result) in
+            switch result {
+            case .success(let response):
+                do {
+                    guard response.statusCode == 200 else {
+                        let error = self.handleError(response: response)
+                        completion(nil, error)
+                        return
+                    }
+                    let user = try response.map(User.self)
+                    completion(user, nil)
+                } catch(let error) {
+                    completion(nil, error)
+                }
+            case .failure(let error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    func fetchUserAccount(uid: String, completion: @escaping (User?, Error?) -> ()) {
+        userAPIProvider.request(.fetchUserAccount(uid: uid)) { (result) in
             switch result {
             case .success(let response):
                 do {

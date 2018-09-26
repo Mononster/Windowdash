@@ -38,6 +38,7 @@ extension User: PersistentModel {
         user.email = email
         user.firstName = firstName
         user.lastName = lastName
+        user.isGuest = isGuest
         return user
     }
 
@@ -52,7 +53,8 @@ extension User: PersistentModel {
             lastName: persistent.lastName ?? "",
             firstName: persistent.firstName ?? "",
             email: persistent.email ?? "",
-            defaultAddress: address
+            defaultAddress: address,
+            isGuest: persistent.isGuest
         )
     }
 }

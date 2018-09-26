@@ -16,6 +16,8 @@ protocol ImageAsset {
     var onboardingImages: [UIImage] { get }
     var tabbarImages: [UIImage] { get }
     var mapPinImage: UIImage { get }
+    var rightArrowImage: UIImage { get }
+    var grayRoundBackground: UIImage { get }
 }
 
 struct DefaultImageAsset: ImageAsset {
@@ -45,5 +47,13 @@ struct DefaultImageAsset: ImageAsset {
 
     var mapPinImage: UIImage {
         return #imageLiteral(resourceName: "map_pin")
+    }
+
+    var rightArrowImage: UIImage {
+        return #imageLiteral(resourceName: "right_arrow")
+    }
+
+    var grayRoundBackground: UIImage {
+        return #imageLiteral(resourceName: "gray_round_background")
     }
 }

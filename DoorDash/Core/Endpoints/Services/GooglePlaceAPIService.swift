@@ -6,7 +6,6 @@
 //  Copyright © 2018 Monster. All rights reserved.
 //
 
-
 import Moya
 import SwiftyJSON
 import Alamofire

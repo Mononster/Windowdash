@@ -153,7 +153,7 @@ public extension GradientLayer {
 }
 
 open class GradientKitHelper {
-    open static func getStartEndPointOf(_ gradientDirection: GradientDirection) -> (startPoint: CGPoint, endPoint: CGPoint) {
+    public static func getStartEndPointOf(_ gradientDirection: GradientDirection) -> (startPoint: CGPoint, endPoint: CGPoint) {
         switch gradientDirection {
         case .topToBottom:
             return (CGPoint(x: 0.5, y: 0.0), CGPoint(x: 0.5, y: 1.0))
