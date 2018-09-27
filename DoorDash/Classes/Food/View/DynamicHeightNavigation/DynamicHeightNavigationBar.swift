@@ -20,11 +20,12 @@ final class DynamicHeightNavigationBar: UIView {
 
     override init(frame: CGRect) {
         addressView = NavigationAddressHeaderView()
-        originTitleLabelFrame = CGRect(x: 24, y: UIDevice.current.verticalPadding + 18,
+        let leading = BrowseFoodViewModel.UIConfigure.homePageLeadingSpace
+        originTitleLabelFrame = CGRect(x: leading, y: UIDevice.current.verticalPadding + 18,
                                        width: frame.width / 3, height: (frame.height - 24) / 2)
         titleLabel = UILabel(frame: originTitleLabelFrame)
         let filterLabelWidth = frame.width / 3.5
-        let filterLabelFrame = CGRect(x: frame.width - 24 - filterLabelWidth,
+        let filterLabelFrame = CGRect(x: frame.width - leading - filterLabelWidth,
                                       y: UIDevice.current.verticalPadding + 16,
                                       width:filterLabelWidth, height: (frame.height - 24) / 2)
         filterLabel = UILabel(frame: filterLabelFrame)
@@ -40,12 +41,6 @@ final class DynamicHeightNavigationBar: UIView {
 
     private func updateBy(offset: CGFloat) {
         let navBarHeight = ApplicationDependency.manager.theme.navigationBarHeight
-//        self.frame = CGRect(
-//            x: originFrame.minX,
-//            y: originFrame.minY - offset,
-//            width: originFrame.width,
-//            height: originFrame.height
-//        )
         self.transform = CGAffineTransform(
             translationX: 0,
             y: -offset

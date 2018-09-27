@@ -35,15 +35,20 @@ final class StoreCarouselItems: NSObject, ListDiffable {
     let carouselDescription: String?
     let carouselTitle: String
     let maxTitleHeight: CGFloat
+    let largeDisplayTitleHeight: CGFloat
 
+    // MaxTitleHeight represents the max title height for two sub cells
+    // largeDisplayTitleHeight represents the title height for top display cell.
     init(items: [StoreCarouselItem],
          carouselTitle: String,
          maxTitleHeight: CGFloat,
+         largeDisplayTitleHeight: CGFloat,
          carouselDescription: String? = nil) {
         self.items = items
         self.carouselTitle = carouselTitle
         self.carouselDescription = carouselDescription
         self.maxTitleHeight = maxTitleHeight
+        self.largeDisplayTitleHeight = largeDisplayTitleHeight
     }
 
     func diffIdentifier() -> NSObjectProtocol {
@@ -59,75 +64,50 @@ final class StoreCarouselSectionController: ListSectionController {
 
     private var items: StoreCarouselItems?
 
+    override init() {
+        super.init()
+        supplementaryViewSource = self
+    }
+
     override func numberOfItems() -> Int {
-        var numItem = 1
         if items?.items.count == 1 {
-            numItem += 1
+            return 1
         } else if items?.items.count == 3 {
-            numItem += 2
+            return 2
         }
-        return numItem
+        return 0
     }
 
     override func sizeForItem(at index: Int) -> CGSize {
         var height: CGFloat = 0
-        var width: CGFloat = (collectionContext?.containerSize.width ?? 0)
+        let width: CGFloat = collectionContext?.containerSize.width ?? 0
         if index == 0 {
-            if items?.carouselDescription == nil {
-                height = BrowseFoodSectionHeaderViewCell.height
-            } else {
-                height = BrowseFoodHeaderWithSubTitleViewCell.height
-            }
+            height = StoreCarouselLargeDisplayCell.getHeight(titleHeight: items?.largeDisplayTitleHeight ?? 0)
         } else if index == 1 {
-            height = StoreCarouselLargeDisplayCell.height
-            width = width - 2 * 18
-        } else if index == 2 {
             height = StoreCarouselTwoStoresCell.getHeight(titleHeight: items?.maxTitleHeight ?? 0)
-            width = width - 2 * 18
         }
         return CGSize(width: width, height: height)
     }
 
     override func cellForItem(at index: Int) -> UICollectionViewCell {
         if index == 0 {
-            if let descripiton = items?.carouselDescription {
-                guard let cell = collectionContext?.dequeueReusableCell(
-                    of: BrowseFoodHeaderWithSubTitleViewCell.self,
-                    for: self,
-                    at: index) as? BrowseFoodHeaderWithSubTitleViewCell else {
-                        fatalError()
-                }
-                cell.titleLabel.text = items?.carouselTitle
-                cell.descriptionLabel.text = descripiton
-                return cell
-            } else {
-                guard let cell = collectionContext?.dequeueReusableCell(
-                    of: BrowseFoodSectionHeaderViewCell.self,
-                    for: self,
-                    at: index) as? BrowseFoodSectionHeaderViewCell else {
-                        fatalError()
-                }
-                cell.titleLabel.text = items?.carouselTitle
-                return cell
-            }
-        } else if index == 1 {
             guard let cell = collectionContext?.dequeueReusableCell(
                 of: StoreCarouselLargeDisplayCell.self,
                 for: self,
                 at: index) as? StoreCarouselLargeDisplayCell,
-                let item = items?.items[safe: index - 1] else {
+                let item = items?.items[safe: 0] else {
                     fatalError()
             }
             let model = (imageURL: item.imageURL, title: item.title, subTitle: item.subTitle)
             cell.setupCell(model: model)
             return cell
-        } else if index == 2 {
+        } else if index == 1 {
             guard let cell = collectionContext?.dequeueReusableCell(
                 of: StoreCarouselTwoStoresCell.self,
                 for: self,
                 at: index) as? StoreCarouselTwoStoresCell,
-                let itemA = items?.items[safe: index - 1],
-                let itemB = items?.items[safe: index - 2] else {
+                let itemA = items?.items[safe: 1],
+                let itemB = items?.items[safe: 2] else {
                     fatalError()
             }
             let modelA = (imageURL: itemA.imageURL, title: itemA.title, subTitle: itemA.subTitle)
@@ -140,5 +120,73 @@ final class StoreCarouselSectionController: ListSectionController {
 
     override func didUpdate(to object: Any) {
         items = object as? StoreCarouselItems
+    }
+}
+
+extension StoreCarouselSectionController: ListSupplementaryViewSource {
+    func supportedElementKinds() -> [String] {
+        return [UICollectionView.elementKindSectionHeader, UICollectionView.elementKindSectionFooter]
+    }
+
+    func viewForSupplementaryElement(ofKind elementKind: String, at index: Int) -> UICollectionReusableView {
+        switch elementKind {
+        case UICollectionView.elementKindSectionHeader:
+            return headerView(atIndex: index)
+        case UICollectionView.elementKindSectionFooter:
+            return footerView(atIndex: index)
+        default:
+            fatalError()
+        }
+    }
+
+    func sizeForSupplementaryView(ofKind elementKind: String, at index: Int) -> CGSize {
+        let width = collectionContext?.containerSize.width ?? 0
+        if elementKind == UICollectionView.elementKindSectionHeader {
+            let height: CGFloat
+            if items?.carouselDescription == nil {
+                height = BrowseFoodSectionHeaderViewCell.height
+            } else {
+                height = BrowseFoodHeaderWithSubTitleViewCell.height
+            }
+            return CGSize(width: width, height: height)
+        } else {
+            return CGSize(width: width, height: StoreCarouselFooterCell.height)
+        }
+    }
+
+    private func headerView(atIndex index: Int) -> UICollectionReusableView {
+        if let descripiton = items?.carouselDescription {
+            guard let cell = collectionContext?.dequeueReusableSupplementaryView(
+                ofKind: UICollectionView.elementKindSectionHeader,
+                for: self,
+                class: BrowseFoodHeaderWithSubTitleViewCell.self,
+                at: index) as? BrowseFoodHeaderWithSubTitleViewCell else {
+                    fatalError()
+            }
+            cell.titleLabel.text = items?.carouselTitle
+            cell.descriptionLabel.text = descripiton
+            return cell
+        } else {
+            guard let cell = collectionContext?.dequeueReusableSupplementaryView(
+                ofKind: UICollectionView.elementKindSectionHeader,
+                for: self,
+                class: BrowseFoodSectionHeaderViewCell.self,
+                at: index) as? BrowseFoodSectionHeaderViewCell else {
+                    fatalError()
+            }
+            cell.titleLabel.text = items?.carouselTitle
+            return cell
+        }
+    }
+
+    private func footerView(atIndex index: Int) -> UICollectionReusableView {
+        guard let view = collectionContext?.dequeueReusableSupplementaryView(
+            ofKind: UICollectionView.elementKindSectionFooter,
+            for: self,
+            class: StoreCarouselFooterCell.self,
+            at: index) as? StoreCarouselFooterCell else {
+            fatalError()
+        }
+        return view
     }
 }

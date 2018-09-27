@@ -29,7 +29,7 @@ final class StoreCarouselSingleStoreView: UIView {
     func setupView(model: StoreCarouselModelAlias) {
         self.title.text = model.title
         self.subTitle.text = model.subTitle
-        self.storeImageView.layer.cornerRadius = 4
+        self.storeImageView.layer.cornerRadius = 3
         self.storeImageView.setImage(
             placeHolder: ApplicationDependency.manager.theme.imageAssets.grayRectBackground,
             regularURL: model.imageURL,
@@ -46,13 +46,16 @@ final class StoreCarouselSingleStoreView: UIView {
         setupLabels()
         setupConstraints()
         self.layoutIfNeeded()
-        self.storeImageView.layer.cornerRadius = 4
+        self.storeImageView.layer.cornerRadius = 3
     }
 
     private func setupImageView() {
         addSubview(storeImageView)
         storeImageView.contentMode = .scaleAspectFill
         self.storeImageView.layer.masksToBounds = true
+        let transition = SDWebImageTransition.fade
+        transition.duration = 0.3
+        storeImageView.sd_imageTransition = transition
     }
 
     private func setupLabels() {
@@ -62,7 +65,7 @@ final class StoreCarouselSingleStoreView: UIView {
         title.textAlignment = .left
         title.adjustsFontSizeToFitWidth = true
         title.minimumScaleFactor = 0.5
-        title.numberOfLines = 1
+        title.numberOfLines = 3
 
         addSubview(subTitle)
         subTitle.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
@@ -137,14 +140,18 @@ extension StoreCarouselTwoStoresCell {
     private func setupConstraints() {
         firstStore.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
-            make.leading.equalToSuperview()
+            make.leading.equalToSuperview().offset(
+                BrowseFoodViewModel.UIConfigure.homePageLeadingSpace
+            )
             make.width.equalTo(StoreCarouselTwoStoresCell.width)
             make.height.equalTo(50)
         }
 
         secondStore.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
-            make.trailing.equalToSuperview()
+            make.trailing.equalToSuperview().offset(
+                -BrowseFoodViewModel.UIConfigure.homePageLeadingSpace
+            )
             make.width.equalTo(StoreCarouselTwoStoresCell.width)
             make.height.equalTo(50)
         }

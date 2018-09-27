@@ -53,7 +53,8 @@ extension Store: PersistentModel {
             name: persistent.name ?? "",
             nextCloseTime: persistent.nextCloseTime ?? Date(),
             nextOpenTime: persistent.nextOpenTime ?? Date(),
-            headerImageURL: persistent.headerImageURL
+            headerImageURL: persistent.headerImageURL,
+            menus: nil
         )
     }
 }

@@ -98,12 +98,12 @@ extension BrowseFoodViewController {
 
     private func setupConstraints() {
         collectionView.snp.makeConstraints { (make) in
-            //make.top.equalTo(navigationBar.snp.bottom)
             make.top.leading.trailing.bottom.equalToSuperview()
         }
 
         skeletonLoadingView.snp.makeConstraints { (make) in
-            make.edges.equalTo(collectionView)
+            make.top.equalTo(navigationBar.snp.bottom)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
 }
@@ -122,24 +122,20 @@ extension BrowseFoodViewController: UIScrollViewDelegate {
 extension BrowseFoodViewController: ListAdapterDataSource {
 
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
-        //return viewModel.sectionData
-        var data: [ListDiffable] = []
-        for i in 0..<20 {
-            data.append(SubletTitleCellModel(title: "Test \(i)"))
-        }
-        return data
+        return viewModel.sectionData
     }
 
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
-//        switch object {
-//        case is CuisinePages:
-//            return CuisineCarouselSectionController()
-//        case is StoreCarouselItems:
-//            return StoreCarouselSectionController()
-//        default:
-//            return CuisineCarouselSectionController()
-//        }
-        return BrowseFoodSectionController()
+        switch object {
+        case is CuisinePages:
+            return CuisineCarouselSectionController()
+        case is StoreCarouselItems:
+            return StoreCarouselSectionController()
+        case is BrowseFoodAllStoreItem:
+            return BrowseFoodAllStoresSectionController()
+        default:
+            return BrowseFoodSectionController()
+        }
     }
 
     func emptyView(for listAdapter: ListAdapter) -> UIView? {

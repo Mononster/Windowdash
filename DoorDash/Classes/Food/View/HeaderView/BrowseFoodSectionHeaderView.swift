@@ -13,7 +13,7 @@ final class BrowseFoodSectionHeaderViewCell: UICollectionViewCell {
 
     let titleLabel: UILabel
     private let separator: Separator
-    static let height: CGFloat = 60
+    static let height: CGFloat = 70
 
     override init(frame: CGRect) {
         titleLabel = UILabel()

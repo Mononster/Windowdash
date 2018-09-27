@@ -19,6 +19,7 @@ protocol ImageAsset {
     var rightArrowImage: UIImage { get }
     var grayRoundBackground: UIImage { get }
     var grayRectBackground: UIImage { get }
+    var rightArrowViewAll: UIImage { get }
 }
 
 struct DefaultImageAsset: ImageAsset {
@@ -60,5 +61,9 @@ struct DefaultImageAsset: ImageAsset {
 
     var grayRectBackground: UIImage {
         return #imageLiteral(resourceName: "gray_rect_background")
+    }
+
+    var rightArrowViewAll: UIImage {
+        return UIImage(named: "right_arrow_view_all_button")!
     }
 }

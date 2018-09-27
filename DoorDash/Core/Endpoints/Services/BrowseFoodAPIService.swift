@@ -11,23 +11,23 @@ import SwiftyJSON
 import Alamofire
 
 final public class BrowseFoodAPIServiceError: DefaultError {
-
+    public static let noMoreStores: DefaultError = DefaultError(code: 400)
 }
 
-final class FetchAllRestaurantRequestModel {
+final class FetchAllStoresRequestModel {
     let limit: Int
-    let nextOffset: Int
+    let offset: Int
     let latitude: Double
     let longitude: Double
     let sortOption: BrowseFoodSortOptionType?
 
     init(limit: Int = 50,
-         nextOffset: Int,
+         offset: Int,
          latitude: Double,
          longitude: Double,
          sortOption: BrowseFoodSortOptionType?) {
         self.limit = limit
-        self.nextOffset = nextOffset
+        self.offset = offset
         self.latitude = latitude
         self.longitude = longitude
         self.sortOption = sortOption
@@ -37,7 +37,7 @@ final class FetchAllRestaurantRequestModel {
         var result: [String: Any] = [:]
         result["extra"] = "stores.business_id"
         result["limit"] = String(limit)
-        result["offset"] = String(nextOffset)
+        result["offset"] = String(offset)
         if let sortOption = self.sortOption {
             result["sort_options"] = "true"
             result["order_type"] = sortOption.rawValue
@@ -45,6 +45,16 @@ final class FetchAllRestaurantRequestModel {
         result["lat"] = String(latitude)
         result["lng"] = String(longitude)
         return result
+    }
+}
+
+final class FetchAllStoresResponseModel {
+    let nextOffset: Int?
+    let stores: [Store]
+
+    init(nextOffset: Int?, stores: [Store]) {
+        self.nextOffset = nextOffset
+        self.stores = stores
     }
 }
 
@@ -60,7 +70,7 @@ final class BrowseFoodAPIService: DoorDashAPIService {
 
     enum BrowseFoodAPITarget: TargetType {
         case fetchFrontEndLayout(latitude: Double, longitude: Double)
-        case fetchAllRestaurants(request: FetchAllRestaurantRequestModel)
+        case fetchAllStores(request: FetchAllStoresRequestModel)
 
         var baseURL: URL {
             return ApplicationEnvironment.current.networkConfig.hostURL
@@ -68,7 +78,7 @@ final class BrowseFoodAPIService: DoorDashAPIService {
 
         var path: String {
             switch self {
-            case .fetchAllRestaurants:
+            case .fetchAllStores:
                 return "v2/store_search/"
             case .fetchFrontEndLayout:
                 return "v1/frontend_layouts/consumer_homepage/"
@@ -77,14 +87,14 @@ final class BrowseFoodAPIService: DoorDashAPIService {
 
         var method: Moya.Method {
             switch self {
-            case .fetchAllRestaurants, .fetchFrontEndLayout:
+            case .fetchAllStores, .fetchFrontEndLayout:
                 return .get
             }
         }
 
         var task: Task {
             switch self {
-            case .fetchAllRestaurants(let model):
+            case .fetchAllStores(let model):
                 let params = model.convertToQueryParams()
                 return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
             case .fetchFrontEndLayout(let latitude, let longitude):
@@ -98,20 +108,47 @@ final class BrowseFoodAPIService: DoorDashAPIService {
 
         var sampleData: Data {
             switch self {
-            case .fetchAllRestaurants, .fetchFrontEndLayout:
+            case .fetchAllStores, .fetchFrontEndLayout:
                 return Data()
             }
         }
 
-        var headers: [String : String]? {
+        var headers: [String: String]? {
             return nil
         }
     }
 }
 
 extension BrowseFoodAPIService {
-    func fetchAllRestaurants(model: FetchAllRestaurantRequestModel,
-                             completion: @escaping (Error?) -> ()) {
+    func fetchAllStores(request: FetchAllStoresRequestModel,
+                        completion: @escaping (FetchAllStoresResponseModel?, Error?) -> ()) {
+        browseFoodAPIProvider.request(.fetchAllStores(request: request)) { (result) in
+            switch result {
+            case .success(let response):
+                guard response.statusCode == 200,
+                    let dataJSON = try? JSON(data: response.data) else {
+                        let error = self.handleError(response: response)
+                        completion(nil, error)
+                        return
+                }
+                guard let storesArray = dataJSON["stores"].array, storesArray.count > 0 else {
+                    completion(nil, BrowseFoodAPIServiceError.unknown)
+                    return
+                }
+                let nextOffset = dataJSON["next_offset"].int
+                var stores: [Store] = []
+                for storeJSON in storesArray {
+                    if let store = try? JSONDecoder().decode(
+                        Store.self, from: storeJSON.rawData()) {
+                        stores.append(store)
+                    }
+                }
+                let model = FetchAllStoresResponseModel(nextOffset: nextOffset, stores: stores)
+                completion(model, nil)
+            case .failure(let error):
+                completion(nil, error)
+            }
+        }
     }
 
     func fetchPageLayout(userLat: Double,
@@ -126,8 +163,7 @@ extension BrowseFoodAPIService {
                     completion(nil, error)
                     return
                 }
-                guard let jsonArray = dataJSON.array, jsonArray.count > 0 else {
-                    print("No data? WTF?")
+                guard let jsonArray = dataJSON["stores"].array, jsonArray.count > 0 else {
                     completion(nil, DefaultError.unknown)
                     return
                 }
@@ -170,8 +206,9 @@ extension BrowseFoodAPIService {
                         continue
                     }
                 }
+                let subTitle = dataJSON["description"].string
                 storeSecitons.append(
-                    BrowseFoodSectionStore(title: title, type: type, stores: stores)
+                    BrowseFoodSectionStore(title: title, subTitle: subTitle, type: type, stores: stores)
                 )
             }
         }

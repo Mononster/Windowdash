@@ -64,7 +64,7 @@ final class CuisinePages: NSObject, ListDiffable {
 final class CuisineItemSectonController: ListSectionController {
 
     private var cuisineItem: CuisineItem?
-    static var heightWithoutImage: CGFloat = 2 + 10 + 20 + 10
+    static var heightWithoutImage: CGFloat = 2 + 10 + 20
 
     override init() {
         super.init()

@@ -18,7 +18,6 @@ final class StoreCarouselLargeDisplayCell: UICollectionViewCell {
     private let title: UILabel
     private let subTitle: UILabel
 
-    static let height: CGFloat = 2 + 180 + 10 + 20 + 5 + 20 + 5
     static let width: CGFloat = UIScreen.main.bounds.width - 2 * BrowseFoodViewModel.UIConfigure.homePageLeadingSpace
     static let titleFont: UIFont = ApplicationDependency.manager.theme.fontSchema.bold18
 
@@ -34,10 +33,15 @@ final class StoreCarouselLargeDisplayCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    static func getHeight(titleHeight: CGFloat) -> CGFloat {
+        let heightWithoutTitleName = 2 + 200 + 10 + 5 + 20 + 10
+        return CGFloat(heightWithoutTitleName) + titleHeight
+    }
+
     func setupCell(model: StoreCarouselModelAlias) {
         self.title.text = model.title
         self.subTitle.text = model.subTitle
-        self.cuisineImageView.layer.cornerRadius = 4
+        self.cuisineImageView.layer.cornerRadius = 3
         self.cuisineImageView.setImage(
             placeHolder: ApplicationDependency.manager.theme.imageAssets.grayRectBackground,
             regularURL: model.imageURL,
@@ -53,13 +57,16 @@ extension StoreCarouselLargeDisplayCell {
         setupLabels()
         setupConstraints()
         self.layoutIfNeeded()
-        self.cuisineImageView.layer.cornerRadius = 4
+        self.cuisineImageView.layer.cornerRadius = 3
     }
 
     private func setupImageView() {
         addSubview(cuisineImageView)
         cuisineImageView.contentMode = .scaleAspectFill
         self.cuisineImageView.layer.masksToBounds = true
+        let transition = SDWebImageTransition.fade
+        transition.duration = 0.3
+        cuisineImageView.sd_imageTransition = transition
     }
 
     private func setupLabels() {
@@ -69,7 +76,7 @@ extension StoreCarouselLargeDisplayCell {
         title.textAlignment = .left
         title.adjustsFontSizeToFitWidth = true
         title.minimumScaleFactor = 0.5
-        title.numberOfLines = 1
+        title.numberOfLines = 3
 
         addSubview(subTitle)
         subTitle.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
@@ -83,18 +90,20 @@ extension StoreCarouselLargeDisplayCell {
     private func setupConstraints() {
         cuisineImageView.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(2)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(180)
+            make.leading.trailing.equalToSuperview().inset(
+                BrowseFoodViewModel.UIConfigure.homePageLeadingSpace
+            )
+            make.height.equalTo(200)
         }
 
         title.snp.makeConstraints { (make) in
             make.top.equalTo(cuisineImageView.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalTo(cuisineImageView)
         }
 
         subTitle.snp.makeConstraints { (make) in
             make.top.equalTo(title.snp.bottom).offset(5)
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalTo(cuisineImageView)
         }
     }
 }

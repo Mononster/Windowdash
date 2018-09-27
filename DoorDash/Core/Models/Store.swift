@@ -11,6 +11,53 @@ import SwiftDate
 
 public struct Store {
 
+    public struct Menu: Codable {
+
+        public enum MenuCodingKeys: String, CodingKey {
+            case popularItems = "popular_items"
+        }
+
+        public let items: [PopularItem]?
+
+        public struct PopularItem: Codable {
+
+            public enum PopularItemKeys: String, CodingKey {
+                case imageURL = "img_url"
+            }
+
+            public let url: String?
+
+            public init(url: String?) {
+                self.url = url
+            }
+
+            public init(from decoder: Decoder) throws {
+                let values = try decoder.container(keyedBy: PopularItemKeys.self)
+                let urlString: String? = try values.decodeIfPresent(String.self, forKey: .imageURL)
+                self.init(url: urlString)
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.container(keyedBy: PopularItemKeys.self)
+                try container.encode(url, forKey: .imageURL)
+            }
+        }
+
+        public init(items: [PopularItem]?) {
+            self.items = items
+        }
+
+        public init(from decoder: Decoder) throws {
+            let values = try decoder.container(keyedBy: MenuCodingKeys.self)
+            let items: [PopularItem]? = try values.decodeIfPresent([PopularItem].self, forKey: .popularItems)
+            self.init(items: items)
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: MenuCodingKeys.self)
+            try container.encode(items, forKey: .popularItems)
+        }
+    }
     public enum StoreCodingKeys: String, CodingKey {
         case id
         case numRatings = "num_ratings"
@@ -21,6 +68,7 @@ public struct Store {
         case nextCloseTime = "next_close_time"
         case nextOpenTime = "next_open_time"
         case headerImageURL = "header_img_url"
+        case menus = "menus"
     }
 
     public let id: Int64
@@ -32,6 +80,7 @@ public struct Store {
     public let nextCloseTime: Date
     public let nextOpenTime: Date
     public let headerImageURL: String?
+    public let menus: [Menu]?
 
     public init(id: Int64,
                 numRatings: Int64,
@@ -41,7 +90,8 @@ public struct Store {
                 name: String,
                 nextCloseTime: Date,
                 nextOpenTime: Date,
-                headerImageURL: String?) {
+                headerImageURL: String?,
+                menus: [Menu]?) {
         self.id = id
         self.numRatings = numRatings
         self.averageRating = averageRating
@@ -51,6 +101,7 @@ public struct Store {
         self.nextCloseTime = nextCloseTime
         self.nextOpenTime = nextOpenTime
         self.headerImageURL = headerImageURL
+        self.menus = menus
     }
 }
 
@@ -68,6 +119,7 @@ extension Store: Codable {
         let nextOpenTimeRaw: String = try values.decodeIfPresent(String.self, forKey: .nextOpenTime) ?? ""
         let nextOpenTime = nextOpenTimeRaw.toISODate()?.date ?? Date()
         let headerImageURL: String? = try values.decodeIfPresent(String.self, forKey: .headerImageURL)
+        let menus: [Store.Menu]? = try values.decodeIfPresent([Menu].self, forKey: .menus)
         self.init(id: id,
                   numRatings: numRatings,
                   averageRating: averageRating,
@@ -76,7 +128,8 @@ extension Store: Codable {
                   name: name,
                   nextCloseTime: nextCloseTime,
                   nextOpenTime: nextOpenTime,
-                  headerImageURL: headerImageURL)
+                  headerImageURL: headerImageURL,
+                  menus: menus)
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -89,6 +142,6 @@ extension Store: Codable {
         try container.encode(name, forKey: .name)
         try container.encode(nextCloseTime, forKey: .nextCloseTime)
         try container.encode(nextOpenTime, forKey: .nextOpenTime)
-        try container.encodeIfPresent(headerImageURL, forKey: .headerImageURL)
+        try container.encodeIfPresent(menus, forKey: .menus)
     }
 }

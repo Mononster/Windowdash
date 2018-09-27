@@ -57,6 +57,12 @@
 		8754BC092152B442008D9E1C /* NVActivityIndicatorAnimationCircleStrokeSpin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BC032152B442008D9E1C /* NVActivityIndicatorAnimationCircleStrokeSpin.swift */; };
 		8754BC0A2152B442008D9E1C /* NVActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BC042152B442008D9E1C /* NVActivityIndicatorView.swift */; };
 		8754BC0C2152B743008D9E1C /* LaunchLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754BC0B2152B743008D9E1C /* LaunchLoadingViewController.swift */; };
+		875C7876215C14AD00D99E34 /* StoreCarouselFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 875C7875215C14AD00D99E34 /* StoreCarouselFooterCell.swift */; };
+		875C7878215C158A00D99E34 /* StoreCarouselViewAllCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 875C7877215C158A00D99E34 /* StoreCarouselViewAllCell.swift */; };
+		875C787C215C34C100D99E34 /* BrowseFoodAllStoresSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 875C787B215C34C100D99E34 /* BrowseFoodAllStoresSectionController.swift */; };
+		875C787E215C375100D99E34 /* BrowseFoodStoreDispalyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 875C787D215C375100D99E34 /* BrowseFoodStoreDispalyCell.swift */; };
+		875C7880215C3E3C00D99E34 /* BrowseFoodStoreMenuImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 875C787F215C3E3C00D99E34 /* BrowseFoodStoreMenuImageCell.swift */; };
+		875C7882215C3F4700D99E34 /* BrowseFoodStoreMenuDisplaySectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 875C7881215C3F4700D99E34 /* BrowseFoodStoreMenuDisplaySectionController.swift */; };
 		876319EF2152D7F900475074 /* GMPrediction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876319EE2152D7F900475074 /* GMPrediction.swift */; };
 		876319F12152D95800475074 /* GooglePlaceAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876319F02152D95800475074 /* GooglePlaceAPIService.swift */; };
 		876319F52152EB8500475074 /* SelectAddressCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876319F42152EB8500475074 /* SelectAddressCoordinator.swift */; };
@@ -120,7 +126,6 @@
 		8782951F2148D49500AB56B2 /* ContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878295192148D49400AB56B2 /* ContentCoordinator.swift */; };
 		878295202148D49500AB56B2 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8782951A2148D49400AB56B2 /* MainTabBarController.swift */; };
 		878295212148D49500AB56B2 /* DoorDashNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8782951B2148D49400AB56B2 /* DoorDashNavigationController.swift */; };
-		878295222148D49500AB56B2 /* BaseUserTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8782951D2148D49400AB56B2 /* BaseUserTableViewController.swift */; };
 		878295232148D49500AB56B2 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8782951E2148D49400AB56B2 /* BaseViewController.swift */; };
 		878295262148D4C600AB56B2 /* ApplicationDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878295242148D4C500AB56B2 /* ApplicationDependency.swift */; };
 		878295272148D4C600AB56B2 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878295252148D4C500AB56B2 /* AppCoordinator.swift */; };
@@ -235,6 +240,12 @@
 		8754BC032152B442008D9E1C /* NVActivityIndicatorAnimationCircleStrokeSpin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NVActivityIndicatorAnimationCircleStrokeSpin.swift; sourceTree = "<group>"; };
 		8754BC042152B442008D9E1C /* NVActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NVActivityIndicatorView.swift; sourceTree = "<group>"; };
 		8754BC0B2152B743008D9E1C /* LaunchLoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchLoadingViewController.swift; sourceTree = "<group>"; };
+		875C7875215C14AD00D99E34 /* StoreCarouselFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCarouselFooterCell.swift; sourceTree = "<group>"; };
+		875C7877215C158A00D99E34 /* StoreCarouselViewAllCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCarouselViewAllCell.swift; sourceTree = "<group>"; };
+		875C787B215C34C100D99E34 /* BrowseFoodAllStoresSectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseFoodAllStoresSectionController.swift; sourceTree = "<group>"; };
+		875C787D215C375100D99E34 /* BrowseFoodStoreDispalyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseFoodStoreDispalyCell.swift; sourceTree = "<group>"; };
+		875C787F215C3E3C00D99E34 /* BrowseFoodStoreMenuImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseFoodStoreMenuImageCell.swift; sourceTree = "<group>"; };
+		875C7881215C3F4700D99E34 /* BrowseFoodStoreMenuDisplaySectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseFoodStoreMenuDisplaySectionController.swift; sourceTree = "<group>"; };
 		876319EE2152D7F900475074 /* GMPrediction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMPrediction.swift; sourceTree = "<group>"; };
 		876319F02152D95800475074 /* GooglePlaceAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooglePlaceAPIService.swift; sourceTree = "<group>"; };
 		876319F42152EB8500475074 /* SelectAddressCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAddressCoordinator.swift; sourceTree = "<group>"; };
@@ -298,7 +309,6 @@
 		878295192148D49400AB56B2 /* ContentCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentCoordinator.swift; sourceTree = "<group>"; };
 		8782951A2148D49400AB56B2 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		8782951B2148D49400AB56B2 /* DoorDashNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoorDashNavigationController.swift; sourceTree = "<group>"; };
-		8782951D2148D49400AB56B2 /* BaseUserTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseUserTableViewController.swift; sourceTree = "<group>"; };
 		8782951E2148D49400AB56B2 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		878295242148D4C500AB56B2 /* ApplicationDependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationDependency.swift; sourceTree = "<group>"; };
 		878295252148D4C500AB56B2 /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
@@ -661,6 +671,24 @@
 			path = Presenter;
 			sourceTree = "<group>";
 		};
+		875C7879215C34A500D99E34 /* AllStores */ = {
+			isa = PBXGroup;
+			children = (
+				875C787D215C375100D99E34 /* BrowseFoodStoreDispalyCell.swift */,
+				875C787F215C3E3C00D99E34 /* BrowseFoodStoreMenuImageCell.swift */,
+			);
+			path = AllStores;
+			sourceTree = "<group>";
+		};
+		875C787A215C34AE00D99E34 /* AllStores */ = {
+			isa = PBXGroup;
+			children = (
+				875C787B215C34C100D99E34 /* BrowseFoodAllStoresSectionController.swift */,
+				875C7881215C3F4700D99E34 /* BrowseFoodStoreMenuDisplaySectionController.swift */,
+			);
+			path = AllStores;
+			sourceTree = "<group>";
+		};
 		876319F22152EB6100475074 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -870,7 +898,6 @@
 		8782951C2148D49400AB56B2 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				8782951D2148D49400AB56B2 /* BaseUserTableViewController.swift */,
 				8782951E2148D49400AB56B2 /* BaseViewController.swift */,
 			);
 			path = Base;
@@ -1033,6 +1060,7 @@
 		8782955A214C72D400AB56B2 /* Presenters */ = {
 			isa = PBXGroup;
 			children = (
+				875C787A215C34AE00D99E34 /* AllStores */,
 				87A26F43215B52BF001C3561 /* StoreCarousel */,
 				87A26F42215B52B5001C3561 /* CuisineCarousel */,
 				8782955B214C72E700AB56B2 /* BrowseFoodSectionController.swift */,
@@ -1044,6 +1072,7 @@
 		8782955D214C734600AB56B2 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				875C7879215C34A500D99E34 /* AllStores */,
 				87A26F3D215B4CF8001C3561 /* StoreCarousel */,
 				87A26F3C215B4CE8001C3561 /* CuisineCarousel */,
 				8782955E214C735300AB56B2 /* SubletStatusTitleCell.swift */,
@@ -1214,6 +1243,8 @@
 			children = (
 				87A26F3E215B4D17001C3561 /* StoreCarouselLargeDisplayCell.swift */,
 				87A26F40215B4FC0001C3561 /* StoreCarouselTwoStoresCell.swift */,
+				875C7877215C158A00D99E34 /* StoreCarouselViewAllCell.swift */,
+				875C7875215C14AD00D99E34 /* StoreCarouselFooterCell.swift */,
 			);
 			path = StoreCarousel;
 			sourceTree = "<group>";
@@ -1296,6 +1327,7 @@
 				87C7A4EE214863490040A7CD /* Resources */,
 				DE7BC865A24D69F914FC3A5B /* [CP] Embed Pods Frameworks */,
 				09979412C650C7A9551DCDF2 /* [CP] Copy Pods Resources */,
+				87A26F46215BF94A001C3561 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1379,6 +1411,23 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DoorDash/Pods-DoorDash-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		87A26F46215BF94A001C3561 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "KEYWORDS=\"TODO|FIXME|\\?\\?\\?:|\\!\\!\\!:\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" -or -name \"*.m\" \\) -print0 | \\\nxargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | \\\nperl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"\n";
+		};
 		DD90FB58FB62C2278977802C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1454,6 +1503,7 @@
 				87A26F2B215AFDC5001C3561 /* BrowseFoodSectionHeaderView.swift in Sources */,
 				876E7FE1215495D300D235B5 /* RefineLocationViewController.swift in Sources */,
 				876319FD2152ECA600475074 /* SelectAddressViewModel.swift in Sources */,
+				875C7880215C3E3C00D99E34 /* BrowseFoodStoreMenuImageCell.swift in Sources */,
 				8754BB7621517E2B008D9E1C /* SignupButtonSectionController.swift in Sources */,
 				876E7FF021575FF600D235B5 /* UserAccountCoordinator.swift in Sources */,
 				87A26F08215A0A50001C3561 /* SegmentNavigateView.swift in Sources */,
@@ -1484,6 +1534,7 @@
 				8782953B2149DBF200AB56B2 /* Router.swift in Sources */,
 				87829559214C6C4300AB56B2 /* Separator.swift in Sources */,
 				876319F52152EB8500475074 /* SelectAddressCoordinator.swift in Sources */,
+				875C7876215C14AD00D99E34 /* StoreCarouselFooterCell.swift in Sources */,
 				876E80202158A1A200D235B5 /* PSStore+CoreDataProperties.swift in Sources */,
 				87631A122154037800475074 /* ConfirmAddressViewController.swift in Sources */,
 				87631A0C2152F40B00475074 /* GMAutoCompleteManager.swift in Sources */,
@@ -1506,6 +1557,7 @@
 				876E7FE92154980900D235B5 /* RefineAddressMapCell.swift in Sources */,
 				87631A092152F17400475074 /* AddressTextLabelSectionController.swift in Sources */,
 				8754BB7421517C88008D9E1C /* SignupButtonCell.swift in Sources */,
+				875C7878215C158A00D99E34 /* StoreCarouselViewAllCell.swift in Sources */,
 				8782952E2148D50000AB56B2 /* AppColor.swift in Sources */,
 				8776F5F32148886200ABAA71 /* DataStore.swift in Sources */,
 				8754BBA32151BC65008D9E1C /* PSDeliveryAddress+CoreDataProperties.swift in Sources */,
@@ -1544,6 +1596,7 @@
 				87A26F41215B4FC0001C3561 /* StoreCarouselTwoStoresCell.swift in Sources */,
 				8731A57521488655005B7CFF /* Constants.swift in Sources */,
 				8776F5F02148886200ABAA71 /* PersistentModel.swift in Sources */,
+				875C787E215C375100D99E34 /* BrowseFoodStoreDispalyCell.swift in Sources */,
 				8754BC092152B442008D9E1C /* NVActivityIndicatorAnimationCircleStrokeSpin.swift in Sources */,
 				87829583214F074B00AB56B2 /* SignupHomeViewModel.swift in Sources */,
 				87C7A4F4214863490040A7CD /* AppDelegate.swift in Sources */,
@@ -1559,7 +1612,6 @@
 				8782951221488AF400AB56B2 /* User.swift in Sources */,
 				8754BC062152B442008D9E1C /* NVActivityIndicatorPresenter.swift in Sources */,
 				8782954F214B130900AB56B2 /* BrowseFoodViewController.swift in Sources */,
-				878295222148D49500AB56B2 /* BaseUserTableViewController.swift in Sources */,
 				87631A072152F15B00475074 /* AddressTextLabelCell.swift in Sources */,
 				876E80122158449D00D235B5 /* SkeletonLoadingView.swift in Sources */,
 				87A26F29215AFD7D001C3561 /* CuisineCarouselCollectionViewCell.swift in Sources */,
@@ -1591,6 +1643,7 @@
 				876E7FF8215769F800D235B5 /* LargeLoadingIndicator.swift in Sources */,
 				8776F5FE214888B200ABAA71 /* Bundle+.swift in Sources */,
 				876E7FF6215761E600D235B5 /* UserAccountViewModel.swift in Sources */,
+				875C7882215C3F4700D99E34 /* BrowseFoodStoreMenuDisplaySectionController.swift in Sources */,
 				87A26F33215B1DE4001C3561 /* CuisineCarouselPageCollectionViewCell.swift in Sources */,
 				876E7FF42157619E00D235B5 /* AccountDetailsSectionController.swift in Sources */,
 				878295302148D50000AB56B2 /* AppFont.swift in Sources */,
@@ -1602,6 +1655,7 @@
 				876E800B2158370600D235B5 /* UserAccountPageVersionCell.swift in Sources */,
 				87631A0E2152F47D00475074 /* GlobalFunctions.swift in Sources */,
 				878295212148D49500AB56B2 /* DoorDashNavigationController.swift in Sources */,
+				875C787C215C34C100D99E34 /* BrowseFoodAllStoresSectionController.swift in Sources */,
 				87829556214C628300AB56B2 /* NavigationAddressHeaderView.swift in Sources */,
 				8754BC0C2152B743008D9E1C /* LaunchLoadingViewController.swift in Sources */,
 				8731A56C214885FE005B7CFF /* Authentication.swift in Sources */,

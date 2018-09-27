@@ -14,7 +14,7 @@ final class BrowseFoodHeaderWithSubTitleViewCell: UICollectionViewCell {
     let titleLabel: UILabel
     let descriptionLabel: UILabel
     private let separator: Separator
-    static let height: CGFloat = 80
+    static let height: CGFloat = 90
 
     override init(frame: CGRect) {
         titleLabel = UILabel()
@@ -40,15 +40,15 @@ extension BrowseFoodHeaderWithSubTitleViewCell {
     private func setupLabel() {
         addSubview(titleLabel)
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.heavy16
+        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.extraBold18
         titleLabel.textAlignment = .left
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.5
         titleLabel.numberOfLines = 1
 
         addSubview(descriptionLabel)
-        descriptionLabel.textColor = ApplicationDependency.manager.theme.colors.doorDashGray
-        descriptionLabel.font = ApplicationDependency.manager.theme.fontSchema.regular12
+        descriptionLabel.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
+        descriptionLabel.font = ApplicationDependency.manager.theme.fontSchema.medium14
         descriptionLabel.textAlignment = .left
         descriptionLabel.adjustsFontSizeToFitWidth = true
         descriptionLabel.minimumScaleFactor = 0.5
@@ -63,22 +63,22 @@ extension BrowseFoodHeaderWithSubTitleViewCell {
 
     private func setupConstraints() {
         titleLabel.snp.makeConstraints { (make) in
-            make.bottom.equalTo(self.snp.centerY).offset(-4)
+            make.bottom.equalTo(self.snp.centerY)
             make.leading.trailing.equalToSuperview().inset(
                 BrowseFoodViewModel.UIConfigure.homePageLeadingSpace
             )
         }
 
         descriptionLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(titleLabel.snp.bottom).offset(2)
+            make.top.equalTo(titleLabel.snp.bottom)
             make.leading.trailing.equalTo(titleLabel)
         }
 
         separator.snp.makeConstraints { (make) in
-            make.height.equalTo(2.5)
+            make.height.equalTo(4)
             make.leading.equalTo(titleLabel)
-            make.width.equalTo(25)
-            make.top.equalTo(descriptionLabel.snp.bottom)
+            make.width.equalTo(35)
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(2)
         }
     }
 }
