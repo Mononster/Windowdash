@@ -64,7 +64,7 @@ final class Router: NSObject {
         }
     }
 
-    func setNavigationBarStyle(style: DoorDashNavigationController.NavigationBarStyle,
+    func setNavigationBarStyle(style: NavigationBarStyle,
                                preferLargeTitles: Bool = true) {
         self.navigationController.navigationBarStyle = style
     }

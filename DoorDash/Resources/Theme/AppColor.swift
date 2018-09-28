@@ -24,6 +24,7 @@ protocol ColorSchema {
     var signInFacebookButtonColor: UIColor { get }
     var linkTextColor: UIColor { get }
     var loadingBackgroundColor: UIColor { get }
+    var doordashDarkCyan: UIColor { get }
 }
 
 struct DefaultColors: ColorSchema {
@@ -85,5 +86,9 @@ struct DefaultColors: ColorSchema {
 
     var loadingBackgroundColor: UIColor {
         return UIColor.hex("E1E1E1")
+    }
+
+    var doordashDarkCyan: UIColor {
+        return UIColor.hex("3b8593")
     }
 }

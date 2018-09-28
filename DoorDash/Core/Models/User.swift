@@ -60,6 +60,7 @@ public struct User {
         case firstName = "first_name"
         case email
         case defaultAddress = "default_address"
+        case isGuest = "is_guest"
     }
 
     public let id: Int64
@@ -68,19 +69,22 @@ public struct User {
     public let firstName: String
     public let email: String
     public let defaultAddress: DeliveryAddress?
+    public let isGuest: Bool
 
     public init(id: Int64,
                 phoneNumber: String?,
                 lastName: String,
                 firstName: String,
                 email: String,
-                defaultAddress: DeliveryAddress?) {
+                defaultAddress: DeliveryAddress?,
+                isGuest: Bool) {
         self.id = id
         self.phoneNumber = phoneNumber
         self.lastName = lastName
         self.firstName = firstName
         self.email = email
         self.defaultAddress = defaultAddress
+        self.isGuest = isGuest
     }
 }
 
@@ -93,12 +97,14 @@ extension User: Codable {
         let lastName: String = try values.decode(String.self, forKey: .lastName)
         let email: String = try values.decode(String.self, forKey: .email)
         let defaultAddress: DeliveryAddress? = try values.decodeIfPresent(DeliveryAddress.self, forKey: .defaultAddress)
+        let isGuest: Bool = try values.decode(Bool.self, forKey: .isGuest)
         self.init(id: id,
                   phoneNumber: phoneNumber,
                   lastName: lastName,
                   firstName: firstName,
                   email: email,
-                  defaultAddress: defaultAddress)
+                  defaultAddress: defaultAddress,
+                  isGuest: isGuest)
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -109,6 +115,7 @@ extension User: Codable {
         try container.encode(lastName, forKey: .lastName)
         try container.encode(email, forKey: .email)
         try container.encodeIfPresent(defaultAddress, forKey: .defaultAddress)
+        try container.encode(isGuest, forKey: .isGuest)
     }
 }
 
@@ -119,14 +126,15 @@ extension User {
             self.firstName == otherUser.firstName &&
             self.lastName == otherUser.lastName &&
             self.email == otherUser.email &&
-            self.defaultAddress == otherUser.defaultAddress
+            self.defaultAddress == otherUser.defaultAddress &&
+            self.isGuest == otherUser.isGuest
     }
 }
 
 extension User: Equatable {}
 
 public func == (lhs: User, rhs: User) -> Bool {
-    return lhs.id == rhs.id
+    return lhs.exactlyEqual(otherUser: rhs)
 }
 
 /*

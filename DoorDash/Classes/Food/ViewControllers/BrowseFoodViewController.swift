@@ -8,19 +8,28 @@
 
 import UIKit
 import SnapKit
+import SkeletonView
 import IGListKit
 
-class BrowseFoodViewController: BaseViewController {
+protocol BrowseFoodViewControllerDelegate: class {
+    func showCuisineAllStores(cuisine: BrowseFoodCuisineCategory)
+}
+
+final class BrowseFoodViewController: BaseViewController {
 
     lazy var adapter: ListAdapter = {
         return ListAdapter(updater: ListAdapterUpdater(), viewController: self)
     }()
 
-    let navigationBar: DynamicHeightNavigationBar
-    let navigationBarHeight: CGFloat
-    let navigattionBarMinHeight: CGFloat
-    let collectionView: UICollectionView
-    var previousOffset: CGFloat = 0
+    private let skeletonLoadingView: SkeletonLoadingView
+    private let navigationBar: DynamicHeightNavigationBar
+    private let navigationBarHeight: CGFloat
+    private let navigattionBarMinHeight: CGFloat
+    private let collectionView: UICollectionView
+    private var previousOffset: CGFloat = 0
+    private let viewModel: BrowseFoodViewModel
+
+    weak var delegate: BrowseFoodViewControllerDelegate?
 
     override init() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -30,6 +39,8 @@ class BrowseFoodViewController: BaseViewController {
             frame: CGRect(x: 0, y: 0,
                           width: UIScreen.main.bounds.width, height: navigationBarHeight)
         )
+        viewModel = BrowseFoodViewModel(service: BrowseFoodAPIService())
+        skeletonLoadingView = SkeletonLoadingView()
         super.init()
         adapter.dataSource = self
         adapter.scrollViewDelegate = self
@@ -38,14 +49,35 @@ class BrowseFoodViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        bindModels()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        skeletonLoadingView.show()
+    }
+
+    private func bindModels() {
+        self.navigationBar.addressView.addressContentLabel.text = viewModel.generateUserAddressContent()
+        viewModel.fetchMainViewLayout { errorMsg in
+            if let errorMsg = errorMsg {
+                log.error(errorMsg)
+                return
+            }
+
+            DispatchQueue.main.async {
+                self.skeletonLoadingView.hide()
+                self.adapter.performUpdates(animated: false)
+            }
+        }
     }
 }
 
 extension BrowseFoodViewController {
 
     private func setupUI() {
-        setupNavigationBar()
         setupCollectionView()
+        setupSkeletonLoadingView()
+        setupNavigationBar()
         setupConstraints()
     }
 
@@ -54,6 +86,16 @@ extension BrowseFoodViewController {
         adapter.collectionView = collectionView
         collectionView.backgroundColor = theme.colors.white
         collectionView.alwaysBounceVertical = true
+        let inset = UIEdgeInsets(
+            top: navigationBarHeight - UIDevice.current.statusBarHeight, left: 0,
+            bottom: 0, right: 0
+        )
+        collectionView.contentInset = inset
+        collectionView.scrollIndicatorInsets = inset
+    }
+
+    private func setupSkeletonLoadingView() {
+        self.view.addSubview(skeletonLoadingView)
     }
 
     private func setupNavigationBar() {
@@ -62,6 +104,10 @@ extension BrowseFoodViewController {
 
     private func setupConstraints() {
         collectionView.snp.makeConstraints { (make) in
+            make.top.leading.trailing.bottom.equalToSuperview()
+        }
+
+        skeletonLoadingView.snp.makeConstraints { (make) in
             make.top.equalTo(navigationBar.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
         }
@@ -70,7 +116,8 @@ extension BrowseFoodViewController {
 
 extension BrowseFoodViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offsetY = scrollView.contentOffset.y
+        let topInset = navigationBarHeight
+        let offsetY = scrollView.contentOffset.y + topInset
         navigationBar.adjustBySrollView(offsetY: offsetY,
                                         previousOffset: previousOffset,
                                         navigattionBarMinHeight: navigattionBarMinHeight)
@@ -81,18 +128,49 @@ extension BrowseFoodViewController: UIScrollViewDelegate {
 extension BrowseFoodViewController: ListAdapterDataSource {
 
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
-        var result: [ListDiffable] = []
-        for i in 0..<20 {
-            result.append(SubletTitleCellModel(title: "Nice\(i)"))
-        }
-        return result
+        return viewModel.sectionData
     }
 
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
-        return BrowseFoodSectionController()
+        switch object {
+        case is CuisinePages:
+            let controller = CuisineCarouselSectionController()
+            controller.didSelectCuisine = { cuisine in
+                self.delegate?.showCuisineAllStores(cuisine: cuisine)
+            }
+            return controller
+        case is StoreCarouselItems:
+            return StoreCarouselSectionController()
+        case is BrowseFoodAllStoreItem:
+            guard let item = object as? BrowseFoodAllStoreItem else {
+                fatalError()
+            }
+            return BrowseFoodAllStoresSectionController(addInset: item.shouldAddTopInset)
+        case is BrowseFoodAllStoreHeaderModel:
+            return BrowseFoodAllStoreHeaderSectionController()
+        default:
+            fatalError()
+        }
     }
 
     func emptyView(for listAdapter: ListAdapter) -> UIView? {
         return nil
+    }
+}
+
+extension BrowseFoodViewController {
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView,
+                                   withVelocity velocity: CGPoint,
+                                   targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let distance = scrollView.contentSize.height - (targetContentOffset.pointee.y + scrollView.bounds.height)
+        if distance < 100 {
+            self.viewModel.loadMoreStores { shouldRefresh in
+                DispatchQueue.main.async {
+                    if shouldRefresh {
+                        self.adapter.performUpdates(animated: true, completion: nil)
+                    }
+                }
+            }
+        }
     }
 }

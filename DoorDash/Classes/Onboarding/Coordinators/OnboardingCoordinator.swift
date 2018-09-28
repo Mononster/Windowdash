@@ -45,9 +45,8 @@ extension OnboardingCoordinator: OnboardingViewControllerDelegate {
     func showLoginSignupViewController(mode: SignupMode) {
         let signupHomeViewController = SignupHomeViewController(mode: mode)
         signupHomeViewController.userCanProceedToNextStep = { _ in
-            self.router.dismissModule(animated: true, completion: {
-                self.delegate?.didFinishOnboarding(in: self)
-            })
+            self.router.dismissModule(animated: true)
+            self.delegate?.didFinishOnboarding(in: self)
         }
         self.router.push(signupHomeViewController)
     }

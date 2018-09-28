@@ -164,6 +164,7 @@ extension SignupHomeViewController {
             let password = inputSectionController.inputResults[.password] else {
             fatalError()
         }
+        self.view.endEditing(true)
         self.view.isUserInteractionEnabled = false
         loadingIndicator.show()
         viewModel.login(email: email, password: password) { (errorMsg) in

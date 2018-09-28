@@ -58,7 +58,8 @@ final class ConfirmAddressViewModel {
                 lastName: currentUser.lastName,
                 firstName: currentUser.firstName,
                 email: currentUser.email,
-                defaultAddress: address
+                defaultAddress: address,
+                isGuest: currentUser.isGuest
             )
             ApplicationEnvironment.updateCurrentUser(updatedUser: updatedUser)
             try? updatedUser.savePersistently(to: self.dataStore)

@@ -29,7 +29,7 @@ struct Theme {
 
 extension Theme {
 
-    func navigationBarAppearance(type: DoorDashNavigationController.NavigationBarStyle) {
+    func navigationBarAppearance(type: NavigationBarStyle) {
         let appearance = UINavigationBar.appearance()
         appearance.barTintColor = colors.doorDashRed
         var titleColor: UIColor

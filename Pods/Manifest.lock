@@ -33,7 +33,9 @@ PODS:
   - SDWebImage (4.4.2):
     - SDWebImage/Core (= 4.4.2)
   - SDWebImage/Core (4.4.2)
+  - SkeletonView (1.4)
   - SnapKit (4.0.0)
+  - SwiftDate (5.0.9)
   - SwiftyJSON (4.1.0)
   - XCGLogger (6.1.0):
     - XCGLogger/Core (= 6.1.0)
@@ -51,7 +53,9 @@ DEPENDENCIES:
   - Moya (~> 11.0)
   - PhoneNumberKit (~> 2.1)
   - SDWebImage (~> 4.0)
+  - SkeletonView
   - SnapKit
+  - SwiftDate
   - SwiftyJSON
   - XCGLogger
 
@@ -69,7 +73,9 @@ SPEC REPOS:
     - PhoneNumberKit
     - Result
     - SDWebImage
+    - SkeletonView
     - SnapKit
+    - SwiftDate
     - SwiftyJSON
     - XCGLogger
 
@@ -86,10 +92,12 @@ SPEC CHECKSUMS:
   PhoneNumberKit: 62003f40ff75315fd3738286558bc365365ac222
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+  SkeletonView: 50f7a9b04e3a62bd0ae964859c19317fabaea367
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
+  SwiftDate: 52b718d32ec006861a2be2756cbfa482d438e781
   SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
   XCGLogger: 7f7f43f15dfe3a305fa1342b7dc29af656289abd
 
-PODFILE CHECKSUM: 6c46f312ddd0f60ceeb1fa140d7e12d6495e9fb9
+PODFILE CHECKSUM: d488cd521381487f6fe6a3eb7e2649a23e34e7d2
 
 COCOAPODS: 1.5.3

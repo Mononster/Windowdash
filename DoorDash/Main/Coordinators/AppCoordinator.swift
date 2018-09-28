@@ -38,6 +38,7 @@ class AppCoordinator: Coordinator {
             router: Router(),
             appTracker: appTracker
         )
+        coordinator.delegate = self
         coordinator.start()
         addCoordinator(coordinator)
         self.router.present(coordinator)
@@ -127,5 +128,12 @@ extension AppCoordinator: OnboardingCoordinatorDelegate {
             return
         }
         self.showContents()
+    }
+}
+
+extension AppCoordinator: ContentCoordinatorDelegate {
+    func restartApp(in coordinator: ContentCoordinator) {
+        self.removeCoordinator(coordinator)
+        self.show()
     }
 }

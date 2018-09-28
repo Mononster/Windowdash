@@ -10,12 +10,6 @@ import UIKit
 
 class DoorDashNavigationController: UINavigationController {
 
-    enum NavigationBarStyle {
-        case mainTheme
-        case white
-        case transparent
-    }
-
     var navigationBarStyle: NavigationBarStyle = .mainTheme {
         didSet {
             let theme = ApplicationDependency.manager.theme

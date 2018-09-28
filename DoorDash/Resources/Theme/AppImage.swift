@@ -16,6 +16,12 @@ protocol ImageAsset {
     var onboardingImages: [UIImage] { get }
     var tabbarImages: [UIImage] { get }
     var mapPinImage: UIImage { get }
+    var rightArrowImage: UIImage { get }
+    var grayRoundBackground: UIImage { get }
+    var grayRectBackground: UIImage { get }
+    var rightArrowViewAll: UIImage { get }
+    var starHighlighted: UIImage { get }
+    var starDarkGray: UIImage { get }
 }
 
 struct DefaultImageAsset: ImageAsset {
@@ -45,5 +51,29 @@ struct DefaultImageAsset: ImageAsset {
 
     var mapPinImage: UIImage {
         return #imageLiteral(resourceName: "map_pin")
+    }
+
+    var rightArrowImage: UIImage {
+        return #imageLiteral(resourceName: "right_arrow")
+    }
+
+    var grayRoundBackground: UIImage {
+        return #imageLiteral(resourceName: "gray_round_background")
+    }
+
+    var grayRectBackground: UIImage {
+        return #imageLiteral(resourceName: "gray_rect_background")
+    }
+
+    var rightArrowViewAll: UIImage {
+        return UIImage(named: "right_arrow_view_all_button")!
+    }
+
+    var starHighlighted: UIImage {
+        return UIImage(named: "star_highlighted")!
+    }
+
+    var starDarkGray: UIImage {
+        return UIImage(named: "star_unhighlighted")!
     }
 }

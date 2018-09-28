@@ -21,4 +21,6 @@ target 'DoorDash' do
   pod 'GoogleMaps'
   pod 'GooglePlaces'
   pod 'PhoneNumberKit', '~> 2.1'
+  pod 'SkeletonView'
+  pod 'SwiftDate'
 end

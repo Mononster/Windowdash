@@ -20,11 +20,12 @@ final class DynamicHeightNavigationBar: UIView {
 
     override init(frame: CGRect) {
         addressView = NavigationAddressHeaderView()
-        originTitleLabelFrame = CGRect(x: 24, y: UIDevice.current.verticalPadding + 18,
+        let leading = BrowseFoodViewModel.UIConfigure.homePageLeadingSpace
+        originTitleLabelFrame = CGRect(x: leading, y: UIDevice.current.verticalPadding + 18,
                                        width: frame.width / 3, height: (frame.height - 24) / 2)
         titleLabel = UILabel(frame: originTitleLabelFrame)
         let filterLabelWidth = frame.width / 3.5
-        let filterLabelFrame = CGRect(x: frame.width - 24 - filterLabelWidth,
+        let filterLabelFrame = CGRect(x: frame.width - leading - filterLabelWidth,
                                       y: UIDevice.current.verticalPadding + 16,
                                       width:filterLabelWidth, height: (frame.height - 24) / 2)
         filterLabel = UILabel(frame: filterLabelFrame)
@@ -40,11 +41,9 @@ final class DynamicHeightNavigationBar: UIView {
 
     private func updateBy(offset: CGFloat) {
         let navBarHeight = ApplicationDependency.manager.theme.navigationBarHeight
-        self.frame = CGRect(
-            x: originFrame.minX,
-            y: originFrame.minY - offset,
-            width: originFrame.width,
-            height: originFrame.height
+        self.transform = CGAffineTransform(
+            translationX: 0,
+            y: -offset
         )
 
         let filterOffsetMax: CGFloat = 8
@@ -54,11 +53,11 @@ final class DynamicHeightNavigationBar: UIView {
         )
 
         self.addressView.layer.opacity = Float(1 - offset / (navBarHeight - 10))
-        print(offset / navBarHeight / filterOffsetMax)
+        //print(offset / navBarHeight / filterOffsetMax)
         let scale = 0.35 - offset / originFrame.height
         self.titleLabel.transform = CGAffineTransform(translationX: 0, y: offset)
             .scaledBy(x: max(0.65, scale + 0.65), y: max(0.65, scale + 0.65))
-        print("scale == \(scale)")
+        //print("scale == \(scale)")
     }
 
     func adjustBySrollView(offsetY: CGFloat,
@@ -84,6 +83,7 @@ final class DynamicHeightNavigationBar: UIView {
 extension DynamicHeightNavigationBar {
 
     private func setupUI() {
+        self.backgroundColor = ApplicationDependency.manager.theme.colors.white
         addSubview(separator)
         separator.alpha = 0.6
         setupTitleLabel()
@@ -119,14 +119,18 @@ extension DynamicHeightNavigationBar {
 
     private func setupConstraints() {
         addressView.snp.makeConstraints { (make) in
-            make.leading.equalToSuperview().offset(24)
+            make.leading.equalToSuperview().offset(
+                BrowseFoodViewModel.UIConfigure.homePageLeadingSpace
+            )
             make.bottom.equalToSuperview().offset(-12)
             make.width.equalToSuperview().multipliedBy(0.33)
             make.height.equalToSuperview().offset(-12).multipliedBy(0.5)
         }
 
         separator.snp.makeConstraints { (make) in
-            make.leading.equalToSuperview().offset(24)
+            make.leading.equalToSuperview().offset(
+                BrowseFoodViewModel.UIConfigure.homePageLeadingSpace
+            )
             make.height.equalTo(0.6)
             make.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
