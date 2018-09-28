@@ -54,6 +54,8 @@ protocol FontSchema {
     var heavy12: UIFont { get }
     var heavy16: UIFont { get }
     var heavy18: UIFont { get }
+    var extraBold10: UIFont { get }
+    var extraBold12: UIFont { get }
     var extraBold16: UIFont { get }
     var extraBold18: UIFont { get }
 
@@ -198,6 +200,14 @@ struct DefaultFontSchema: FontSchema {
 
     var heavy18: UIFont {
         return font(style: .heavy, size: 18)
+    }
+
+    var extraBold10: UIFont {
+        return font(style: .extraBold, size: 10)
+    }
+
+    var extraBold12: UIFont {
+        return font(style: .extraBold, size: 12)
     }
 
     var extraBold16: UIFont {

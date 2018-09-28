@@ -69,7 +69,7 @@ final class StoreCarouselSingleStoreView: UIView {
 
         addSubview(subTitle)
         subTitle.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
-        subTitle.font = ApplicationDependency.manager.theme.fontSchema.medium12
+        subTitle.font = ApplicationDependency.manager.theme.fontSchema.medium14
         subTitle.textAlignment = .left
         subTitle.adjustsFontSizeToFitWidth = true
         subTitle.minimumScaleFactor = 0.5
@@ -114,7 +114,7 @@ final class StoreCarouselTwoStoresCell: UICollectionViewCell {
     }
     
     static func getHeight(titleHeight: CGFloat) -> CGFloat {
-        let heightWithoutTitleName = 2 + 85 + 5 + 5 + 10 + 5
+        let heightWithoutTitleName = 2 + 85 + 5 + 5 + 15 + 5
         return CGFloat(heightWithoutTitleName) + titleHeight
     }
 

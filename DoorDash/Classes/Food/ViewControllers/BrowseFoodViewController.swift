@@ -11,7 +11,11 @@ import SnapKit
 import SkeletonView
 import IGListKit
 
-class BrowseFoodViewController: BaseViewController {
+protocol BrowseFoodViewControllerDelegate: class {
+    func showCuisineAllStores(cuisine: BrowseFoodCuisineCategory)
+}
+
+final class BrowseFoodViewController: BaseViewController {
 
     lazy var adapter: ListAdapter = {
         return ListAdapter(updater: ListAdapterUpdater(), viewController: self)
@@ -24,6 +28,8 @@ class BrowseFoodViewController: BaseViewController {
     private let collectionView: UICollectionView
     private var previousOffset: CGFloat = 0
     private let viewModel: BrowseFoodViewModel
+
+    weak var delegate: BrowseFoodViewControllerDelegate?
 
     override init() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -128,17 +134,43 @@ extension BrowseFoodViewController: ListAdapterDataSource {
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
         switch object {
         case is CuisinePages:
-            return CuisineCarouselSectionController()
+            let controller = CuisineCarouselSectionController()
+            controller.didSelectCuisine = { cuisine in
+                self.delegate?.showCuisineAllStores(cuisine: cuisine)
+            }
+            return controller
         case is StoreCarouselItems:
             return StoreCarouselSectionController()
         case is BrowseFoodAllStoreItem:
-            return BrowseFoodAllStoresSectionController()
+            guard let item = object as? BrowseFoodAllStoreItem else {
+                fatalError()
+            }
+            return BrowseFoodAllStoresSectionController(addInset: item.shouldAddTopInset)
+        case is BrowseFoodAllStoreHeaderModel:
+            return BrowseFoodAllStoreHeaderSectionController()
         default:
-            return BrowseFoodSectionController()
+            fatalError()
         }
     }
 
     func emptyView(for listAdapter: ListAdapter) -> UIView? {
         return nil
+    }
+}
+
+extension BrowseFoodViewController {
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView,
+                                   withVelocity velocity: CGPoint,
+                                   targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let distance = scrollView.contentSize.height - (targetContentOffset.pointee.y + scrollView.bounds.height)
+        if distance < 100 {
+            self.viewModel.loadMoreStores { shouldRefresh in
+                DispatchQueue.main.async {
+                    if shouldRefresh {
+                        self.adapter.performUpdates(animated: true, completion: nil)
+                    }
+                }
+            }
+        }
     }
 }

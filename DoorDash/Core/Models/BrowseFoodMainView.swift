@@ -55,11 +55,11 @@ struct BrowseFoodSectionStore {
     let title: String
     let subTitle: String?
     let type: BrowseFoodMainViewSectionType
-    let stores: [Store]
+    let stores: [StoreViewModel]
     init(title: String,
          subTitle: String?,
          type: BrowseFoodMainViewSectionType,
-         stores: [Store]) {
+         stores: [StoreViewModel]) {
         self.title = title
         self.subTitle = subTitle
         self.type = type

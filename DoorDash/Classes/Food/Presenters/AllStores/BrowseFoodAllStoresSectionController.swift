@@ -9,73 +9,10 @@
 import IGListKit
 import UIKit
 
-final class BrowseFoodAllStoreMenuItem: NSObject, ListDiffable {
-
-    let imageURL: URL
-
-    init(imageURL: URL) {
-        self.imageURL = imageURL
-    }
-
-    func diffIdentifier() -> NSObjectProtocol {
-        return self
-    }
-
-    func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
-        return true
-    }
-}
-
-final class BrowseFoodAllStoreItem: NSObject, ListDiffable {
-    let menuItems: [BrowseFoodAllStoreMenuItem]
-    let storeName: String
-    let priceAndCuisine: String
-    let rating: String
-    let deliveryTime: String
-    let deliveryCost: String
-
-    init(menuItems: [BrowseFoodAllStoreMenuItem],
-         storeName: String,
-         priceAndCuisine: String,
-         rating: String,
-         deliveryTime: String,
-         deliveryCost: String) {
-        self.menuItems = menuItems
-        self.storeName = storeName
-        self.priceAndCuisine = priceAndCuisine
-        self.rating = rating
-        self.deliveryTime = deliveryTime
-        self.deliveryCost = deliveryCost
-    }
-
-    func diffIdentifier() -> NSObjectProtocol {
-        return self
-    }
-
-    func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
-        return true
-    }
-}
-
-final class BrowseFoodAllStoreItems: NSObject, ListDiffable {
-    var items: [BrowseFoodAllStoreItem]
-
-    init(items: [BrowseFoodAllStoreItem]) {
-        self.items = items
-    }
-
-    func diffIdentifier() -> NSObjectProtocol {
-        return self
-    }
-
-    func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
-        return true
-    }
-}
-
 final class BrowseFoodAllStoresSectionController: ListSectionController, ListAdapterDataSource {
 
     private var item: BrowseFoodAllStoreItem?
+    weak var edgeSwipeBackGesture: UIGestureRecognizer?
 
     private lazy var adapter: ListAdapter = {
         let adapter = ListAdapter(updater: ListAdapterUpdater(),
@@ -83,6 +20,13 @@ final class BrowseFoodAllStoresSectionController: ListSectionController, ListAda
         adapter.dataSource = self
         return adapter
     }()
+
+    init(addInset: Bool) {
+        super.init()
+        if addInset {
+            self.inset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+        }
+    }
 
     override func numberOfItems() -> Int {
         return 1
@@ -96,6 +40,9 @@ final class BrowseFoodAllStoresSectionController: ListSectionController, ListAda
         } else {
             height = BrowseFoodStoreDispalyCell.heightWithMenu
         }
+        if item?.closeTimeDisplay != nil {
+            height += BrowseFoodStoreDispalyCell.closeTimeHeight
+        }
         return CGSize(width: width, height: height)
     }
 
@@ -103,10 +50,26 @@ final class BrowseFoodAllStoresSectionController: ListSectionController, ListAda
         guard let cell = collectionContext?.dequeueReusableCell(
             of: BrowseFoodStoreDispalyCell.self,
             for: self,
-            at: index) as? BrowseFoodStoreDispalyCell else {
+            at: index) as? BrowseFoodStoreDispalyCell, let item = item else {
                 fatalError()
         }
         adapter.collectionView = cell.collectionView
+        if let gesture = edgeSwipeBackGesture {
+            cell.collectionView.panGestureRecognizer.require(toFail: gesture)
+        }
+        cell.updateUI(menuExists: item.menuItems.count != 0,
+                      closeTimeExists: item.closeTimeDisplay != nil,
+                      isClosed: item.isClosed)
+        cell.setupCell(
+            storeName: item.storeName,
+            priceAndCuisine: item.priceAndCuisine,
+            rating: item.rating,
+            shouldHighlightRating: item.shouldHighlightRating,
+            ratingDescription: item.ratingDescription,
+            deliveryTime: item.deliveryTime,
+            deliveryCost: item.deliveryCost,
+            closeTime: item.closeTimeDisplay
+        )
         return cell
     }
 

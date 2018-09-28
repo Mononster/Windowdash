@@ -12,6 +12,7 @@ import UIKit
 final class CuisineCarouselPageSectionController: ListSectionController, ListAdapterDataSource {
 
     private var page: CuisinePage?
+    var didSelectCuisine: ((BrowseFoodCuisineCategory) -> ())?
 
     private lazy var adapter: ListAdapter = {
         let adapter = ListAdapter(updater: ListAdapterUpdater(),
@@ -61,7 +62,9 @@ extension CuisineCarouselPageSectionController {
     }
 
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
-        return CuisineItemSectonController()
+        let controller = CuisineItemSectonController()
+        controller.didSelectCuisine = didSelectCuisine
+        return controller
     }
 
     func emptyView(for listAdapter: ListAdapter) -> UIView? {

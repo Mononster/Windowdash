@@ -58,17 +58,31 @@ public struct Store {
             try container.encode(items, forKey: .popularItems)
         }
     }
+
+    public enum MoneyFieldCodingKeys: String, CodingKey {
+        case currency
+        case unitAmount = "unit_amount"
+        case displayString = "display_string"
+    }
+
+    public enum DeliveryStatus: String, CodingKey {
+        case minuteRate = "asap_minutes_range"
+    }
+
     public enum StoreCodingKeys: String, CodingKey {
         case id
         case numRatings = "num_ratings"
         case averageRating = "average_rating"
         case storeDescription = "description"
         case priceRange = "price_range"
+        case deliveryMoney = "delivery_fee_monetary_fields"
         case name
         case nextCloseTime = "next_close_time"
         case nextOpenTime = "next_open_time"
         case headerImageURL = "header_img_url"
         case menus = "menus"
+        case deliveryStatus = "status"
+        case isNewlyAdded = "is_newly_added"
     }
 
     public let id: Int64
@@ -76,10 +90,14 @@ public struct Store {
     public let averageRating: Double
     public let storeDescription: String
     public let priceRange: Int64
+    public let deliveryFee: Money
+    public let deliveryFeeDisplay: String
+    public let deliveryMinutes: Int64
     public let name: String
     public let nextCloseTime: Date
     public let nextOpenTime: Date
     public let headerImageURL: String?
+    public let isNewlyAdded: Bool
     public let menus: [Menu]?
 
     public init(id: Int64,
@@ -87,20 +105,28 @@ public struct Store {
                 averageRating: Double,
                 storeDescription: String,
                 priceRange: Int64,
+                deliveryFee: Money,
+                deliveryFeeDisplay: String,
+                deliveryMinutes: Int64,
                 name: String,
                 nextCloseTime: Date,
                 nextOpenTime: Date,
                 headerImageURL: String?,
+                isNewlyAdded: Bool,
                 menus: [Menu]?) {
         self.id = id
         self.numRatings = numRatings
         self.averageRating = averageRating
         self.storeDescription = storeDescription
         self.priceRange = priceRange
+        self.deliveryFee = deliveryFee
+        self.deliveryFeeDisplay = deliveryFeeDisplay
+        self.deliveryMinutes = deliveryMinutes
         self.name = name
         self.nextCloseTime = nextCloseTime
         self.nextOpenTime = nextOpenTime
         self.headerImageURL = headerImageURL
+        self.isNewlyAdded = isNewlyAdded
         self.menus = menus
     }
 }
@@ -120,15 +146,27 @@ extension Store: Codable {
         let nextOpenTime = nextOpenTimeRaw.toISODate()?.date ?? Date()
         let headerImageURL: String? = try values.decodeIfPresent(String.self, forKey: .headerImageURL)
         let menus: [Store.Menu]? = try values.decodeIfPresent([Menu].self, forKey: .menus)
+        let moneyContainer = try values.nestedContainer(keyedBy: MoneyFieldCodingKeys.self, forKey: .deliveryMoney)
+        let currency = try moneyContainer.decode(String.self, forKey: .currency)
+        let moneyCents: Int64 = try moneyContainer.decodeIfPresent(Int64.self, forKey: .unitAmount) ?? 0
+        let moneyDisplayString: String = try moneyContainer.decodeIfPresent(String.self, forKey: .displayString) ?? "$0.00"
+        let deliveryStatusContainer = try values.nestedContainer(keyedBy: DeliveryStatus.self, forKey: .deliveryStatus)
+        let deliveryRange: [Int64] = try deliveryStatusContainer.decodeIfPresent([Int64].self, forKey: .minuteRate) ?? []
+        let isNewlyAdded: Bool = try values.decodeIfPresent(Bool.self, forKey: .isNewlyAdded) ?? false
         self.init(id: id,
                   numRatings: numRatings,
                   averageRating: averageRating,
                   storeDescription: storeDescription,
                   priceRange: priceRange,
+                  deliveryFee: Money(cents: moneyCents,
+                                     currency: Currency(rawValue: currency) ?? .USD),
+                  deliveryFeeDisplay: moneyDisplayString,
+                  deliveryMinutes: deliveryRange[safe: 0] ?? 0,
                   name: name,
                   nextCloseTime: nextCloseTime,
                   nextOpenTime: nextOpenTime,
                   headerImageURL: headerImageURL,
+                  isNewlyAdded: isNewlyAdded,
                   menus: menus)
     }
 
@@ -143,5 +181,6 @@ extension Store: Codable {
         try container.encode(nextCloseTime, forKey: .nextCloseTime)
         try container.encode(nextOpenTime, forKey: .nextOpenTime)
         try container.encodeIfPresent(menus, forKey: .menus)
+        //TODO: Add all fields to encoder if needed.
     }
 }

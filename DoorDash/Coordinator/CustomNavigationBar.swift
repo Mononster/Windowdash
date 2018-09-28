@@ -1,9 +1,6 @@
 import UIKit
 
-fileprivate let WRDefaultTitleSize:CGFloat = 18
-fileprivate let WRDefaultTitleColor = UIColor.black
-fileprivate let WRDefaultBackgroundColor = UIColor.white
-fileprivate let kScreenWidth = UIScreen.main.bounds.size.width
+private let kScreenWidth = UIScreen.main.bounds.size.width
 
 enum NavigationBarStyle {
     case transparent
@@ -11,7 +8,7 @@ enum NavigationBarStyle {
     case mainTheme
 }
 
-class CustomNavigationBar: UIView {
+final class CustomNavigationBar: UIView {
 
     var onClickLeftButton: (() -> ())?
     var onClickRightButton: (() -> ())?
@@ -62,8 +59,8 @@ class CustomNavigationBar: UIView {
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        //label.textColor = WRDefaultTitleColor
-        label.font = UIFont.systemFont(ofSize: WRDefaultTitleSize)
+        label.textColor = ApplicationDependency.manager.theme.colors.black
+        label.font = ApplicationDependency.manager.theme.fontSchema.medium18
         label.textAlignment = .center
         label.isHidden = true
         return label
@@ -87,7 +84,7 @@ class CustomNavigationBar: UIView {
     
     private lazy var bottomLine: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: (218.0/255.0), green: (218.0/255.0), blue: (218.0/255.0), alpha: 1.0)
+        view.backgroundColor = UIColor(red: (218.0 / 255.0), green: (218.0 / 255.0), blue: (218.0 / 255.0), alpha: 1.0)
         return view
     }()
     
@@ -126,7 +123,7 @@ class CustomNavigationBar: UIView {
         addSubview(bottomLine)
         updateFrame()
         backgroundColor = UIColor.clear
-        backgroundView.backgroundColor = WRDefaultBackgroundColor
+        backgroundView.backgroundColor = ApplicationDependency.manager.theme.colors.white
     }
 
     func updateFrame() {
@@ -142,7 +139,7 @@ class CustomNavigationBar: UIView {
         leftButton.frame = CGRect(x: margin, y: top, width: buttonWidth, height: buttonHeight)
         rightButton.frame = CGRect(x: kScreenWidth - buttonWidth - margin, y: top, width: buttonWidth, height: buttonHeight)
         titleLabel.frame = CGRect(x: (kScreenWidth - titleLabelWidth) / 2.0, y: top, width: titleLabelWidth, height: titleLabelHeight)
-        bottomLine.frame = CGRect(x: 0, y: bounds.height-0.5, width: kScreenWidth, height: 0.5)
+        bottomLine.frame = CGRect(x: 0, y: bounds.height - 0.5, width: kScreenWidth, height: 0.5)
     }
 }
 
@@ -236,8 +233,6 @@ extension CustomNavigationBar {
     }
 }
 
-
-// MARK: - 导航栏左右按钮事件
 extension CustomNavigationBar {
     @objc func clickBack() {
         if let onClickBack = onClickLeftButton {
@@ -276,14 +271,12 @@ extension UIViewController {
     }
 
     class func currentViewController(from fromVC: UIViewController) -> UIViewController {
-        if fromVC.isKind(of: UINavigationController.self) {
-            let navigationController = fromVC as! UINavigationController
+        if let navigationController = fromVC as? UINavigationController {
             return currentViewController(from: navigationController.viewControllers.last!)
-        } else if fromVC.isKind(of: UITabBarController.self) {
-            let tabBarController = fromVC as! UITabBarController
+        } else if let tabBarController = fromVC as? UITabBarController {
             return currentViewController(from: tabBarController.selectedViewController!)
-        } else if fromVC.presentedViewController != nil {
-            return currentViewController(from: fromVC.presentingViewController!)
+        } else if let presentingViewController = fromVC.presentedViewController {
+            return currentViewController(from: presentingViewController)
         } else {
             return fromVC
         }

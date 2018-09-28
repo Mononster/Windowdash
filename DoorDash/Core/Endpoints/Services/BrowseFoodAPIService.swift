@@ -20,17 +20,20 @@ final class FetchAllStoresRequestModel {
     let latitude: Double
     let longitude: Double
     let sortOption: BrowseFoodSortOptionType?
+    let query: String?
 
     init(limit: Int = 50,
          offset: Int,
          latitude: Double,
          longitude: Double,
-         sortOption: BrowseFoodSortOptionType?) {
+         sortOption: BrowseFoodSortOptionType?,
+         query: String? = nil) {
         self.limit = limit
         self.offset = offset
         self.latitude = latitude
         self.longitude = longitude
         self.sortOption = sortOption
+        self.query = query
     }
 
     func convertToQueryParams() -> [String: Any] {
@@ -41,6 +44,10 @@ final class FetchAllStoresRequestModel {
         if let sortOption = self.sortOption {
             result["sort_options"] = "true"
             result["order_type"] = sortOption.rawValue
+        }
+        if let query = self.query {
+            result["query"] = query
+            result["is_browse"] = "true"
         }
         result["lat"] = String(latitude)
         result["lng"] = String(longitude)
@@ -159,11 +166,12 @@ extension BrowseFoodAPIService {
             case .success(let response):
                 guard response.statusCode == 200,
                     let dataJSON = try? JSON(data: response.data) else {
-                    let error = self.handleError(response: response)
-                    completion(nil, error)
-                    return
+                        let error = self.handleError(response: response)
+                        completion(nil, error)
+                        return
                 }
-                guard let jsonArray = dataJSON["stores"].array, jsonArray.count > 0 else {
+                guard let jsonArray = dataJSON.array, jsonArray.count > 0 else {
+                    print("No data? WTF?")
                     completion(nil, DefaultError.unknown)
                     return
                 }
@@ -208,7 +216,14 @@ extension BrowseFoodAPIService {
                 }
                 let subTitle = dataJSON["description"].string
                 storeSecitons.append(
-                    BrowseFoodSectionStore(title: title, subTitle: subTitle, type: type, stores: stores)
+                    BrowseFoodSectionStore(
+                        title: title,
+                        subTitle: subTitle,
+                        type: type,
+                        stores: stores.map { store in
+                            StoreViewModel(store: store)
+                        }
+                    )
                 )
             }
         }

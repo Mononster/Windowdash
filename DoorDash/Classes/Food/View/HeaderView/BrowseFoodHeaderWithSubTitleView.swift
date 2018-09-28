@@ -70,7 +70,7 @@ extension BrowseFoodHeaderWithSubTitleViewCell {
         }
 
         descriptionLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(titleLabel.snp.bottom)
+            make.top.equalTo(titleLabel.snp.bottom).offset(4)
             make.leading.trailing.equalTo(titleLabel)
         }
 

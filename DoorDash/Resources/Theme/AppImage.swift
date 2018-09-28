@@ -20,6 +20,8 @@ protocol ImageAsset {
     var grayRoundBackground: UIImage { get }
     var grayRectBackground: UIImage { get }
     var rightArrowViewAll: UIImage { get }
+    var starHighlighted: UIImage { get }
+    var starDarkGray: UIImage { get }
 }
 
 struct DefaultImageAsset: ImageAsset {
@@ -65,5 +67,13 @@ struct DefaultImageAsset: ImageAsset {
 
     var rightArrowViewAll: UIImage {
         return UIImage(named: "right_arrow_view_all_button")!
+    }
+
+    var starHighlighted: UIImage {
+        return UIImage(named: "star_highlighted")!
+    }
+
+    var starDarkGray: UIImage {
+        return UIImage(named: "star_unhighlighted")!
     }
 }

@@ -12,7 +12,7 @@ final class StoreCarouselFooterCell: UICollectionViewCell {
 
     let viewAllButton: IconedButton
     private let separator: Separator
-    static let height: CGFloat = 20 + 36 + 20 + 16
+    static let height: CGFloat = 20 + 30 + 20 + 16
 
     override init(frame: CGRect) {
         separator = Separator.create()
@@ -45,13 +45,13 @@ extension StoreCarouselFooterCell {
 
     private func setupViewAllButton() {
         addSubview(viewAllButton)
-        viewAllButton.layer.cornerRadius = 18
+        viewAllButton.layer.cornerRadius = 15
         viewAllButton.backgroundColor = ApplicationDependency.manager.theme.colors.doorDashRed
         viewAllButton.setTitle("SEE ALL", for: .normal)
         viewAllButton.setTitleColor(ApplicationDependency.manager.theme.colors.white, for: .normal)
         viewAllButton.contentHorizontalAlignment = .left
         viewAllButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
-        viewAllButton.titleLabel?.font = ApplicationDependency.manager.theme.fontSchema.bold16
+        viewAllButton.titleLabel?.font = ApplicationDependency.manager.theme.fontSchema.bold14
     }
 
     private func setupConstraints() {
@@ -61,7 +61,7 @@ extension StoreCarouselFooterCell {
             )
             make.top.equalToSuperview().offset(20)
             make.width.equalTo(120)
-            make.height.equalTo(36)
+            make.height.equalTo(30)
         }
 
         separator.snp.makeConstraints { (make) in

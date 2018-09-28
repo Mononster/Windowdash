@@ -23,6 +23,7 @@ class MainTabBarController: UITabBarController {
         self.tabBar.backgroundColor = .white
         self.tabBar.isTranslucent = false
         self.tabBar.tintColor = ApplicationDependency.manager.theme.colors.doorDashRed
+        self.hidesBottomBarWhenPushed = false
         setup()
     }
 

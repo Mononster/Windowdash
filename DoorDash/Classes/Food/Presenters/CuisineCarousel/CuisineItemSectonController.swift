@@ -13,10 +13,12 @@ final class CuisineItem: NSObject, ListDiffable {
 
     let imageURL: URL
     let title: String
+    let cuisine: BrowseFoodCuisineCategory
 
-    init(imageURL: URL, title: String) {
+    init(imageURL: URL, title: String, cuisine: BrowseFoodCuisineCategory) {
         self.imageURL = imageURL
         self.title = title
+        self.cuisine = cuisine
     }
 
     func diffIdentifier() -> NSObjectProtocol {
@@ -65,6 +67,7 @@ final class CuisineItemSectonController: ListSectionController {
 
     private var cuisineItem: CuisineItem?
     static var heightWithoutImage: CGFloat = 2 + 10 + 20
+    var didSelectCuisine: ((BrowseFoodCuisineCategory) -> ())?
 
     override init() {
         super.init()
@@ -88,6 +91,13 @@ final class CuisineItemSectonController: ListSectionController {
 
     override func didUpdate(to object: Any) {
         cuisineItem = object as? CuisineItem
+    }
+
+    override func didSelectItem(at index: Int) {
+        guard let cuisine = self.cuisineItem?.cuisine else {
+            return
+        }
+        self.didSelectCuisine?(cuisine)
     }
 }
 

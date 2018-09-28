@@ -80,7 +80,7 @@ extension StoreCarouselLargeDisplayCell {
 
         addSubview(subTitle)
         subTitle.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
-        subTitle.font = ApplicationDependency.manager.theme.fontSchema.medium12
+        subTitle.font = ApplicationDependency.manager.theme.fontSchema.medium14
         subTitle.textAlignment = .left
         subTitle.adjustsFontSizeToFitWidth = true
         subTitle.minimumScaleFactor = 0.5

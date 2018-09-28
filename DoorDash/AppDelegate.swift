@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftDate
 @UIApplicationMain
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         //ApplicationEnvironment.logout()
+        SwiftDate.defaultRegion = Region.local
         if let storedEnvironment
             = ApplicationEnvironment.restore(from: UserDefaults.standard) {
             ApplicationEnvironment.replaceCurrentEnvironment(storedEnvironment)

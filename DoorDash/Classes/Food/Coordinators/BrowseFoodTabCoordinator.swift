@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BrowseFoodTabCoordinator: Coordinator {
+final class BrowseFoodTabCoordinator: Coordinator {
 
     let router: Router
     var coordinators: [Coordinator] = []
@@ -17,6 +17,7 @@ class BrowseFoodTabCoordinator: Coordinator {
     init(rootViewController: BrowseFoodViewController, router: Router) {
         self.router = router
         self.rootViewController = rootViewController
+        self.rootViewController.delegate = self
     }
 
     func start() {
@@ -26,5 +27,20 @@ class BrowseFoodTabCoordinator: Coordinator {
 
     func toPresentable() -> UIViewController {
         return self.router.navigationController
+    }
+}
+
+extension BrowseFoodTabCoordinator: BrowseFoodViewControllerDelegate {
+
+    func showCuisineAllStores(cuisine: BrowseFoodCuisineCategory) {
+        let coordinator = CuisineAllStoresCoordinator(
+            rootViewController: CuisineAllStoresViewController(cuisine: cuisine),
+            router: self.router
+        )
+        coordinator.start()
+        addCoordinator(coordinator)
+        self.router.push(coordinator, animated: true) {
+            self.removeCoordinator(coordinator)
+        }
     }
 }

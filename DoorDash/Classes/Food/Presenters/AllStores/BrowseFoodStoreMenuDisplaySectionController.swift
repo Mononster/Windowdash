@@ -19,7 +19,8 @@ final class BrowseFoodStoreMenuDisplaySectionController: ListSectionController {
     }
 
     override func sizeForItem(at index: Int) -> CGSize {
-        return CGSize(width: collectionContext?.containerSize.width ?? 0,
+        let width: CGFloat = (collectionContext?.containerSize.width ?? 0) - 2 * BrowseFoodViewModel.UIConfigure.homePageLeadingSpace
+        return CGSize(width: width,
                       height: collectionContext?.containerSize.height ?? 0)
     }
 
