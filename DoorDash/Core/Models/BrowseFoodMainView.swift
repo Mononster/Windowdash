@@ -52,14 +52,17 @@ struct BrowseFoodCuisineCategory: Codable {
 }
 
 struct BrowseFoodSectionStore {
+    let id: String
     let title: String
     let subTitle: String?
     let type: BrowseFoodMainViewSectionType
     let stores: [StoreViewModel]
-    init(title: String,
+    init(id: String,
+         title: String,
          subTitle: String?,
          type: BrowseFoodMainViewSectionType,
          stores: [StoreViewModel]) {
+        self.id = id
         self.title = title
         self.subTitle = subTitle
         self.type = type

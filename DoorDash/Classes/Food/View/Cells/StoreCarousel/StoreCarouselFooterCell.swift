@@ -14,6 +14,8 @@ final class StoreCarouselFooterCell: UICollectionViewCell {
     private let separator: Separator
     static let height: CGFloat = 20 + 30 + 20 + 16
 
+    var seeAllButtonTapped: (() -> ())?
+
     override init(frame: CGRect) {
         separator = Separator.create()
         viewAllButton = IconedButton.button(
@@ -26,6 +28,11 @@ final class StoreCarouselFooterCell: UICollectionViewCell {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    @objc
+    func userTappedViewAllButton() {
+        seeAllButtonTapped?()
     }
 }
 
@@ -52,6 +59,7 @@ extension StoreCarouselFooterCell {
         viewAllButton.contentHorizontalAlignment = .left
         viewAllButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         viewAllButton.titleLabel?.font = ApplicationDependency.manager.theme.fontSchema.bold14
+        viewAllButton.addTarget(self, action: #selector(userTappedViewAllButton), for: .touchUpInside)
     }
 
     private func setupConstraints() {

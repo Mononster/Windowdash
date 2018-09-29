@@ -21,19 +21,22 @@ final class FetchAllStoresRequestModel {
     let longitude: Double
     let sortOption: BrowseFoodSortOptionType?
     let query: String?
+    let curatedCateogryID: String?
 
     init(limit: Int = 50,
          offset: Int,
          latitude: Double,
          longitude: Double,
          sortOption: BrowseFoodSortOptionType?,
-         query: String? = nil) {
+         query: String? = nil,
+         curatedCateogryID: String? = nil) {
         self.limit = limit
         self.offset = offset
         self.latitude = latitude
         self.longitude = longitude
         self.sortOption = sortOption
         self.query = query
+        self.curatedCateogryID = curatedCateogryID
     }
 
     func convertToQueryParams() -> [String: Any] {
@@ -48,6 +51,10 @@ final class FetchAllStoresRequestModel {
         if let query = self.query {
             result["query"] = query
             result["is_browse"] = "true"
+        }
+        if let curatedCateogryID = self.curatedCateogryID {
+            result["curated_category"] = curatedCateogryID
+            result["extra"] = "stores.is_consumer_subscription_eligible"
         }
         result["lat"] = String(latitude)
         result["lng"] = String(longitude)
@@ -203,7 +210,8 @@ extension BrowseFoodAPIService {
                 continue
             }
             if let storeJSONs = dataJSON["stores"].array,
-                let title = dataJSON["title"].string {
+                let title = dataJSON["title"].string,
+                let id = dataJSON["id"].int {
                 var stores: [Store] = []
                 for storeJSON in storeJSONs {
                     do {
@@ -217,6 +225,7 @@ extension BrowseFoodAPIService {
                 let subTitle = dataJSON["description"].string
                 storeSecitons.append(
                     BrowseFoodSectionStore(
+                        id: String(id),
                         title: title,
                         subTitle: subTitle,
                         type: type,

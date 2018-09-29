@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		5611ABEA1FC00C63B46301AC /* Pods_DoorDash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADFE9795CC67CF842B0A8B0E /* Pods_DoorDash.framework */; };
+		6A0BBBCC215EA1FE00A73596 /* CuratedCategoryAllStoresViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BBBCB215EA1FE00A73596 /* CuratedCategoryAllStoresViewController.swift */; };
+		6A0BBBCE215EA21800A73596 /* CuratedCategoryAllStoresViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BBBCD215EA21800A73596 /* CuratedCategoryAllStoresViewModel.swift */; };
+		6A0BBBD0215EA65600A73596 /* BaseSearchAllStoresViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BBBCF215EA65600A73596 /* BaseSearchAllStoresViewController.swift */; };
+		6A0BBBD2215EAAF800A73596 /* CuratedCategoryAllStoresCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BBBD1215EAAF800A73596 /* CuratedCategoryAllStoresCoordinator.swift */; };
+		6A0BBBD4215ED50C00A73596 /* CenterDualCardsCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BBBD3215ED50C00A73596 /* CenterDualCardsCollectionViewFlowLayout.swift */; };
+		6A0BBBD6215EF3ED00A73596 /* CuratedCategoryHeaderSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BBBD5215EF3ED00A73596 /* CuratedCategoryHeaderSectionController.swift */; };
+		6A0BBBD8215EF44B00A73596 /* CuratedCategoryHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BBBD7215EF44B00A73596 /* CuratedCategoryHeaderCell.swift */; };
+		6A0BBBDA215F073C00A73596 /* SearchStoreDetailAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BBBD9215F073C00A73596 /* SearchStoreDetailAPIService.swift */; };
 		6AFCC6DA21543912004D6600 /* TTNorms-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6AFCC6D521543911004D6600 /* TTNorms-Black.otf */; };
 		6AFCC6DB21543912004D6600 /* TTNorms-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6AFCC6D621543912004D6600 /* TTNorms-Medium.otf */; };
 		6AFCC6DC21543912004D6600 /* TTNorms-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6AFCC6D721543912004D6600 /* TTNorms-Light.otf */; };
@@ -198,6 +206,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6A0BBBCB215EA1FE00A73596 /* CuratedCategoryAllStoresViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuratedCategoryAllStoresViewController.swift; sourceTree = "<group>"; };
+		6A0BBBCD215EA21800A73596 /* CuratedCategoryAllStoresViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuratedCategoryAllStoresViewModel.swift; sourceTree = "<group>"; };
+		6A0BBBCF215EA65600A73596 /* BaseSearchAllStoresViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSearchAllStoresViewController.swift; sourceTree = "<group>"; };
+		6A0BBBD1215EAAF800A73596 /* CuratedCategoryAllStoresCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuratedCategoryAllStoresCoordinator.swift; sourceTree = "<group>"; };
+		6A0BBBD3215ED50C00A73596 /* CenterDualCardsCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterDualCardsCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		6A0BBBD5215EF3ED00A73596 /* CuratedCategoryHeaderSectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuratedCategoryHeaderSectionController.swift; sourceTree = "<group>"; };
+		6A0BBBD7215EF44B00A73596 /* CuratedCategoryHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuratedCategoryHeaderCell.swift; sourceTree = "<group>"; };
+		6A0BBBD9215F073C00A73596 /* SearchStoreDetailAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStoreDetailAPIService.swift; sourceTree = "<group>"; };
 		6AFCC6D521543911004D6600 /* TTNorms-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TTNorms-Black.otf"; sourceTree = "<group>"; };
 		6AFCC6D621543912004D6600 /* TTNorms-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TTNorms-Medium.otf"; sourceTree = "<group>"; };
 		6AFCC6D721543912004D6600 /* TTNorms-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TTNorms-Light.otf"; sourceTree = "<group>"; };
@@ -847,6 +863,7 @@
 				876E800F2158401100D235B5 /* BrowseFoodViewModel.swift */,
 				875C7883215C6C0700D99E34 /* BrowseFoodPresenterModels.swift */,
 				875C7893215D8C7000D99E34 /* CuisineAllStoresViewModel.swift */,
+				6A0BBBCD215EA21800A73596 /* CuratedCategoryAllStoresViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1034,6 +1051,7 @@
 			children = (
 				8782954B214B12D000AB56B2 /* BrowseFoodTabCoordinator.swift */,
 				875C7897215D965E00D99E34 /* CuisineAllStoresCoordinator.swift */,
+				6A0BBBD1215EAAF800A73596 /* CuratedCategoryAllStoresCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -1041,8 +1059,10 @@
 		8782954D214B12DF00AB56B2 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				6A0BBBCF215EA65600A73596 /* BaseSearchAllStoresViewController.swift */,
 				8782954E214B130900AB56B2 /* BrowseFoodViewController.swift */,
 				875C7890215D8BBE00D99E34 /* CuisineAllStoresViewController.swift */,
+				6A0BBBCB215EA1FE00A73596 /* CuratedCategoryAllStoresViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -1116,6 +1136,7 @@
 				87829567214EBF4500AB56B2 /* UserAPIService.swift */,
 				876319F02152D95800475074 /* GooglePlaceAPIService.swift */,
 				876E80182158972C00D235B5 /* BrowseFoodAPIService.swift */,
+				6A0BBBD9215F073C00A73596 /* SearchStoreDetailAPIService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1245,6 +1266,7 @@
 			children = (
 				87A26F2A215AFDC5001C3561 /* BrowseFoodSectionHeaderView.swift */,
 				87A26F2C215AFFDB001C3561 /* BrowseFoodHeaderWithSubTitleView.swift */,
+				6A0BBBD7215EF44B00A73596 /* CuratedCategoryHeaderCell.swift */,
 			);
 			path = HeaderView;
 			sourceTree = "<group>";
@@ -1253,6 +1275,7 @@
 			isa = PBXGroup;
 			children = (
 				87A26F38215B4468001C3561 /* CenterCardsCollectionViewFlowLayout.swift */,
+				6A0BBBD3215ED50C00A73596 /* CenterDualCardsCollectionViewFlowLayout.swift */,
 			);
 			path = FlowLayout;
 			sourceTree = "<group>";
@@ -1292,6 +1315,7 @@
 			isa = PBXGroup;
 			children = (
 				87A26F44215B52DC001C3561 /* StoreCarouselSectionController.swift */,
+				6A0BBBD5215EF3ED00A73596 /* CuratedCategoryHeaderSectionController.swift */,
 			);
 			path = StoreCarousel;
 			sourceTree = "<group>";
@@ -1541,6 +1565,7 @@
 				87A26F08215A0A50001C3561 /* SegmentNavigateView.swift in Sources */,
 				875C7884215C6C0700D99E34 /* BrowseFoodPresenterModels.swift in Sources */,
 				87A26F2D215AFFDB001C3561 /* BrowseFoodHeaderWithSubTitleView.swift in Sources */,
+				6A0BBBD2215EAAF800A73596 /* CuratedCategoryAllStoresCoordinator.swift in Sources */,
 				878295162148CCC300AB56B2 /* DeliveryAddress.swift in Sources */,
 				876E7FFB21576FEE00D235B5 /* UserAccountPageTitleCell.swift in Sources */,
 				8754BB982151BB37008D9E1C /* PSUser+CoreDataProperties.swift in Sources */,
@@ -1548,10 +1573,12 @@
 				8731A5792148868E005B7CFF /* SignupTempAccount.swift in Sources */,
 				87A26F0E215A117F001C3561 /* UIFont+Size.swift in Sources */,
 				8782953E2149DBF200AB56B2 /* Coordinator.swift in Sources */,
+				6A0BBBDA215F073C00A73596 /* SearchStoreDetailAPIService.swift in Sources */,
 				87A26F3B215B46E2001C3561 /* CuisineCarouselPageSectionController.swift in Sources */,
 				876319F12152D95800475074 /* GooglePlaceAPIService.swift in Sources */,
 				8754BB7021516FFF008D9E1C /* FontNames.swift in Sources */,
 				8782958A214F085F00AB56B2 /* OnboardingViewController.swift in Sources */,
+				6A0BBBD0215EA65600A73596 /* BaseSearchAllStoresViewController.swift in Sources */,
 				87829552214C61DA00AB56B2 /* DynamicHeightNavigationBar.swift in Sources */,
 				87631A1021530B7500475074 /* InputApartmentView.swift in Sources */,
 				87829540214A09C500AB56B2 /* UIColor+Gradient+Hex.swift in Sources */,
@@ -1589,6 +1616,7 @@
 				876E7FE52154966600D235B5 /* RefineAddressSectionController.swift in Sources */,
 				87631A142154043100475074 /* ConfirmAddressViewModel.swift in Sources */,
 				876E7FE92154980900D235B5 /* RefineAddressMapCell.swift in Sources */,
+				6A0BBBD6215EF3ED00A73596 /* CuratedCategoryHeaderSectionController.swift in Sources */,
 				87631A092152F17400475074 /* AddressTextLabelSectionController.swift in Sources */,
 				8754BB7421517C88008D9E1C /* SignupButtonCell.swift in Sources */,
 				875C7878215C158A00D99E34 /* StoreCarouselViewAllCell.swift in Sources */,
@@ -1601,6 +1629,7 @@
 				8782952F2148D50000AB56B2 /* AppTheme.swift in Sources */,
 				87A26F21215AF7F8001C3561 /* CuisineItemSectonController.swift in Sources */,
 				8754BB5C21509EEE008D9E1C /* SignupAgreementCell.swift in Sources */,
+				6A0BBBCE215EA21800A73596 /* CuratedCategoryAllStoresViewModel.swift in Sources */,
 				8776F5FB214888B200ABAA71 /* Dictionary+Operations.swift in Sources */,
 				878295272148D4C600AB56B2 /* AppCoordinator.swift in Sources */,
 				8782953C2149DBF200AB56B2 /* AppTracker.swift in Sources */,
@@ -1612,6 +1641,7 @@
 				87829568214EBF4500AB56B2 /* UserAPIService.swift in Sources */,
 				8776F5FF214888B200ABAA71 /* Device.generated.swift in Sources */,
 				8754BBA22151BC65008D9E1C /* PSDeliveryAddress+CoreDataClass.swift in Sources */,
+				6A0BBBCC215EA1FE00A73596 /* CuratedCategoryAllStoresViewController.swift in Sources */,
 				8731A56F214885FE005B7CFF /* Logger.swift in Sources */,
 				8776F5FC214888B200ABAA71 /* Foundation+.swift in Sources */,
 				8782951021488AAC00AB56B2 /* KeyValueStoreType.swift in Sources */,
@@ -1647,6 +1677,7 @@
 				8754BC062152B442008D9E1C /* NVActivityIndicatorPresenter.swift in Sources */,
 				8782954F214B130900AB56B2 /* BrowseFoodViewController.swift in Sources */,
 				87631A072152F15B00475074 /* AddressTextLabelCell.swift in Sources */,
+				6A0BBBD4215ED50C00A73596 /* CenterDualCardsCollectionViewFlowLayout.swift in Sources */,
 				876E80122158449D00D235B5 /* SkeletonLoadingView.swift in Sources */,
 				875C7894215D8C7000D99E34 /* CuisineAllStoresViewModel.swift in Sources */,
 				87A26F29215AFD7D001C3561 /* CuisineCarouselCollectionViewCell.swift in Sources */,
@@ -1687,6 +1718,7 @@
 				8754BBAA2151BE37008D9E1C /* District+Persistent.swift in Sources */,
 				878295262148D4C600AB56B2 /* ApplicationDependency.swift in Sources */,
 				8782958D214F103A00AB56B2 /* OnboardingViewModel.swift in Sources */,
+				6A0BBBD8215EF44B00A73596 /* CuratedCategoryHeaderCell.swift in Sources */,
 				876E800B2158370600D235B5 /* UserAccountPageVersionCell.swift in Sources */,
 				87631A0E2152F47D00475074 /* GlobalFunctions.swift in Sources */,
 				878295212148D49500AB56B2 /* DoorDashNavigationController.swift in Sources */,

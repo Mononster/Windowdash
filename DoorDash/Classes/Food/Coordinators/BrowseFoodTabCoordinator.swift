@@ -43,4 +43,20 @@ extension BrowseFoodTabCoordinator: BrowseFoodViewControllerDelegate {
             self.removeCoordinator(coordinator)
         }
     }
+
+    func showCuratedCategoryAllStores(id: String, name: String, description: String?) {
+        let viewModel = CuratedCategoryAllStoresViewModel(
+            service: BrowseFoodAPIService(), id: id, name: name, description: description
+        )
+        let coordinator = CuratedCategoryAllStoresCoordinator(
+            rootViewController: CuratedCategoryAllStoresViewController(viewModel: viewModel),
+            router: self.router
+        )
+        coordinator.start()
+        addCoordinator(coordinator)
+        self.router.push(coordinator, animated: true) {
+            self.removeCoordinator(coordinator)
+        }
+
+    }
 }

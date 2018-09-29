@@ -31,6 +31,7 @@ final class StoreCarouselItem: NSObject, ListDiffable {
 }
 
 final class StoreCarouselItems: NSObject, ListDiffable {
+    let id: String
     let items: [StoreCarouselItem]
     let carouselDescription: String?
     let carouselTitle: String
@@ -39,11 +40,13 @@ final class StoreCarouselItems: NSObject, ListDiffable {
 
     // MaxTitleHeight represents the max title height for two sub cells
     // largeDisplayTitleHeight represents the title height for top display cell.
-    init(items: [StoreCarouselItem],
+    init(id: String,
+         items: [StoreCarouselItem],
          carouselTitle: String,
          maxTitleHeight: CGFloat,
          largeDisplayTitleHeight: CGFloat,
          carouselDescription: String? = nil) {
+        self.id = id
         self.items = items
         self.carouselTitle = carouselTitle
         self.carouselDescription = carouselDescription
@@ -63,6 +66,8 @@ final class StoreCarouselItems: NSObject, ListDiffable {
 final class StoreCarouselSectionController: ListSectionController {
 
     private var items: StoreCarouselItems?
+
+    var seeAllButtonTapped: ((String, String, String?) -> ())?
 
     override init() {
         super.init()
@@ -163,7 +168,7 @@ extension StoreCarouselSectionController: ListSupplementaryViewSource {
                 at: index) as? BrowseFoodHeaderWithSubTitleViewCell else {
                     fatalError()
             }
-            cell.titleLabel.text = items?.carouselTitle
+            cell.titleLabel.text = items?.carouselTitle.uppercased()
             cell.descriptionLabel.text = descripiton
             return cell
         } else {
@@ -174,7 +179,7 @@ extension StoreCarouselSectionController: ListSupplementaryViewSource {
                 at: index) as? BrowseFoodSectionHeaderViewCell else {
                     fatalError()
             }
-            cell.titleLabel.text = items?.carouselTitle
+            cell.titleLabel.text = items?.carouselTitle.uppercased()
             return cell
         }
     }
@@ -184,8 +189,11 @@ extension StoreCarouselSectionController: ListSupplementaryViewSource {
             ofKind: UICollectionView.elementKindSectionFooter,
             for: self,
             class: StoreCarouselFooterCell.self,
-            at: index) as? StoreCarouselFooterCell else {
+            at: index) as? StoreCarouselFooterCell, let items = items else {
             fatalError()
+        }
+        view.seeAllButtonTapped = {
+            self.seeAllButtonTapped?(items.id, items.carouselTitle, items.carouselDescription)
         }
         return view
     }

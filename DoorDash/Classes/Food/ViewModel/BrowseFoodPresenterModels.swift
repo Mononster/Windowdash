@@ -38,6 +38,7 @@ final class BrowseFoodAllStoreItem: NSObject, ListDiffable {
     let shouldAddTopInset: Bool
     var closeTimeDisplay: String?
     let isClosed: Bool
+    var currentScrollOffset: CGPoint?
 
     init(menuItems: [BrowseFoodAllStoreMenuItem],
          storeName: String,

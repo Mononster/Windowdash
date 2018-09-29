@@ -13,6 +13,8 @@ final class BrowseFoodAllStoresSectionController: ListSectionController, ListAda
 
     private var item: BrowseFoodAllStoreItem?
     weak var edgeSwipeBackGesture: UIGestureRecognizer?
+    private let menuLayout: MenuCollectionViewLayoutKind
+    private let menuCollectionViewHeight: CGFloat
 
     private lazy var adapter: ListAdapter = {
         let adapter = ListAdapter(updater: ListAdapterUpdater(),
@@ -20,12 +22,16 @@ final class BrowseFoodAllStoresSectionController: ListSectionController, ListAda
         adapter.dataSource = self
         return adapter
     }()
+    
 
-    init(addInset: Bool) {
+    init(addInset: Bool, menuLayout: MenuCollectionViewLayoutKind) {
+        self.menuLayout = menuLayout
+        self.menuCollectionViewHeight = menuLayout == .centerOneItem ? 180 : 100
         super.init()
         if addInset {
             self.inset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         }
+        scrollDelegate = self
     }
 
     override func numberOfItems() -> Int {
@@ -38,7 +44,7 @@ final class BrowseFoodAllStoresSectionController: ListSectionController, ListAda
         if item?.menuItems.count == 0 {
             height = BrowseFoodStoreDispalyCell.heightWithoutMenu
         } else {
-            height = BrowseFoodStoreDispalyCell.heightWithMenu
+            height = BrowseFoodStoreDispalyCell.heightWithMenu + menuCollectionViewHeight
         }
         if item?.closeTimeDisplay != nil {
             height += BrowseFoodStoreDispalyCell.closeTimeHeight
@@ -54,6 +60,14 @@ final class BrowseFoodAllStoresSectionController: ListSectionController, ListAda
                 fatalError()
         }
         adapter.collectionView = cell.collectionView
+        let layout = menuLayout == .centerOneItem ? CenterCardsCollectionViewFlowLayout()
+            : CenterDualCardsCollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        cell.collectionView.setCollectionViewLayout(layout, animated: false)
+        cell.collectionViewHeight = menuCollectionViewHeight
+        if let offset = item.currentScrollOffset {
+            cell.collectionView.setContentOffset(offset, animated: false)
+        }
         if let gesture = edgeSwipeBackGesture {
             cell.collectionView.panGestureRecognizer.require(toFail: gesture)
         }
@@ -89,12 +103,28 @@ extension BrowseFoodAllStoresSectionController {
     }
 
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
-        return BrowseFoodStoreMenuDisplaySectionController()
+        return BrowseFoodStoreMenuDisplaySectionController(layoutKind: menuLayout)
     }
 
     func emptyView(for listAdapter: ListAdapter) -> UIView? {
         return nil
     }
+}
+
+extension BrowseFoodAllStoresSectionController: ListScrollDelegate {
+
+    func listAdapter(_ listAdapter: ListAdapter, didScroll sectionController: ListSectionController) {
+        guard let cell = collectionContext?.cellForItem(
+            at: 0, sectionController: self
+            ) as? BrowseFoodStoreDispalyCell else {
+            return
+        }
+        item?.currentScrollOffset = cell.collectionView.contentOffset
+    }
+
+    func listAdapter(_ listAdapter: ListAdapter, willBeginDragging sectionController: ListSectionController) {}
+
+    func listAdapter(_ listAdapter: ListAdapter, didEndDragging sectionController: ListSectionController, willDecelerate decelerate: Bool) {}
 }
 
 

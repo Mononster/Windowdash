@@ -12,20 +12,7 @@ import UIKit
 final class BrowseFoodStoreDispalyCell: UICollectionViewCell {
 
     lazy var collectionView: UICollectionView = {
-        let layout = CenterCardsCollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        view.decelerationRate = UIScrollView.DecelerationRate.fast
-        view.backgroundColor = .clear
-        view.alwaysBounceVertical = false
-        view.alwaysBounceHorizontal = true
-        view.showsHorizontalScrollIndicator = false
-        var insets = view.contentInset
-        insets.left = BrowseFoodViewModel.UIConfigure.homePageLeadingSpace
-        insets.right = insets.left
-        view.contentInset = insets
-        self.contentView.addSubview(view)
-        return view
+        return generateCollectionView()
     }()
 
     private let closeTimeLabel: UILabel
@@ -40,8 +27,9 @@ final class BrowseFoodStoreDispalyCell: UICollectionViewCell {
     private let viewsToNotAdjustTag: Int = 100
     private let storeNameLabelTag: Int = 101
 
-    static let heightWithMenu: CGFloat = 180 + 14 + 25 + 4 + 20 + 3 + 20 + 8
-    static let heightWithoutMenu: CGFloat = BrowseFoodStoreDispalyCell.heightWithMenu - 180 - 14
+    var collectionViewHeight: CGFloat = 0
+    static let heightWithMenu: CGFloat = 14 + 25 + 4 + 20 + 3 + 20 + 8
+    static let heightWithoutMenu: CGFloat = BrowseFoodStoreDispalyCell.heightWithMenu - 14
     static let closeTimeHeight: CGFloat = 16
 
     override init(frame: CGRect) {
@@ -65,7 +53,7 @@ final class BrowseFoodStoreDispalyCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         collectionView.frame = CGRect(
-            x: 0, y: 0, width: self.frame.width, height: 180
+            x: 0, y: 0, width: self.frame.width, height: collectionViewHeight
         )
     }
 
@@ -120,6 +108,23 @@ extension BrowseFoodStoreDispalyCell {
         setupImageView()
         setupSeparator()
         setupConstraints()
+    }
+
+    private func generateCollectionView() -> UICollectionView {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.decelerationRate = UIScrollView.DecelerationRate.fast
+        view.backgroundColor = .clear
+        view.alwaysBounceVertical = false
+        view.alwaysBounceHorizontal = true
+        view.showsHorizontalScrollIndicator = false
+        var insets = view.contentInset
+        insets.left = BrowseFoodViewModel.UIConfigure.homePageLeadingSpace
+        insets.right = insets.left
+        view.contentInset = insets
+        self.contentView.addSubview(view)
+        return view
     }
 
     private func setupSeparator() {

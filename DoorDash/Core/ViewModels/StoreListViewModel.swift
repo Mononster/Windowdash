@@ -15,13 +15,18 @@ final class StoreListViewModel {
     private var serverFetchLimit: Int = 50
     private var localPageOffset: Int = 0
     private var localFetchLimit: Int = 10
+
     private let service: BrowseFoodAPIService
     private let query: String?
+    private let curatedCateogryID: String?
 
     init(service: BrowseFoodAPIService,
-         query: String? = nil) {
+         serverFetchLimit: Int = 50,
+         query: String? = nil,
+         curatedCateogryID: String? = nil) {
         self.service = service
         self.query = query
+        self.curatedCateogryID = curatedCateogryID
     }
 
     func loadMoreStores(completion: @escaping ([BrowseFoodAllStoreItem], Bool) -> ()) {
@@ -36,16 +41,16 @@ final class StoreListViewModel {
         }
     }
 
-    func fetchFirstList(addTopInset: Bool,
-                        completion: @escaping ([BrowseFoodAllStoreItem], String?) -> ()) {
+    func fetchFirstList(completion: @escaping ([BrowseFoodAllStoreItem], String?) -> ()) {
         fetchStores { (errorMsg) in
             if let error = errorMsg {
                 completion([], error)
                 return
             }
-            completion(self.generateDataForAllStores(
-                stores: self.allStores, addTopInset: addTopInset
-            ), nil)
+            self.generatePresentingStores { (stores) in
+                let items = self.generateDataForAllStores(stores: stores)
+                completion(items, nil)
+            }
         }
     }
 
@@ -61,7 +66,8 @@ final class StoreListViewModel {
             return
         }
         let request = FetchAllStoresRequestModel(
-            limit: serverFetchLimit, offset: pageOffset, latitude: lat, longitude: lng, sortOption: .asap, query: query
+            limit: serverFetchLimit, offset: pageOffset, latitude: lat, longitude: lng,
+            sortOption: .asap, query: query, curatedCateogryID: curatedCateogryID
         )
         service.fetchAllStores(request: request) { (response, error) in
             if let error = error as? BrowseFoodAPIServiceError {

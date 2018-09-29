@@ -1,8 +1,8 @@
 //
-//  CuisineAllStoresViewController.swift
+//  CuratedCategoryAllStoresViewController.swift
 //  DoorDash
 //
-//  Created by Marvin Zhan on 2018-09-27.
+//  Created by Marvin Zhan on 9/28/18.
 //  Copyright © 2018 Monster. All rights reserved.
 //
 
@@ -10,13 +10,12 @@ import UIKit
 import SnapKit
 import IGListKit
 
-final class CuisineAllStoresViewController: BaseSearchAllStoresViewController {
+final class CuratedCategoryAllStoresViewController: BaseSearchAllStoresViewController {
 
-    private let viewModel: CuisineAllStoresViewModel
+    private let viewModel: CuratedCategoryAllStoresViewModel
 
-    init(cuisine: BrowseFoodCuisineCategory) {
-        viewModel = CuisineAllStoresViewModel(service: BrowseFoodAPIService(),
-                                              cuisine: cuisine)
+    init(viewModel: CuratedCategoryAllStoresViewModel) {
+        self.viewModel = viewModel
         super.init()
         adapter.dataSource = self
         adapter.scrollViewDelegate = self
@@ -33,7 +32,7 @@ final class CuisineAllStoresViewController: BaseSearchAllStoresViewController {
 
     override func setupUI() {
         super.setupUI()
-        self.navigationBar.title = viewModel.cuisineName
+        self.navigationBar.title = viewModel.categoryName
     }
 
     private func bindModels() {
@@ -53,7 +52,7 @@ final class CuisineAllStoresViewController: BaseSearchAllStoresViewController {
     }
 }
 
-extension CuisineAllStoresViewController: ListAdapterDataSource {
+extension CuratedCategoryAllStoresViewController: ListAdapterDataSource {
 
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
         return viewModel.sectionData
@@ -61,18 +60,20 @@ extension CuisineAllStoresViewController: ListAdapterDataSource {
 
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
         switch object {
+        case is CuratedCategoryHeaderModel:
+            return CuratedCategoryHeaderSectionController()
         case is BrowseFoodAllStoreItem:
             guard let item = object as? BrowseFoodAllStoreItem else {
                 fatalError()
             }
             let controller = BrowseFoodAllStoresSectionController(
                 addInset: item.shouldAddTopInset,
-                menuLayout: .centerOneItem
+                menuLayout: .centerTwoItems
             )
             controller.edgeSwipeBackGesture = self.navigationController?.interactivePopGestureRecognizer
             return controller
         default:
-            return BrowseFoodAllStoresSectionController(addInset: true, menuLayout: .centerOneItem)
+            return BrowseFoodAllStoresSectionController(addInset: true, menuLayout: .centerTwoItems)
         }
     }
 
@@ -81,7 +82,7 @@ extension CuisineAllStoresViewController: ListAdapterDataSource {
     }
 }
 
-extension CuisineAllStoresViewController: UIScrollViewDelegate {
+extension CuratedCategoryAllStoresViewController: UIScrollViewDelegate {
 
     func scrollViewWillEndDragging(_ scrollView: UIScrollView,
                                    withVelocity velocity: CGPoint,
@@ -98,4 +99,5 @@ extension CuisineAllStoresViewController: UIScrollViewDelegate {
         }
     }
 }
+
 

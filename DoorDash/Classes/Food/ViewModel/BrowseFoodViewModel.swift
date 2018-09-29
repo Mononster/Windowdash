@@ -16,12 +16,12 @@ final class BrowseFoodViewModel {
 
     struct UIConfigure {
         static let homePageLeadingSpace: CGFloat = 18
+        static let menuCollectionViewSpacing: CGFloat = 6
         static let cuisineCategoriesOneScreenDisplayCount: CGFloat = 4
         static func getCuisineItemSize(collectionViewWidth: CGFloat) -> CGFloat {
-            let displayCount = BrowseFoodViewModel.UIConfigure.cuisineCategoriesOneScreenDisplayCount
-            let marginRight: CGFloat = 10
+            let displayCount = cuisineCategoriesOneScreenDisplayCount
             let width = collectionViewWidth
-            let itemWidth = (width - (displayCount - 1) * marginRight) / displayCount
+            let itemWidth = (width - (displayCount - 1) * menuCollectionViewSpacing) / displayCount
             return itemWidth
         }
     }
@@ -106,14 +106,13 @@ extension BrowseFoodViewModel {
         }
         if storeList.allStores.count > 0 {
             sectionData.append(BrowseFoodAllStoreHeaderModel(title: "ALL RESTAURANTS"))
-            generateDataForAllStores(stores: storeList.allStores, addTopInset: false)
+            generateDataForAllStores(stores: storeList.allStores)
         }
     }
 
-    private func generateDataForAllStores(stores: [StoreViewModel], addTopInset: Bool = true) {
+    private func generateDataForAllStores(stores: [StoreViewModel]) {
         self.storeList.generatePresentingStores { (stores) in
-            let items = self.storeList.generateDataForAllStores(stores: stores,
-                                                    addTopInset: addTopInset)
+            let items = self.storeList.generateDataForAllStores(stores: stores, addTopInset: false)
             self.sectionData.append(contentsOf: items)
         }
     }
@@ -138,6 +137,9 @@ extension BrowseFoodViewModel {
                 items.removeAll()
                 count = 0
             }
+        }
+        if items.count > 0 {
+            pages.append(CuisinePage(items: items))
         }
         sectionData.append(CuisinePages(pages: pages))
     }
@@ -168,6 +170,7 @@ extension BrowseFoodViewModel {
             font: StoreCarouselLargeDisplayCell.titleFont
         )
         sectionData.append(StoreCarouselItems(
+            id: section.id,
             items: [StoreCarouselItem(
                 imageURL: url,
                 title: firstStore.nameDisplay,
@@ -213,8 +216,9 @@ extension BrowseFoodViewModel {
             count += 1
         }
         sectionData.append(StoreCarouselItems(
+            id: section.id,
             items: items,
-            carouselTitle: section.title.uppercased(),
+            carouselTitle: section.title,
             maxTitleHeight: maxTitleHeight,
             largeDisplayTitleHeight: largeDisplayTitleHeight,
             carouselDescription: section.subTitle

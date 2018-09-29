@@ -1,14 +1,14 @@
 //
-//  CenterCardsCollectionViewFlowLayout.swift
+//  CenterDualCardsCollectionViewFlowLayout.swift
 //  DoorDash
 //
-//  Created by Marvin Zhan on 2018-09-25.
+//  Created by Marvin Zhan on 9/28/18.
 //  Copyright © 2018 Monster. All rights reserved.
 //
 
 import UIKit
 
-final class CenterCardsCollectionViewFlowLayout: UICollectionViewFlowLayout {
+final class CenterDualCardsCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
     var mostRecentOffset = CGPoint.zero
 
@@ -26,6 +26,7 @@ final class CenterCardsCollectionViewFlowLayout: UICollectionViewFlowLayout {
         }
         let cvBounds = cv.bounds
         let halfWidth = cvBounds.size.width * 0.5
+        let halfBetweenCellSpacing = self.minimumInteritemSpacing * 0.5
         if let attributesForVisibleCells = self.layoutAttributesForElements(in: cvBounds) {
             var candidateAttributes: UICollectionViewLayoutAttributes?
             for attributes in attributesForVisibleCells {
@@ -33,20 +34,31 @@ final class CenterCardsCollectionViewFlowLayout: UICollectionViewFlowLayout {
                 if attributes.representedElementCategory != UICollectionView.ElementCategory.cell {
                     continue
                 }
-                let scrollInvalid = attributes.center.x > (cv.contentOffset.x + halfWidth) && velocity.x < 0
+                let rightEndPos = attributes.frame.maxX + halfBetweenCellSpacing
+                let scrollInvalid = rightEndPos > (cv.contentOffset.x + halfWidth) && velocity.x < 0
                 if attributes.center.x == 0 || scrollInvalid {
                     continue
                 }
                 candidateAttributes = attributes
             }
-            if proposedContentOffset.x == -(cv.contentInset.left) {
+            if proposedContentOffset.x == -cv.contentInset.left {
                 return proposedContentOffset
             }
 
             guard let candidate = candidateAttributes else {
                 return mostRecentOffset
             }
-            mostRecentOffset = CGPoint(x: floor(candidate.center.x - halfWidth), y: proposedContentOffset.y)
+            let offsetX: CGFloat
+            if velocity.x < 0 {
+                offsetX = floor(candidate.frame.minX + halfBetweenCellSpacing - halfWidth)
+            } else {
+                offsetX = floor(candidate.frame.maxX + halfBetweenCellSpacing - halfWidth)
+            }
+            mostRecentOffset = CGPoint(
+                x: offsetX,
+                y: proposedContentOffset.y
+            )
+            print(mostRecentOffset)
         }
         return mostRecentOffset
     }
@@ -55,4 +67,5 @@ final class CenterCardsCollectionViewFlowLayout: UICollectionViewFlowLayout {
         return true
     }
 }
+
 

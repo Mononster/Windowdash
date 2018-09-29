@@ -42,7 +42,7 @@ class DoorDashNavigationController: UINavigationController {
 
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
         if children.count > 0 {
-            viewController.hidesBottomBarWhenPushed = true
+            viewController.hidesBottomBarWhenPushed = false
         }
 
         super.pushViewController(viewController, animated: animated)

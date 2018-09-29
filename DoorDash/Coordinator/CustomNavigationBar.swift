@@ -82,7 +82,7 @@ final class CustomNavigationBar: UIView {
         return button
     }()
     
-    private lazy var bottomLine: UIView = {
+    lazy var bottomLine: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(red: (218.0 / 255.0), green: (218.0 / 255.0), blue: (218.0 / 255.0), alpha: 1.0)
         return view

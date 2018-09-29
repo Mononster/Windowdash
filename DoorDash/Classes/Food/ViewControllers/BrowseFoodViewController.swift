@@ -13,6 +13,7 @@ import IGListKit
 
 protocol BrowseFoodViewControllerDelegate: class {
     func showCuisineAllStores(cuisine: BrowseFoodCuisineCategory)
+    func showCuratedCategoryAllStores(id: String, name: String, description: String?)
 }
 
 final class BrowseFoodViewController: BaseViewController {
@@ -140,12 +141,16 @@ extension BrowseFoodViewController: ListAdapterDataSource {
             }
             return controller
         case is StoreCarouselItems:
-            return StoreCarouselSectionController()
+            let controller = StoreCarouselSectionController()
+            controller.seeAllButtonTapped = { id, name, description in
+                self.delegate?.showCuratedCategoryAllStores(id: id, name: name, description: description)
+            }
+            return controller
         case is BrowseFoodAllStoreItem:
             guard let item = object as? BrowseFoodAllStoreItem else {
                 fatalError()
             }
-            return BrowseFoodAllStoresSectionController(addInset: item.shouldAddTopInset)
+            return BrowseFoodAllStoresSectionController(addInset: item.shouldAddTopInset, menuLayout: .centerOneItem)
         case is BrowseFoodAllStoreHeaderModel:
             return BrowseFoodAllStoreHeaderSectionController()
         default:

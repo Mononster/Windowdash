@@ -9,17 +9,30 @@
 import IGListKit
 import UIKit
 
+enum MenuCollectionViewLayoutKind {
+    case centerTwoItems
+    case centerOneItem
+}
+
 final class BrowseFoodStoreMenuDisplaySectionController: ListSectionController {
 
     private var menuItem: BrowseFoodAllStoreMenuItem?
+    private let layoutKind: MenuCollectionViewLayoutKind
 
-    override init() {
+    init(layoutKind: MenuCollectionViewLayoutKind) {
+        self.layoutKind = layoutKind
         super.init()
-        self.inset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+        self.inset = UIEdgeInsets(
+            top: 0, left: 0,
+            bottom: 0, right: BrowseFoodViewModel.UIConfigure.menuCollectionViewSpacing
+        )
     }
 
     override func sizeForItem(at index: Int) -> CGSize {
-        let width: CGFloat = (collectionContext?.containerSize.width ?? 0) - 2 * BrowseFoodViewModel.UIConfigure.homePageLeadingSpace
+        var width: CGFloat = (collectionContext?.containerSize.width ?? 0) - 2 * BrowseFoodViewModel.UIConfigure.homePageLeadingSpace
+        if layoutKind == .centerTwoItems {
+            width = (width - BrowseFoodViewModel.UIConfigure.menuCollectionViewSpacing) / 2
+        }
         return CGSize(width: width,
                       height: collectionContext?.containerSize.height ?? 0)
     }
