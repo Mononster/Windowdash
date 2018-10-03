@@ -49,7 +49,10 @@ class HelperManager {
         return UUID().uuidString.lowercased()
     }
 
-    static func textHeight(_ text: String, width: CGFloat, font: UIFont) -> CGFloat {
+    static func textHeight(_ text: String?, width: CGFloat, font: UIFont) -> CGFloat {
+        guard let text = text else {
+            return 0
+        }
         let constrainedSize = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
         let attributes = [NSAttributedString.Key.font: font]
         let options: NSStringDrawingOptions = [.usesFontLeading, .usesLineFragmentOrigin]

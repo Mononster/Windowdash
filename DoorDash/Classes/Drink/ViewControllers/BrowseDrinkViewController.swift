@@ -20,7 +20,6 @@ final class BrowseDrinkViewController: BaseViewController {
     
     override init() {
         segmentNavigateView = SegmentNavigateView(
-            titles: titles,
             frame: CGRect(
                 x: 0, y: UIDevice.current.statusBarHeight,
                 width: UIScreen.main.bounds.width, height: 45)
@@ -31,6 +30,10 @@ final class BrowseDrinkViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        segmentNavigateView.setTitles(titles: titles)
     }
 }
 

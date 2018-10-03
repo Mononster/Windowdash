@@ -69,6 +69,10 @@ public struct Store {
         case minuteRate = "asap_minutes_range"
     }
 
+    public enum BusinessInfo: String, CodingKey {
+        case name
+    }
+
     public enum StoreCodingKeys: String, CodingKey {
         case id
         case numRatings = "num_ratings"
@@ -83,6 +87,9 @@ public struct Store {
         case menus = "menus"
         case deliveryStatus = "status"
         case isNewlyAdded = "is_newly_added"
+        case distanceFromConsumer = "distance_from_consumer"
+        case business
+        case offersPickup = "offers_pickup"
     }
 
     public let id: Int64
@@ -94,10 +101,13 @@ public struct Store {
     public let deliveryFeeDisplay: String
     public let deliveryMinutes: Int64
     public let name: String
+    public let businessName: String
     public let nextCloseTime: Date
     public let nextOpenTime: Date
     public let headerImageURL: String?
     public let isNewlyAdded: Bool
+    public let distanceFromConsumer: Double?
+    public let offersPickup: Bool
     public let menus: [Menu]?
 
     public init(id: Int64,
@@ -109,10 +119,13 @@ public struct Store {
                 deliveryFeeDisplay: String,
                 deliveryMinutes: Int64,
                 name: String,
+                businessName: String,
                 nextCloseTime: Date,
                 nextOpenTime: Date,
                 headerImageURL: String?,
                 isNewlyAdded: Bool,
+                distanceFromConsumer: Double?,
+                offersPickup: Bool,
                 menus: [Menu]?) {
         self.id = id
         self.numRatings = numRatings
@@ -123,10 +136,13 @@ public struct Store {
         self.deliveryFeeDisplay = deliveryFeeDisplay
         self.deliveryMinutes = deliveryMinutes
         self.name = name
+        self.businessName = businessName
         self.nextCloseTime = nextCloseTime
         self.nextOpenTime = nextOpenTime
         self.headerImageURL = headerImageURL
         self.isNewlyAdded = isNewlyAdded
+        self.distanceFromConsumer = distanceFromConsumer
+        self.offersPickup = offersPickup
         self.menus = menus
     }
 }
@@ -140,6 +156,8 @@ extension Store: Codable {
         let storeDescription: String = try values.decodeIfPresent(String.self, forKey: .storeDescription) ?? ""
         let priceRange: Int64 = try values.decodeIfPresent(Int64.self, forKey: .priceRange) ?? 0
         let name: String = try values.decode(String.self, forKey: .name)
+        let businessInfo = try? values.nestedContainer(keyedBy: BusinessInfo.self, forKey: .business)
+        let businessName: String = try businessInfo?.decodeIfPresent(String.self, forKey: .name) ?? ""
         let nextCloseTimeRaw: String = try values.decodeIfPresent(String.self, forKey: .nextCloseTime) ?? ""
         let nextCloseTime = nextCloseTimeRaw.toISODate()?.date ?? Date()
         let nextOpenTimeRaw: String = try values.decodeIfPresent(String.self, forKey: .nextOpenTime) ?? ""
@@ -147,12 +165,14 @@ extension Store: Codable {
         let headerImageURL: String? = try values.decodeIfPresent(String.self, forKey: .headerImageURL)
         let menus: [Store.Menu]? = try values.decodeIfPresent([Menu].self, forKey: .menus)
         let moneyContainer = try values.nestedContainer(keyedBy: MoneyFieldCodingKeys.self, forKey: .deliveryMoney)
-        let currency = try moneyContainer.decode(String.self, forKey: .currency)
+        let currency = try moneyContainer.decodeIfPresent(String.self, forKey: .currency) ?? "USD"
         let moneyCents: Int64 = try moneyContainer.decodeIfPresent(Int64.self, forKey: .unitAmount) ?? 0
         let moneyDisplayString: String = try moneyContainer.decodeIfPresent(String.self, forKey: .displayString) ?? "$0.00"
         let deliveryStatusContainer = try values.nestedContainer(keyedBy: DeliveryStatus.self, forKey: .deliveryStatus)
+        let distanceFromConsumer = try values.decodeIfPresent(Double.self, forKey: .distanceFromConsumer)
         let deliveryRange: [Int64] = try deliveryStatusContainer.decodeIfPresent([Int64].self, forKey: .minuteRate) ?? []
         let isNewlyAdded: Bool = try values.decodeIfPresent(Bool.self, forKey: .isNewlyAdded) ?? false
+        let offersPickup: Bool = try values.decodeIfPresent(Bool.self, forKey: .offersPickup) ?? false
         self.init(id: id,
                   numRatings: numRatings,
                   averageRating: averageRating,
@@ -163,10 +183,13 @@ extension Store: Codable {
                   deliveryFeeDisplay: moneyDisplayString,
                   deliveryMinutes: deliveryRange[safe: 0] ?? 0,
                   name: name,
+                  businessName: businessName,
                   nextCloseTime: nextCloseTime,
                   nextOpenTime: nextOpenTime,
                   headerImageURL: headerImageURL,
                   isNewlyAdded: isNewlyAdded,
+                  distanceFromConsumer: distanceFromConsumer,
+                  offersPickup: offersPickup,
                   menus: menus)
     }
 

@@ -22,6 +22,8 @@ protocol ImageAsset {
     var rightArrowViewAll: UIImage { get }
     var starHighlighted: UIImage { get }
     var starDarkGray: UIImage { get }
+    var ratingStarFull: UIImage { get }
+    var ratingStarEmpty: UIImage { get }
 }
 
 struct DefaultImageAsset: ImageAsset {
@@ -75,5 +77,13 @@ struct DefaultImageAsset: ImageAsset {
 
     var starDarkGray: UIImage {
         return UIImage(named: "star_unhighlighted")!
+    }
+
+    var ratingStarFull: UIImage {
+        return UIImage(named: "rating_star_full")!
+    }
+
+    var ratingStarEmpty: UIImage {
+        return UIImage(named: "rating_star_empty")!
     }
 }

@@ -45,9 +45,11 @@ protocol FontSchema {
     var bold12: UIFont { get }
     var bold14: UIFont { get }
     var bold16: UIFont { get }
+    var bold17: UIFont { get }
     var bold18: UIFont { get }
     var bold20: UIFont { get }
     var bold24: UIFont { get }
+    var bold28: UIFont { get }
     var bold30: UIFont { get }
     var bold32: UIFont { get }
     var bold40: UIFont { get }
@@ -57,6 +59,7 @@ protocol FontSchema {
     var extraBold10: UIFont { get }
     var extraBold12: UIFont { get }
     var extraBold16: UIFont { get }
+    var extraBold17: UIFont { get }
     var extraBold18: UIFont { get }
 
     /* Font templates */
@@ -166,6 +169,10 @@ struct DefaultFontSchema: FontSchema {
         return font(style: .bold, size: 16)
     }
 
+    var bold17: UIFont {
+        return font(style: .bold, size: 17)
+    }
+
     var bold18: UIFont {
         return font(style: .bold, size: 18)
     }
@@ -176,6 +183,10 @@ struct DefaultFontSchema: FontSchema {
 
     var bold24: UIFont {
         return font(style: .bold, size: 24)
+    }
+
+    var bold28: UIFont {
+        return font(style: .bold, size: 28)
     }
 
     var bold30: UIFont {
@@ -212,6 +223,10 @@ struct DefaultFontSchema: FontSchema {
 
     var extraBold16: UIFont {
         return font(style: .extraBold, size: 16)
+    }
+
+    var extraBold17: UIFont {
+        return font(style: .extraBold, size: 17)
     }
 
     var extraBold18: UIFont {

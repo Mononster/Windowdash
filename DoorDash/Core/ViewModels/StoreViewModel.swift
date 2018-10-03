@@ -12,12 +12,17 @@ import SwiftDate
 final class StoreViewModel {
 
     let model: Store
-    let costDisplay: String
+    let costDisplayLong: String
+    let costDisplayShort: String
+    let distanceFromConsumer: String
     let deliveryTimeDisplay: String
     let nameDisplay: String
+    let businessNameDisplay: String
     let storeDescriptionDisplay: String
     let ratingNumberDisplay: String?
     var ratingDescription: String = ""
+    let ratingPreciseDescription: String
+    let priceRangeDisplay: String
     let isNewlyAdded: Bool
     let shouldHighlightRating: Bool
 
@@ -32,17 +37,30 @@ final class StoreViewModel {
 
     init(store: Store) {
         self.model = store
-        costDisplay = store.deliveryFee.cents == 0 ? "Free delivery" : store.deliveryFeeDisplay + " delivery"
+        costDisplayLong = store.deliveryFee.cents == 0 ? "Free delivery" : store.deliveryFeeDisplay + " delivery"
+        costDisplayShort = store.deliveryFee.cents == 0 ? "Free" : store.deliveryFeeDisplay
         deliveryTimeDisplay = String(store.deliveryMinutes) + " min"
         isClosed = store.nextCloseTime > store.nextOpenTime
         nextOpenDate = DateInRegion(store.nextOpenTime)
         nextCloseDate = DateInRegion(store.nextCloseTime)
         nameDisplay = store.name
+        businessNameDisplay = store.businessName
         storeDescriptionDisplay = store.storeDescription
         headerImageURL = URL(string: store.headerImageURL ?? "")
         ratingNumberDisplay = store.averageRating == -1 ? nil : String(store.averageRating)
         shouldHighlightRating = store.averageRating >= 4.7
         isNewlyAdded = store.isNewlyAdded
+        ratingPreciseDescription = (ratingNumberDisplay ?? "") + " (\(store.numRatings) ratings)"
+        if let distance = store.distanceFromConsumer {
+            distanceFromConsumer = String(format: "%.1f", distance)
+        } else {
+            distanceFromConsumer = "N/A"
+        }
+        var tempPriceRange = ""
+        for _ in 0..<store.priceRange {
+            tempPriceRange += "$"
+        }
+        priceRangeDisplay = tempPriceRange + " •"
         setup()
     }
 
@@ -101,7 +119,7 @@ final class StoreViewModel {
     }
 
     func getDeliveryTimeAndCostCombineString() -> String {
-        return deliveryTimeDisplay + " • " + costDisplay
+        return deliveryTimeDisplay + " • " + costDisplayLong
     }
 }
 
@@ -113,6 +131,7 @@ extension StoreViewModel {
             return BrowseFoodAllStoreMenuItem(imageURL: url)
         }
         return BrowseFoodAllStoreItem(
+            storeID: String(model.id),
             menuItems: menuItems,
             storeName: nameDisplay,
             priceAndCuisine: storeDescriptionDisplay,
@@ -121,7 +140,7 @@ extension StoreViewModel {
             shouldHighlightRating: shouldHighlightRating,
             deliveryTime: isClosed ? openTimeDisplay ?? ""
                 : deliveryTimeDisplay,
-            deliveryCost: costDisplay,
+            deliveryCost: costDisplayLong,
             isClosed: isClosed,
             shouldAddTopInset: shouldAddInset,
             closeTimeDisplay: closeTimeDisplay)

@@ -167,13 +167,10 @@ public struct Money: Comparable {
     }
 
     public var isBelowMinBalanceToTakeRide: Bool {
-        //TODO: Localize - works for USD + CHF + EUR
         return cents < 50
     }
 }
 
-
-//TODO: Support comparing different Money currency types
 public func < (lhs: Money, rhs: Money) -> Bool {
     return lhs.cents < rhs.cents
 }

@@ -16,19 +16,19 @@ final class SegmentNavigateView: UIScrollView {
     let titleSelectedFont: UIFont = ApplicationDependency.manager.theme.fontSchema.bold16
     let titleSelectedColor: UIColor = ApplicationDependency.manager.theme.colors.doorDashRed
     let sliderViewHeight: CGFloat = 4
+    var currentIndex: Int = 0
 
     private var buttonWidthDict: [Int: CGFloat] = [:]
     private let viewHeight: CGFloat
-    private let titles: [String]
     private let slider: UIView
     private let separator: Separator
     private var selectedButton: UIButton?
     private var allButtons: [UIButton] = []
+    private var titles: [String] = []
 
-    init(titles: [String], frame: CGRect) {
+    override init(frame: CGRect) {
         self.slider = UIView()
         self.viewHeight = frame.height
-        self.titles = titles
         self.separator = Separator.create()
         super.init(frame: frame)
         setupUI()
@@ -38,26 +38,35 @@ final class SegmentNavigateView: UIScrollView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc
-    func titleButtonSelected(sender: UIButton!) {
-        adjustUI(currButton: sender)
+    func setTitles(titles: [String]) {
+        self.titles = titles
+        self.setupButtons()
+        self.layoutIfNeeded()
     }
 
-    func adjustUI(currButton: UIButton) {
+    @objc
+    func titleButtonSelected(sender: UIButton!) {
+        adjustUI(currButton: sender, index: sender.tag)
+    }
+
+    func adjustUI(currButton: UIButton, index: Int) {
         self.selectedButton?.isSelected = false
         currButton.isSelected = true
         currButton.titleLabel?.font = titleSelectedFont
         self.selectedButton?.titleLabel?.font = titleFont
         let sliderWidth = self.buttonWidthDict[currButton.tag] ?? 0
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: 0.2,
+                       delay: 0,
+                       options: [.curveEaseInOut],
+                       animations: {
             let frame = self.slider.frame
             self.slider.frame = CGRect(
                 x: frame.minX, y: frame.minY,
                 width: sliderWidth, height: frame.height
             )
             self.slider.center.x = currButton.center.x
-        }
-
+        })
+        self.currentIndex = index
         self.selectedButton = currButton
         var offsetX = currButton.frame.origin.x - 10
         if offsetX > self.contentSize.width - self.frame.size.width {
@@ -70,7 +79,10 @@ final class SegmentNavigateView: UIScrollView {
     }
 
     func scrollTo(index buttonTag: Int) {
-        adjustUI(currButton: allButtons[buttonTag])
+        guard buttonTag != currentIndex else {
+            return
+        }
+        adjustUI(currButton: allButtons[buttonTag], index: buttonTag)
     }
 }
 
@@ -80,11 +92,11 @@ extension SegmentNavigateView {
         setupScrollViewProperties()
         setupSeparator()
         setupSlider()
-        setupButtons()
     }
 
     private func setupSeparator() {
         self.addSubview(separator)
+        separator.backgroundColor = ApplicationDependency.manager.theme.colors.separatorGray.withAlphaComponent(0.7)
     }
 
     private func setupScrollViewProperties() {
@@ -138,9 +150,23 @@ extension SegmentNavigateView {
         }
         totalWidth = totalWidth + buttonSpace
         separator.frame = CGRect(
-            x: 0, y: viewHeight - sliderViewHeight / 2 - 0.25,
-            width: max(self.frame.width, totalWidth), height: 0.5
+            x: 0, y: viewHeight - sliderViewHeight / 2 - 0.2,
+            width: max(self.frame.width, totalWidth), height: 0.4
         )
+        var containerWidth = totalWidth
+        if totalWidth < self.frame.width {
+            containerWidth = self.frame.width
+        }
+        let container = UIView(frame: CGRect(
+            x: 0, y: 0,
+            width: containerWidth, height: viewHeight - 2 - 0.5)
+        )
+        container.backgroundColor = ApplicationDependency.manager.theme.colors.white
+        self.addSubview(container)
+        for button in allButtons {
+            self.bringSubviewToFront(button)
+        }
+        self.bringSubviewToFront(slider)
         self.contentSize = CGSize(width: totalWidth, height: 0)
     }
 
