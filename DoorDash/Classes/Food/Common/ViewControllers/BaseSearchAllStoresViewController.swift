@@ -58,7 +58,6 @@ class BaseSearchAllStoresViewController: BaseViewController {
         setupLoadingIndicator()
         setupConstraints()
     }
-
 }
 
 extension BaseSearchAllStoresViewController {
@@ -66,6 +65,10 @@ extension BaseSearchAllStoresViewController {
     private func setupNavigationBar() {
         self.view.addSubview(navigationBar)
         navigationBar.bottomLine.isHidden = true
+        navigationBar.setLeftButton(normal: theme.imageAssets.backTriangleIcon,
+                                    highlighted: theme.imageAssets.backTriangleIcon,
+                                    title: "Back",
+                                    titleColor: theme.colors.doorDashRed)
     }
 
     private func setupLoadingIndicator() {

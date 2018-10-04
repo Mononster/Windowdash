@@ -21,6 +21,8 @@ final class StoreCarouselLargeDisplayCell: UICollectionViewCell {
     static let width: CGFloat = UIScreen.main.bounds.width - 2 * BrowseFoodViewModel.UIConfigure.homePageLeadingSpace
     static let titleFont: UIFont = ApplicationDependency.manager.theme.fontSchema.bold18
 
+    var didSelectItem: (() -> ())?
+
     override init(frame: CGRect) {
         cuisineImageView = UIImageView()
         title = UILabel()
@@ -48,6 +50,10 @@ final class StoreCarouselLargeDisplayCell: UICollectionViewCell {
             highQualityURL: nil
         )
     }
+
+    @objc func userTappedCell() {
+        self.didSelectItem?()
+    }
 }
 
 extension StoreCarouselLargeDisplayCell {
@@ -58,6 +64,8 @@ extension StoreCarouselLargeDisplayCell {
         setupConstraints()
         self.layoutIfNeeded()
         self.cuisineImageView.layer.cornerRadius = 3
+        let tap = UITapGestureRecognizer(target: self, action: #selector(userTappedCell))
+        self.addGestureRecognizer(tap)
     }
 
     private func setupImageView() {

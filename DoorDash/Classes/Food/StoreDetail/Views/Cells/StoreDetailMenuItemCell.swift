@@ -54,6 +54,7 @@ final class StoreDetailMenuItemCell: UICollectionViewCell {
         }
         self.itemDescriptionLabel.text = itemDescription
         self.popularIndicatorLabel.text = popularTag
+        self.popularIndicatorLabel.isHidden = popularTag == nil
         updateCellConstraints(showItemImage: imageURL != nil)
     }
 
@@ -156,7 +157,7 @@ extension StoreDetailMenuItemCell {
         }
 
         itemNameLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(popularIndicatorLabel.snp.bottom).offset(4)
+            make.top.equalTo(popularIndicatorLabel.snp.bottom).offset(2)
             make.leading.trailing.equalTo(itemImageView)
         }
 

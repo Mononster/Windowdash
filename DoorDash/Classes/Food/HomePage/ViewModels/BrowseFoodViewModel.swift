@@ -172,6 +172,7 @@ extension BrowseFoodViewModel {
         sectionData.append(StoreCarouselItems(
             id: section.id,
             items: [StoreCarouselItem(
+                id: String(firstStore.model.id),
                 imageURL: url,
                 title: firstStore.nameDisplay,
                 subTitle: firstStore.getDeliveryTimeAndCostCombineString()
@@ -210,7 +211,9 @@ extension BrowseFoodViewModel {
                 )
             }
             items.append(StoreCarouselItem(
-                imageURL: url, title: store.nameDisplay,
+                id: String(store.model.id),
+                imageURL: url,
+                title: store.nameDisplay,
                 subTitle: store.getDeliveryTimeAndCostCombineString()
             ))
             count += 1

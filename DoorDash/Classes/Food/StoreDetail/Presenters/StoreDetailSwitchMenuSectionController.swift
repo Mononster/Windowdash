@@ -19,9 +19,15 @@ final class StoreDetailSwitchMenuPresentingModel: NSObject, ListDiffable {
     }
 }
 
+protocol StoreDetailSwitchMenuSectionControllerDelegate: class {
+    func userTappedSwitchMenu()
+}
+
 final class StoreDetailSwitchMenuSectionController: ListSectionController {
 
     private var model: StoreDetailSwitchMenuPresentingModel?
+
+    weak var delegate: StoreDetailSwitchMenuSectionControllerDelegate?
 
     override func numberOfItems() -> Int {
         return 1
@@ -38,6 +44,9 @@ final class StoreDetailSwitchMenuSectionController: ListSectionController {
             of: StoreDetailSwitchMenuCell.self, for: self, at: index)
             as? StoreDetailSwitchMenuCell else {
                 fatalError()
+        }
+        cell.userTappedSwitchMenu = {
+            self.delegate?.userTappedSwitchMenu()
         }
         return cell
     }

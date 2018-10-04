@@ -24,6 +24,7 @@ protocol ImageAsset {
     var starDarkGray: UIImage { get }
     var ratingStarFull: UIImage { get }
     var ratingStarEmpty: UIImage { get }
+    var backTriangleIcon: UIImage { get }
 }
 
 struct DefaultImageAsset: ImageAsset {
@@ -85,5 +86,9 @@ struct DefaultImageAsset: ImageAsset {
 
     var ratingStarEmpty: UIImage {
         return UIImage(named: "rating_star_empty")!
+    }
+
+    var backTriangleIcon: UIImage {
+        return UIImage(named: "back_triangle")!
     }
 }

@@ -21,7 +21,7 @@ final class CuratedCategoryAllStoresCoordinator: Coordinator {
     }
 
     func start() {
-
+        self.rootViewController.delegate = self
     }
 
     func toPresentable() -> UIViewController {
@@ -29,3 +29,20 @@ final class CuratedCategoryAllStoresCoordinator: Coordinator {
     }
 }
 
+extension CuratedCategoryAllStoresCoordinator: CuratedCategoryAllStoresViewControllerDelegate {
+    func dismiss() {
+        self.router.popModule()
+    }
+
+    func showDetailStorePage(id: String) {
+        let coordinator = StoreDetailCoordinator(
+            rootViewController: StoreDetailViewController(storeID: id),
+            router: self.router
+        )
+        coordinator.start()
+        addCoordinator(coordinator)
+        self.router.push(coordinator, animated: true) {
+            self.removeCoordinator(coordinator)
+        }
+    }
+}

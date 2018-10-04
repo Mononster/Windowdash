@@ -26,6 +26,8 @@ final class SegmentNavigateView: UIScrollView {
     private var allButtons: [UIButton] = []
     private var titles: [String] = []
 
+    var buttonTapped: ((Int) -> ())?
+
     override init(frame: CGRect) {
         self.slider = UIView()
         self.viewHeight = frame.height
@@ -47,6 +49,7 @@ final class SegmentNavigateView: UIScrollView {
     @objc
     func titleButtonSelected(sender: UIButton!) {
         adjustUI(currButton: sender, index: sender.tag)
+        self.buttonTapped?(sender.tag)
     }
 
     func adjustUI(currButton: UIButton, index: Int) {
@@ -116,6 +119,11 @@ extension SegmentNavigateView {
     }
 
     private func setupButtons() {
+        for button in allButtons {
+            button.removeFromSuperview()
+        }
+        allButtons.removeAll()
+        buttonWidthDict.removeAll()
         var totalWidth: CGFloat = 15
         let buttonSpace: CGFloat = 15
         let maxTitleWidth: CGFloat = self.frame.width / 2

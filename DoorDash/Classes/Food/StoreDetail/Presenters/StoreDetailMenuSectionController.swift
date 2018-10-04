@@ -79,11 +79,16 @@ final class StoreDetailMenuPresentingModel: NSObject, ListDiffable {
     }
 }
 
+protocol StoreDetailMenuSectionControllerDelegate: class {
+    func navigatorButtonTapped(index: Int)
+}
+
 final class StoreDetailMenuSectionController: ListSectionController {
 
     private var model: StoreDetailMenuPresentingModel?
-
     var menuNavigator: SegmentNavigateView?
+
+    weak var delegate: StoreDetailMenuSectionControllerDelegate?
 
     override init() {
         super.init()
@@ -167,6 +172,9 @@ extension StoreDetailMenuSectionController: ListSupplementaryViewSource {
         }
         cell.setupCell(navigatorTitles: model.menuTitles)
         menuNavigator = cell.segmentNavigateView
+        menuNavigator?.buttonTapped = { index in
+            self.delegate?.navigatorButtonTapped(index: index)
+        }
         return cell
     }
 

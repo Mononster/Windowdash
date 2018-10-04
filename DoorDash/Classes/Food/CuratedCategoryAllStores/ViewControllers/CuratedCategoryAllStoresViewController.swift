@@ -10,9 +10,16 @@ import UIKit
 import SnapKit
 import IGListKit
 
+protocol CuratedCategoryAllStoresViewControllerDelegate: class {
+    func dismiss()
+    func showDetailStorePage(id: String)
+}
+
 final class CuratedCategoryAllStoresViewController: BaseSearchAllStoresViewController {
 
     private let viewModel: CuratedCategoryAllStoresViewModel
+
+    weak var delegate: CuratedCategoryAllStoresViewControllerDelegate?
 
     init(viewModel: CuratedCategoryAllStoresViewModel) {
         self.viewModel = viewModel
@@ -28,6 +35,7 @@ final class CuratedCategoryAllStoresViewController: BaseSearchAllStoresViewContr
     override func viewDidLoad() {
         super.viewDidLoad()
         bindModels()
+        setupActions()
     }
 
     override func setupUI() {
@@ -50,6 +58,12 @@ final class CuratedCategoryAllStoresViewController: BaseSearchAllStoresViewContr
             }
         }
     }
+
+    private func setupActions() {
+        navigationBar.onClickLeftButton = {
+            self.delegate?.dismiss()
+        }
+    }
 }
 
 extension CuratedCategoryAllStoresViewController: ListAdapterDataSource {
@@ -70,6 +84,9 @@ extension CuratedCategoryAllStoresViewController: ListAdapterDataSource {
                 addInset: item.shouldAddTopInset,
                 menuLayout: .centerTwoItems
             )
+            controller.didSelectItem = { storeID in
+                self.delegate?.showDetailStorePage(id: storeID)
+            }
             controller.edgeSwipeBackGesture = self.navigationController?.interactivePopGestureRecognizer
             return controller
         default:

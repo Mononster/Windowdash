@@ -16,6 +16,7 @@ struct MenuItem: Codable {
         case itemDescription = "description"
         case imageURL = "image_url"
         case priceMonetaryFields = "price_monetary_fields"
+        case isActive = "is_active"
     }
 
     public enum MoneyFieldCodingKeys: String, CodingKey {
@@ -29,19 +30,22 @@ struct MenuItem: Codable {
     let imageURL: String
     let price: Money
     let priceDisplay: String
+    let isActive: Bool
 
     init(id: Int64,
          name: String,
          itemDescription: String?,
          imageURL: String,
          price: Money,
-         priceDisplay: String) {
+         priceDisplay: String,
+         isActive: Bool) {
         self.id = id
         self.name = name
         self.itemDescription = itemDescription
         self.imageURL = imageURL
         self.price = price
         self.priceDisplay = priceDisplay
+        self.isActive = isActive
     }
 
     init(from decoder: Decoder) throws {
@@ -53,12 +57,14 @@ struct MenuItem: Codable {
         let moneyContainer = try values.nestedContainer(keyedBy: MoneyFieldCodingKeys.self, forKey: .priceMonetaryFields)
         let moneyCents: Int64 = try moneyContainer.decodeIfPresent(Int64.self, forKey: .unitAmount) ?? 0
         let moneyDisplayString: String = try moneyContainer.decodeIfPresent(String.self, forKey: .displayString) ?? "$0.00"
+        let isActive: Bool = try values.decodeIfPresent(Bool.self, forKey: .isActive) ?? false
         self.init(id: id,
                   name: name,
                   itemDescription: itemDescription,
                   imageURL: imageURL,
                   price: Money(cents: moneyCents, currency: .USD),
-                  priceDisplay: moneyDisplayString)
+                  priceDisplay: moneyDisplayString,
+                  isActive: isActive)
     }
 
     func encode(to encoder: Encoder) throws {}
@@ -143,7 +149,15 @@ struct StoreMenu: Codable {
         let subTitle: String = try values.decodeIfPresent(String.self, forKey: .subTitle) ?? ""
         let featuredItems: [MenuItem] = try values.decodeIfPresent([MenuItem].self, forKey: .featuredItems) ?? []
         let popularItems: [MenuItem] = try values.decodeIfPresent([MenuItem].self, forKey: .popularItems) ?? []
-        let categories: [MenuCategory] = try values.decodeIfPresent([MenuCategory].self, forKey: .categories) ?? []
+        var categories: [MenuCategory] = try values.decodeIfPresent([MenuCategory].self, forKey: .categories) ?? []
+        if popularItems.count > 0 {
+            categories.insert(MenuCategory(
+                id: 1, name: "Popular Items",
+                title: "Popular Items",
+                subTitle: "The most commonly ordered items and dishes from this store",
+                items: popularItems), at: 0
+            )
+        }
         self.init(id: id,
                   name: name,
                   subTitle: subTitle,

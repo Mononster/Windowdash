@@ -11,11 +11,13 @@ import UIKit
 
 final class StoreCarouselItem: NSObject, ListDiffable {
 
+    let id: String
     let imageURL: URL
     let title: String
     let subTitle: String
 
-    init(imageURL: URL, title: String, subTitle: String) {
+    init(id: String, imageURL: URL, title: String, subTitle: String) {
+        self.id = id
         self.imageURL = imageURL
         self.title = title
         self.subTitle = subTitle
@@ -68,6 +70,7 @@ final class StoreCarouselSectionController: ListSectionController {
     private var items: StoreCarouselItems?
 
     var seeAllButtonTapped: ((String, String, String?) -> ())?
+    var didSelectItem: ((String) -> ())?
 
     override init() {
         super.init()
@@ -105,6 +108,9 @@ final class StoreCarouselSectionController: ListSectionController {
             }
             let model = (imageURL: item.imageURL, title: item.title, subTitle: item.subTitle)
             cell.setupCell(model: model)
+            cell.didSelectItem = {
+                self.didSelectItem?(item.id)
+            }
             return cell
         } else if index == 1 {
             guard let cell = collectionContext?.dequeueReusableCell(
@@ -118,6 +124,13 @@ final class StoreCarouselSectionController: ListSectionController {
             let modelA = (imageURL: itemA.imageURL, title: itemA.title, subTitle: itemA.subTitle)
             let modelB = (imageURL: itemB.imageURL, title: itemB.title, subTitle: itemB.subTitle)
             cell.setupCell(firstStoreModel: modelA, secondStoreModel: modelB)
+            cell.didSelectItem = { index in
+                if index == 0 {
+                    self.didSelectItem?(itemA.id)
+                } else {
+                    self.didSelectItem?(itemB.id)
+                }
+            }
             return cell
         }
         return UICollectionViewCell()

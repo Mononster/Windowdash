@@ -70,6 +70,7 @@ final class CustomNavigationBar: UIView {
         let button = UIButton()
         button.imageView?.contentMode = .center
         button.isHidden = true
+        button.contentHorizontalAlignment = .left
         button.addTarget(self, action: #selector(clickBack), for: .touchUpInside)
         return button
     }()
@@ -128,9 +129,9 @@ final class CustomNavigationBar: UIView {
 
     func updateFrame() {
         let top: CGFloat = UIDevice.current.hasNotch ? 44 : 20
-        let margin: CGFloat = 0
+        let margin: CGFloat = 12
         let buttonHeight: CGFloat = 44
-        let buttonWidth: CGFloat = 44
+        let buttonWidth: CGFloat = 120
         let titleLabelHeight: CGFloat = 44
         let titleLabelWidth: CGFloat = 180
         
@@ -216,15 +217,17 @@ extension CustomNavigationBar {
         setRightButton(normal: nil, highlighted: nil, title: title, titleColor: titleColor)
     }
 
-    private func setLeftButton(normal: UIImage?, highlighted: UIImage?, title: String?, titleColor: UIColor?) {
+    func setLeftButton(normal: UIImage?, highlighted: UIImage?, title: String?, titleColor: UIColor?) {
         leftButton.isHidden = false
         leftButton.setImage(normal, for: .normal)
         leftButton.setImage(highlighted, for: .highlighted)
         leftButton.setTitle(title, for: .normal)
         leftButton.setTitleColor(titleColor, for: .normal)
+        leftButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)
+        leftButton.titleLabel?.font = ApplicationDependency.manager.theme.fontSchema.medium18
     }
 
-    private func setRightButton(normal: UIImage?, highlighted: UIImage?, title: String?, titleColor: UIColor?) {
+    func setRightButton(normal: UIImage?, highlighted: UIImage?, title: String?, titleColor: UIColor?) {
         rightButton.isHidden = false
         rightButton.setImage(normal, for: .normal)
         rightButton.setImage(highlighted, for: .highlighted)
@@ -237,48 +240,11 @@ extension CustomNavigationBar {
     @objc func clickBack() {
         if let onClickBack = onClickLeftButton {
             onClickBack()
-        } else {
-            let currentVC = UIViewController.currentViewController()
-            currentVC.toLastViewController(animated: true)
         }
     }
     @objc func clickRight() {
         if let onClickRight = onClickRightButton {
             onClickRight()
-        }
-    }
-}
-
-extension UIViewController {
-    func toLastViewController(animated: Bool) {
-        if self.navigationController != nil {
-            if self.navigationController?.viewControllers.count == 1 {
-                self.dismiss(animated: animated, completion: nil)
-            } else {
-                self.navigationController?.popViewController(animated: animated)
-            }
-        } else if self.presentingViewController != nil {
-            self.dismiss(animated: animated, completion: nil)
-        }
-    }
-
-    class func currentViewController() -> UIViewController {
-        if let rootVC = UIApplication.shared.delegate?.window??.rootViewController {
-            return self.currentViewController(from: rootVC)
-        } else {
-            return UIViewController()
-        }
-    }
-
-    class func currentViewController(from fromVC: UIViewController) -> UIViewController {
-        if let navigationController = fromVC as? UINavigationController {
-            return currentViewController(from: navigationController.viewControllers.last!)
-        } else if let tabBarController = fromVC as? UITabBarController {
-            return currentViewController(from: tabBarController.selectedViewController!)
-        } else if let presentingViewController = fromVC.presentedViewController {
-            return currentViewController(from: presentingViewController)
-        } else {
-            return fromVC
         }
     }
 }

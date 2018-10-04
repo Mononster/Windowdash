@@ -15,6 +15,8 @@ final class MenuItemViewModel {
     let nameDisplay: String
     let itemDescriptionDisplay: String?
     let imageURL: URL?
+    let isActive: Bool
+    var isPopular: Bool = false
 
     init(item: MenuItem) {
         self.model = item
@@ -22,5 +24,6 @@ final class MenuItemViewModel {
         self.nameDisplay = model.name
         self.itemDescriptionDisplay = model.itemDescription
         self.imageURL = URL(string: model.imageURL)
+        self.isActive = item.isActive
     }
 }

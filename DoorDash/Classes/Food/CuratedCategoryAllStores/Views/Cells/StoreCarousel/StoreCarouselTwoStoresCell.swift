@@ -100,6 +100,8 @@ final class StoreCarouselTwoStoresCell: UICollectionViewCell {
     private let firstStore: StoreCarouselSingleStoreView
     private let secondStore: StoreCarouselSingleStoreView
 
+    var didSelectItem: ((Int) -> ())?
+
     static let width: CGFloat = (UIScreen.main.bounds.width - 18 * 2 - 12) / 2
 
     override init(frame: CGRect) {
@@ -123,6 +125,16 @@ final class StoreCarouselTwoStoresCell: UICollectionViewCell {
         self.firstStore.setupView(model: firstStoreModel)
         self.secondStore.setupView(model: secondStoreModel)
     }
+
+    @objc
+    func firstStoreTapped() {
+        self.didSelectItem?(0)
+    }
+
+    @objc
+    func secondStoreTapped() {
+        self.didSelectItem?(1)
+    }
 }
 
 extension StoreCarouselTwoStoresCell {
@@ -135,6 +147,11 @@ extension StoreCarouselTwoStoresCell {
     private func setupStores() {
         addSubview(firstStore)
         addSubview(secondStore)
+
+        let firstStoreTap = UITapGestureRecognizer(target: self, action: #selector(firstStoreTapped))
+        let secondStoreTap = UITapGestureRecognizer(target: self, action: #selector(secondStoreTapped))
+        firstStore.addGestureRecognizer(firstStoreTap)
+        secondStore.addGestureRecognizer(secondStoreTap)
     }
 
     private func setupConstraints() {

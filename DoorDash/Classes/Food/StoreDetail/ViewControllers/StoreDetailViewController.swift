@@ -10,6 +10,10 @@ import UIKit
 import IGListKit
 import SnapKit
 
+protocol StoreDetailViewControllerDelegate: class {
+    func dismiss()
+}
+
 final class StoreDetailViewController: BaseViewController {
 
     lazy var adapter: ListAdapter = {
@@ -21,6 +25,8 @@ final class StoreDetailViewController: BaseViewController {
     private let collectionView: UICollectionView
     private let viewModel: StoreDetailViewModel
     private let menuPresenter: StoreDetailMenuSectionController
+
+    weak var delegate: StoreDetailViewControllerDelegate?
 
     init(storeID: String) {
         let layout = UICollectionViewFlowLayout()
@@ -36,6 +42,7 @@ final class StoreDetailViewController: BaseViewController {
         skeletonLoadingView = SkeletonLoadingView()
         menuPresenter = StoreDetailMenuSectionController()
         super.init()
+        menuPresenter.delegate = self
         adapter.dataSource = self
         adapter.scrollViewDelegate = self
     }
@@ -48,6 +55,7 @@ final class StoreDetailViewController: BaseViewController {
         super.viewDidLoad()
         setupUI()
         bindModels()
+        setupActions()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -62,6 +70,12 @@ final class StoreDetailViewController: BaseViewController {
                 return
             }
             self.adapter.performUpdates(animated: true)
+        }
+    }
+
+    private func setupActions() {
+        navigationBar.onClickLeftButton = {
+            self.delegate?.dismiss()
         }
     }
 }
@@ -79,6 +93,10 @@ extension StoreDetailViewController {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.view.addSubview(navigationBar)
         navigationBar.bottomLine.isHidden = true
+        navigationBar.setLeftButton(normal: theme.imageAssets.backTriangleIcon,
+                                    highlighted: theme.imageAssets.backTriangleIcon,
+                                    title: "Back",
+                                    titleColor: theme.colors.doorDashRed)
     }
 
     private func setupCollectionView() {
@@ -112,11 +130,59 @@ extension StoreDetailViewController: UIScrollViewDelegate {
         for menuControl in viewModel.menuControls {
             if menuControl.withinRange(pos: offset) {
                 // scroll to this cell
-                print("Section Index: \(menuControl.sectionIndex) \(menuControl.debugName)")
+                //print("Section Index: \(menuControl.sectionIndex) \(menuControl.debugName)")
                 menuPresenter.adjustMenuNavigator(section: menuControl.sectionIndex)
                 break
             }
         }
+    }
+}
+
+extension StoreDetailViewController: StoreDetailMenuSectionControllerDelegate {
+
+    func navigatorButtonTapped(index: Int) {
+        let overViewOffset = viewModel.heightForOverallSection
+        var menuSectionOffset: CGFloat = 0
+        for menuControl in viewModel.menuControls {
+            if menuControl.sectionIndex == index {
+                menuSectionOffset = menuControl.sectionStartPos
+            }
+        }
+        let offsetX = self.collectionView.contentOffset.x
+        self.collectionView.setContentOffset(
+            CGPoint(x: offsetX, y: overViewOffset + menuSectionOffset),
+            animated: true
+        )
+
+        // Hacky way of not triggering scroll view did scroll
+        // might consider some better ways in the future.
+        adapter.scrollViewDelegate = nil
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.adapter.scrollViewDelegate = self
+        }
+    }
+}
+
+extension StoreDetailViewController: StoreDetailSwitchMenuSectionControllerDelegate {
+    
+    func userTappedSwitchMenu() {
+        let alert = UIAlertController(
+            title: viewModel.getStoreDisplayName(), message: nil,
+            preferredStyle: .actionSheet
+        )
+        let menuTitles = viewModel.generateSwitchMenuTitles()
+        for key in menuTitles.keys {
+            alert.addAction(UIAlertAction(title: key, style: .destructive, handler: { action in
+                if let index = menuTitles[action.title ?? ""] {
+                    self.viewModel.switchMenuWith(index: index)
+                    self.adapter.performUpdates(animated: false)
+                }
+            }))
+        }
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel)
+        cancelAction.setValue(theme.colors.doorDashRed, forKey: "titleTextColor")
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -131,7 +197,9 @@ extension StoreDetailViewController: ListAdapterDataSource {
         case is StoreDetailOverviewPresentingModel:
             return StoreDetailOverviewSectionController()
         case is StoreDetailSwitchMenuPresentingModel:
-            return StoreDetailSwitchMenuSectionController()
+            let controller = StoreDetailSwitchMenuSectionController()
+            controller.delegate = self
+            return controller
         case is StoreDetailMenuPresentingModel:
             return menuPresenter
         default:

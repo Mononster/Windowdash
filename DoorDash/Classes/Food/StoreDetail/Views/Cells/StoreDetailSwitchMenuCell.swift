@@ -16,15 +16,28 @@ final class StoreDetailSwitchMenuCell: UICollectionViewCell {
 
     static let height: CGFloat = 16 + 25 + 16
 
+    var userTappedSwitchMenu: (() -> ())?
+
     override init(frame: CGRect) {
         currentMenuTypeLabel = UILabel()
         switchMenuLabel = UILabel()
         super.init(frame: frame)
         setupUI()
+        setupAction()
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupAction() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(switchMenuLabelTapped))
+        switchMenuLabel.addGestureRecognizer(tap)
+    }
+
+    @objc
+    func switchMenuLabelTapped() {
+        self.userTappedSwitchMenu?()
     }
 }
 
@@ -53,6 +66,7 @@ extension StoreDetailSwitchMenuCell {
         switchMenuLabel.minimumScaleFactor = 0.5
         switchMenuLabel.numberOfLines = 1
         switchMenuLabel.text = "Switch Menu"
+        switchMenuLabel.isUserInteractionEnabled = true
     }
 
     private func setupConstraints() {

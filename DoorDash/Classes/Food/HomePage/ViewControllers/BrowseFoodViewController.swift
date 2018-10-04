@@ -146,6 +146,9 @@ extension BrowseFoodViewController: ListAdapterDataSource {
             controller.seeAllButtonTapped = { id, name, description in
                 self.delegate?.showCuratedCategoryAllStores(id: id, name: name, description: description)
             }
+            controller.didSelectItem = { storeID in
+                self.delegate?.showDetailStorePage(id: storeID)
+            }
             return controller
         case is BrowseFoodAllStoreItem:
             guard let item = object as? BrowseFoodAllStoreItem else {

@@ -43,6 +43,7 @@ final class StoreDetailViewModel: PresentableViewModel {
     private let storeID: String
     private var store: StoreViewModel?
     private var storeMenus: [StoreMenuViewModel] = []
+    private var currentDisplayMenu: StoreMenuViewModel?
 
     var sectionData: [ListDiffable] = []
     var menuControls: [StoreDetailMenuSectionControlModel] = []
@@ -54,7 +55,24 @@ final class StoreDetailViewModel: PresentableViewModel {
     }
 
     func generateSectionData() {
-        guard let store = store, let menu = storeMenus.first else {
+        guard let currentMenu = currentDisplayMenu else {
+            return
+        }
+        configureMenuData(menu: currentMenu)
+    }
+    
+    func switchMenuWith(index: Int) {
+        guard let menu = storeMenus[safe: index] else {
+            return
+        }
+        self.sectionData.removeAll()
+        self.menuControls.removeAll()
+        self.heightForOverallSection = 0
+        configureMenuData(menu: menu)
+    }
+
+    func configureMenuData(menu: StoreMenuViewModel) {
+        guard let store = store else {
             return
         }
         let storeOverviewModel = StoreDetailOverviewPresentingModel(
@@ -70,7 +88,7 @@ final class StoreDetailViewModel: PresentableViewModel {
         sectionData.append(storeOverviewModel)
         sectionData.append(StoreDetailSwitchMenuPresentingModel())
         var sectionItems: [StoreDetailMenuItemModel] = []
-        var heightRecord: CGFloat = 0
+        var heightRecord: CGFloat = 2
         var cellIndex: Int = 0
         for (i, category) in menu.categories.enumerated() {
             var sectionHeight: CGFloat = heightRecord
@@ -96,7 +114,7 @@ final class StoreDetailViewModel: PresentableViewModel {
                         itemDescription: itemDescription,
                         imageURL: item.imageURL,
                         price: item.priceDisplay,
-                        popularTag: nil
+                        popularTag: item.isPopular ? "POPULAR" : nil
                     )
                 )
                 sectionHeight += StoreDetailViewModel.getSizeForModel(item: model).height
@@ -122,6 +140,22 @@ final class StoreDetailViewModel: PresentableViewModel {
         heightForOverallSection = getHeightForStoreOverallInfo()
     }
 
+    func generateSwitchMenuTitles() -> [String: Int] {
+        var result: [String: Int] = [:]
+        for (i, menu) in self.storeMenus.enumerated() {
+            let toAppend = menu.subTitleDisplay == "" ? menu.nameDisplay : menu.subTitleDisplay
+            result[toAppend] = i
+        }
+        return result
+    }
+
+    func getStoreDisplayName() -> String {
+        return self.store?.businessNameDisplay ?? ""
+    }
+}
+
+extension StoreDetailViewModel {
+
     func fetchStore(completion: @escaping (String?) -> ()) {
         let tasks = DispatchGroup()
         var mostRecentErrorMsg: String = "Something went wrong."
@@ -144,6 +178,15 @@ final class StoreDetailViewModel: PresentableViewModel {
             }
             tasks.leave()
         }
+        tasks.enter()
+        fetchCurrentMenu { (errorMsg) in
+            if let errorMsg = errorMsg {
+                log.error(errorMsg)
+                mostRecentErrorMsg = errorMsg
+                taskSucceeds = false
+            }
+            tasks.leave()
+        }
         tasks.notify(queue: .main) {
             if taskSucceeds {
                 self.generateSectionData()
@@ -154,7 +197,7 @@ final class StoreDetailViewModel: PresentableViewModel {
         }
     }
 
-    func fetchStoreOverview(completion: @escaping (String?) -> ()) {
+    private func fetchStoreOverview(completion: @escaping (String?) -> ()) {
         let request = FetchStoreOverviewRequestModel(storeID: storeID)
         service.fetchStoreOverview(request: request) { (store, error) in
             if let error = error as? SearchStoreDetailAPIServiceError {
@@ -170,7 +213,7 @@ final class StoreDetailViewModel: PresentableViewModel {
         }
     }
 
-    func fetchStoreMenu(completion: @escaping (String?) -> ()) {
+    private func fetchStoreMenu(completion: @escaping (String?) -> ()) {
         let request = FetchStoreMenuRequestModel(storeID: storeID, type: .fullVersion)
         service.fetchStoreMenu(request: request) { (menus, error) in
             if let error = error as? SearchStoreDetailAPIServiceError {
@@ -184,6 +227,22 @@ final class StoreDetailViewModel: PresentableViewModel {
             menus.forEach { menu in
                 self.storeMenus.append(StoreMenuViewModel(menu: menu))
             }
+            completion(nil)
+        }
+    }
+
+    private func fetchCurrentMenu(completion: @escaping (String?) -> ()) {
+        let request = FetchStoreMenuRequestModel(storeID: storeID, type: .shortVersion)
+        service.fetchStoreMenu(request: request) { (menus, error) in
+            if let error = error as? SearchStoreDetailAPIServiceError {
+                completion(error.errorMessage)
+                return
+            }
+            guard let menu = menus.first else {
+                completion("WTF? Menus are empty??")
+                return
+            }
+            self.currentDisplayMenu = StoreMenuViewModel(menu: menu)
             completion(nil)
         }
     }
@@ -221,7 +280,7 @@ extension StoreDetailViewModel {
             width: containerWidth,
             font: StoreDetailMenuItemCell.descriptionLabelFont
         )
-        var baseHeight = 24 + imageViewHeight + 12 + 15 + 4 + 20 + 6 + descriptionHeight + 6 + 20 + 16
+        var baseHeight = 24 + imageViewHeight + 12 + 15 + 2 + 20 + 6 + descriptionHeight + 6 + 20 + 16
         if item.imageURL == nil {
             baseHeight = baseHeight - imageViewHeight - 16
         }

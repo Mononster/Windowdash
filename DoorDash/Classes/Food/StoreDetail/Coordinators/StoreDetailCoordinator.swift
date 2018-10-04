@@ -21,10 +21,17 @@ final class StoreDetailCoordinator: Coordinator {
     }
 
     func start() {
-
+        self.rootViewController.delegate = self
     }
 
     func toPresentable() -> UIViewController {
         return self.rootViewController
+    }
+}
+
+extension StoreDetailCoordinator: StoreDetailViewControllerDelegate {
+
+    func dismiss() {
+        self.router.popModule()
     }
 }
