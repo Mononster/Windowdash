@@ -119,6 +119,7 @@ extension ContentCoordinator {
             userAccountTabCoordinator.toPresentable()
         ]
         self.router.setRootModule(tabBarController, hideBar: true)
+        tabBarController.setupTabItems()
     }
 }
 
