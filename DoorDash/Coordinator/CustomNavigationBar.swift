@@ -10,6 +10,16 @@ enum NavigationBarStyle {
 
 final class CustomNavigationBar: UIView {
 
+    class func create() -> CustomNavigationBar {
+        let bar = CustomNavigationBar(
+            frame: CGRect(x: 0, y: 0,
+                          width: UIScreen.main.bounds.width,
+                          height: ApplicationDependency.manager.theme.navigationBarHeight
+            )
+        )
+        return bar
+    }
+
     var onClickLeftButton: (() -> ())?
     var onClickRightButton: (() -> ())?
 
@@ -195,6 +205,7 @@ extension CustomNavigationBar {
 
     func setLeftButton(normal: UIImage, highlighted: UIImage) {
         setLeftButton(normal: normal, highlighted: highlighted, title: nil, titleColor: nil)
+        leftButton.frame = CGRect(x: 24, y: leftButton.frame.minY, width: leftButton.frame.width, height: leftButton.frame.height)
     }
 
     func setLeftButton(image: UIImage) {

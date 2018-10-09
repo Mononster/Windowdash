@@ -52,6 +52,11 @@ final class BrowseFoodViewController: BaseViewController {
         super.viewDidLoad()
         setupUI()
         bindModels()
+
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+//            ApplicationDependency.manager.coordinator
+//                .getMainTabbarController()?.showCartThumbnailView()
+//        }
     }
 
     override func viewDidAppear(_ animated: Bool) {

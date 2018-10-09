@@ -77,7 +77,7 @@ public enum Currency: String {
     }
 }
 
-public struct Money: Comparable {
+public class Money: Comparable {
     public let currency: Currency
     public var cents: Int64
     public var moneyLocale: Locale = Locale.current
@@ -105,6 +105,10 @@ public struct Money: Comparable {
 
     public var dollarAmount: Decimal {
         return centsAmount / Decimal(currency.centsDivisor)
+    }
+
+    public func add(cents: Int64) {
+        self.cents += cents
     }
 
     public func getLocaleWithCurrencyCode(from currencyCode: String) -> Locale {

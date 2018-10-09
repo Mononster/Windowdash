@@ -8,68 +8,6 @@
 
 import Foundation
 
-struct MenuItem: Codable {
-
-    enum MenuItemCodingKeys: String, CodingKey {
-        case id
-        case name
-        case itemDescription = "description"
-        case imageURL = "image_url"
-        case priceMonetaryFields = "price_monetary_fields"
-        case isActive = "is_active"
-    }
-
-    public enum MoneyFieldCodingKeys: String, CodingKey {
-        case unitAmount = "unit_amount"
-        case displayString = "display_string"
-    }
-
-    let id: Int64
-    let name: String
-    let itemDescription: String?
-    let imageURL: String
-    let price: Money
-    let priceDisplay: String
-    let isActive: Bool
-
-    init(id: Int64,
-         name: String,
-         itemDescription: String?,
-         imageURL: String,
-         price: Money,
-         priceDisplay: String,
-         isActive: Bool) {
-        self.id = id
-        self.name = name
-        self.itemDescription = itemDescription
-        self.imageURL = imageURL
-        self.price = price
-        self.priceDisplay = priceDisplay
-        self.isActive = isActive
-    }
-
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: MenuItemCodingKeys.self)
-        let id: Int64 = try values.decode(Int64.self, forKey: .id)
-        let name: String = try values.decodeIfPresent(String.self, forKey: .name) ?? ""
-        let itemDescription: String? = try values.decodeIfPresent(String.self, forKey: .itemDescription)
-        let imageURL: String = try values.decodeIfPresent(String.self, forKey: .imageURL) ?? ""
-        let moneyContainer = try values.nestedContainer(keyedBy: MoneyFieldCodingKeys.self, forKey: .priceMonetaryFields)
-        let moneyCents: Int64 = try moneyContainer.decodeIfPresent(Int64.self, forKey: .unitAmount) ?? 0
-        let moneyDisplayString: String = try moneyContainer.decodeIfPresent(String.self, forKey: .displayString) ?? "$0.00"
-        let isActive: Bool = try values.decodeIfPresent(Bool.self, forKey: .isActive) ?? false
-        self.init(id: id,
-                  name: name,
-                  itemDescription: itemDescription,
-                  imageURL: imageURL,
-                  price: Money(cents: moneyCents, currency: .USD),
-                  priceDisplay: moneyDisplayString,
-                  isActive: isActive)
-    }
-
-    func encode(to encoder: Encoder) throws {}
-}
-
 struct MenuCategory: Codable {
     enum MenuCategoryCodingKeys: String, CodingKey {
         case id

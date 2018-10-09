@@ -50,7 +50,7 @@ struct FetchStoreMenuRequestModel {
     //https://api.doordash.com/v1/stores/7249/menus/?
     func convertToQueryParams() -> [String: [String]] {
         var result: [String: [String]] = [:]
-        result["extra"] = ["categories", "featured_items", "featured_items.image_url", "popular_items", "popular_items.image_url", "weekly_hours", "categories.num_items", "sells_alcohol", "num_items", "num_product_codes", "categories.items.image_url", "categories.items"]
+        result["extra"] = ["categories", "featured_items", "featured_items.image_url", "popular_items", "popular_items.image_url", "weekly_hours", "categories.num_items", "sells_alcohol", "num_items", "num_product_codes", "categories.items.image_url", "categories.items", "categories.items.is_popular"]
         result["expand"] = ["categories"]
         if type == .fullVersion {
             result["show_nested"] = ["true"]

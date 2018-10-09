@@ -118,6 +118,15 @@ extension AppCoordinator {
     func didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: Data) {
 
     }
+
+    func getMainTabbarController() -> MainTabBarController? {
+        for coordinator in self.coordinators {
+            if let coordinator = coordinator as? ContentCoordinator {
+                return coordinator.tabBarController
+            }
+        }
+        return nil
+    }
 }
 
 extension AppCoordinator: OnboardingCoordinatorDelegate {

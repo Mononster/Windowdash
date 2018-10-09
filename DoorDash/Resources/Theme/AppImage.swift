@@ -25,6 +25,12 @@ protocol ImageAsset {
     var ratingStarFull: UIImage { get }
     var ratingStarEmpty: UIImage { get }
     var backTriangleIcon: UIImage { get }
+    var backRoundIcon: UIImage { get }
+    var buttonCheckmark: UIImage { get }
+    var addItemIcon: UIImage { get }
+    var minusItemIcon: UIImage { get }
+    var addItemUnselectedIcon: UIImage { get }
+    var minusItemUnselecetedIcon: UIImage { get }
 }
 
 struct DefaultImageAsset: ImageAsset {
@@ -90,5 +96,29 @@ struct DefaultImageAsset: ImageAsset {
 
     var backTriangleIcon: UIImage {
         return UIImage(named: "back_triangle")!
+    }
+
+    var backRoundIcon: UIImage {
+        return UIImage(named: "back_round")!
+    }
+
+    var buttonCheckmark: UIImage {
+        return UIImage(named: "button_checkmark")!
+    }
+
+    var addItemIcon: UIImage {
+        return UIImage(named: "add_item")!
+    }
+
+    var minusItemIcon: UIImage {
+        return UIImage(named: "minus_item")!
+    }
+
+    var addItemUnselectedIcon: UIImage {
+        return UIImage(named: "add_item_unselected")!
+    }
+
+    var minusItemUnselecetedIcon: UIImage {
+        return UIImage(named: "minus_item_unselected")!
     }
 }

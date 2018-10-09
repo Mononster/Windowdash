@@ -39,8 +39,8 @@ final class StoreDetailViewModel: PresentableViewModel {
         static let leadingSpace: CGFloat = 16
     }
 
+    let storeID: String
     private let service: SearchStoreDetailAPIService
-    private let storeID: String
     private var store: StoreViewModel?
     private var storeMenus: [StoreMenuViewModel] = []
     private var currentDisplayMenu: StoreMenuViewModel?
@@ -110,6 +110,7 @@ final class StoreDetailViewModel: PresentableViewModel {
                 let model = StoreDetailMenuItemModel(
                     type: .menuItem,
                     menuItem: StoreDetailMenuItemPresentingModel(
+                        id: String(item.model.id),
                         name: item.nameDisplay,
                         itemDescription: itemDescription,
                         imageURL: item.imageURL,

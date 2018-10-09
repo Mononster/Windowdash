@@ -16,17 +16,20 @@ enum StoreDetailMenuCellType {
 }
 
 struct StoreDetailMenuItemPresentingModel {
+    let id: String
     let name: String
     let itemDescription: String?
     let price: String
     let imageURL: URL?
     let popularTag: String?
 
-    init(name: String,
+    init(id: String,
+         name: String,
          itemDescription: String?,
          imageURL: URL?,
          price: String,
          popularTag: String?) {
+        self.id = id
         self.name = name
         self.itemDescription = itemDescription
         self.imageURL = imageURL
@@ -81,6 +84,7 @@ final class StoreDetailMenuPresentingModel: NSObject, ListDiffable {
 
 protocol StoreDetailMenuSectionControllerDelegate: class {
     func navigatorButtonTapped(index: Int)
+    func itemTapped(id: String)
 }
 
 final class StoreDetailMenuSectionController: ListSectionController {
@@ -140,6 +144,13 @@ final class StoreDetailMenuSectionController: ListSectionController {
 
     override func didUpdate(to object: Any) {
         model = object as? StoreDetailMenuPresentingModel
+    }
+
+    override func didSelectItem(at index: Int) {
+        guard let itemID = model?.menuItemModels[safe: index]?.menuItem?.id else {
+            return
+        }
+        self.delegate?.itemTapped(id: itemID)
     }
 }
 

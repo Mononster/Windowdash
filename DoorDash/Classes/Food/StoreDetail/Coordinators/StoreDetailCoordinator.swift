@@ -34,4 +34,14 @@ extension StoreDetailCoordinator: StoreDetailViewControllerDelegate {
     func dismiss() {
         self.router.popModule()
     }
+
+    func showItemDetail(itemID: String, storeID: String) {
+        let coordinator = ItemDetailInfoCoordinator(
+            rootViewController: ItemDetailInfoViewController(itemID: itemID, storeID: storeID, mode: .fromStore),
+            router: Router()
+        )
+        coordinator.start()
+        addCoordinator(coordinator)
+        self.router.present(coordinator)
+    }
 }

@@ -42,6 +42,7 @@ protocol FontSchema {
     var semiBold17: UIFont { get }
     var semiBold20: UIFont { get }
     var semiBold42: UIFont { get }
+    var bold10: UIFont { get }
     var bold12: UIFont { get }
     var bold14: UIFont { get }
     var bold16: UIFont { get }
@@ -58,6 +59,7 @@ protocol FontSchema {
     var heavy18: UIFont { get }
     var extraBold10: UIFont { get }
     var extraBold12: UIFont { get }
+    var extraBold14: UIFont { get }
     var extraBold16: UIFont { get }
     var extraBold17: UIFont { get }
     var extraBold18: UIFont { get }
@@ -157,6 +159,10 @@ struct DefaultFontSchema: FontSchema {
         return font(style: .semiBold, size: 42)
     }
 
+    var bold10: UIFont {
+        return font(style: .bold, size: 10)
+    }
+
     var bold12: UIFont {
         return font(style: .bold, size: 12)
     }
@@ -219,6 +225,10 @@ struct DefaultFontSchema: FontSchema {
 
     var extraBold12: UIFont {
         return font(style: .extraBold, size: 12)
+    }
+
+    var extraBold14: UIFont {
+        return font(style: .extraBold, size: 14)
     }
 
     var extraBold16: UIFont {

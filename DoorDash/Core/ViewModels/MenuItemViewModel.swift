@@ -18,6 +18,8 @@ final class MenuItemViewModel {
     let isActive: Bool
     var isPopular: Bool = false
 
+    let extras: [MenuItemExtraViewModel]
+
     init(item: MenuItem) {
         self.model = item
         self.priceDisplay = model.priceDisplay
@@ -25,5 +27,11 @@ final class MenuItemViewModel {
         self.itemDescriptionDisplay = model.itemDescription
         self.imageURL = URL(string: model.imageURL)
         self.isActive = item.isActive
+        if let isPopular = item.isPopular {
+            self.isPopular = isPopular
+        }
+        self.extras = model.extras.map { extra in
+            return MenuItemExtraViewModel(model: extra)
+        }
     }
 }

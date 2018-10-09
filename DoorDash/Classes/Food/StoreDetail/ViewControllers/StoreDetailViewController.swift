@@ -12,6 +12,7 @@ import SnapKit
 
 protocol StoreDetailViewControllerDelegate: class {
     func dismiss()
+    func showItemDetail(itemID: String, storeID: String)
 }
 
 final class StoreDetailViewController: BaseViewController {
@@ -160,6 +161,10 @@ extension StoreDetailViewController: StoreDetailMenuSectionControllerDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.adapter.scrollViewDelegate = self
         }
+    }
+
+    func itemTapped(id: String) {
+        self.delegate?.showItemDetail(itemID: id, storeID: viewModel.storeID)
     }
 }
 

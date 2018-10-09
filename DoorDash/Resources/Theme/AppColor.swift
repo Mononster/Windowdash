@@ -25,6 +25,8 @@ protocol ColorSchema {
     var linkTextColor: UIColor { get }
     var loadingBackgroundColor: UIColor { get }
     var doordashDarkCyan: UIColor { get }
+    var lightYellow: UIColor { get }
+    var adjustQuantityBorder: UIColor { get }
 }
 
 struct DefaultColors: ColorSchema {
@@ -90,5 +92,13 @@ struct DefaultColors: ColorSchema {
 
     var doordashDarkCyan: UIColor {
         return UIColor.hex("3b8593")
+    }
+
+    var lightYellow: UIColor {
+        return UIColor.hex("f7f273")
+    }
+
+    var adjustQuantityBorder: UIColor {
+        return UIColor.hex("e4e3d7")
     }
 }

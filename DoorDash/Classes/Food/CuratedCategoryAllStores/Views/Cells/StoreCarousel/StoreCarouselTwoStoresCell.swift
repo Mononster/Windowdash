@@ -52,6 +52,7 @@ final class StoreCarouselSingleStoreView: UIView {
     private func setupImageView() {
         addSubview(storeImageView)
         storeImageView.contentMode = .scaleAspectFill
+        storeImageView.isUserInteractionEnabled = true
         self.storeImageView.layer.masksToBounds = true
         let transition = SDWebImageTransition.fade
         transition.duration = 0.3
