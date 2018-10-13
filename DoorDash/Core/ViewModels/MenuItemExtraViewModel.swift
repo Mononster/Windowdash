@@ -30,11 +30,16 @@ final class MenuItemExtraViewModel {
             self.questionDescription = model.extraDescription
         }
 
-        if self.questionDescription == nil
-            && model.minNumOptions == 0
-            && model.selectionMode == .multiSelect
-            && model.maxNumOptions == 1 {
-            self.questionDescription = "Select up to 1 (Optional)"
+        if self.questionDescription == nil && model.selectionMode == .multiSelect {
+            if model.minNumOptions == 0 {
+                self.questionDescription = "Select up to \(model.maxNumOptions) (Optional)"
+            } else {
+                self.questionDescription = "Select \(model.minNumOptions)"
+            }
+        }
+
+        if model.maxNumOptions == 1 && options.count == 1 {
+            self.questionDescription = nil
         }
     }
 }

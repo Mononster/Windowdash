@@ -130,8 +130,8 @@ final class StoreDetailViewModel: PresentableViewModel {
                 startCellIndex: cellIndex,
                 sectionIndex: i,
                 debugName: category.categoryNameDisplay))
-            print("Start: \(heightRecord)")
-            print("End: \(sectionHeight)")
+//            print("Start: \(heightRecord)")
+//            print("End: \(sectionHeight)")
             cellIndex = sectionItems.count
             heightRecord = sectionHeight
         }

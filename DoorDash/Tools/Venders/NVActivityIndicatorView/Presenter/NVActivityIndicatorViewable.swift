@@ -39,21 +39,6 @@ public extension NVActivityIndicatorViewable where Self: UIViewController {
     /// Current status of animation, read-only.
     var isAnimating: Bool { return NVActivityIndicatorPresenter.sharedInstance.isAnimating }
 
-    /**
-     Display UI blocker.
-
-     Appropriate NVActivityIndicatorView.DEFAULT_* values are used for omitted params.
-
-     - parameter size:                 size of activity indicator view.
-     - parameter message:              message displayed under activity indicator view.
-     - parameter messageFont:          font of message displayed under activity indicator view.
-     - parameter type:                 animation type.
-     - parameter color:                color of activity indicator view.
-     - parameter padding:              padding of activity indicator view.
-     - parameter displayTimeThreshold: display time threshold to actually display UI blocker.
-     - parameter minimumDisplayTime:   minimum display time of UI blocker.
-     - parameter fadeInAnimation:      fade in animation.
-     */
     public func startAnimating(
         _ size: CGSize? = nil,
         message: String? = nil,

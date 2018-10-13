@@ -88,22 +88,25 @@ extension AdjustItemQuantityView {
     }
 
     private func setupButtons() {
+        let edge = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         addSubview(minusButton)
         minusButton.contentMode = .center
         minusButton.setImage(ApplicationDependency.manager.theme.imageAssets.minusItemIcon, for: .normal)
         minusButton.backgroundColor = .clear
+        minusButton.imageEdgeInsets = edge
 
         addSubview(addButton)
         addButton.contentMode = .center
         addButton.setImage(ApplicationDependency.manager.theme.imageAssets.addItemIcon, for: .normal)
         addButton.backgroundColor = .clear
+        addButton.imageEdgeInsets = edge
     }
 
     private func setupConstraints() {
         minusButton.snp.makeConstraints { (make) in
             make.leading.equalToSuperview().offset(16)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(20)
+            make.width.height.equalTo(36)
         }
 
         displayLabel.snp.makeConstraints { (make) in
@@ -115,7 +118,7 @@ extension AdjustItemQuantityView {
         addButton.snp.makeConstraints { (make) in
             make.trailing.equalToSuperview().offset(-16)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(20)
+            make.width.height.equalTo(36)
         }
     }
 }

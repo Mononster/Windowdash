@@ -23,4 +23,5 @@ target 'DoorDash' do
   pod 'PhoneNumberKit', '~> 2.1'
   pod 'SkeletonView'
   pod 'SwiftDate'
+  pod 'SwipeCellKit'
 end

@@ -59,8 +59,7 @@ final class Router: NSObject {
 
     func popModule(animated: Bool = true)  {
         if let controller = navigationController.popViewController(animated: animated) {
-            runCompletion(for: controller
-            )
+            runCompletion(for: controller)
         }
     }
 

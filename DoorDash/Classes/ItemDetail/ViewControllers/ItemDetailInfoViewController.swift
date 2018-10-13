@@ -107,10 +107,7 @@ final class ItemDetailInfoViewController: BaseViewController {
             }
             self.updateAddToOrderButtonText()
             self.adapter.performUpdates(animated: true)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                self.scroll(toIndexPathPreservingTopInset: IndexPath(row: 0, section: 2), animated: true)
-            }
-            
+
         }
     }
 
@@ -118,9 +115,11 @@ final class ItemDetailInfoViewController: BaseViewController {
         navigationBar.onClickLeftButton = {
             self.delegate?.dismiss()
         }
+        let tap = UITapGestureRecognizer(target: self, action: #selector(addToOrderButtonTapped))
+        addToOrderButton.addGestureRecognizer(tap)
     }
 
-    func updateAddToOrderButtonText() {
+    private func updateAddToOrderButtonText() {
         self.addToOrderButton.setupTexts(
             title: viewModel.addToOrderButtonDisplayTitle,
             price: viewModel.currentTotal.toFloatString()
@@ -129,7 +128,49 @@ final class ItemDetailInfoViewController: BaseViewController {
 
     @objc
     func addToOrderButtonTapped() {
+        if let invalidSection = viewModel.validateAllExtras() {
+            self.scroll(toIndexPathPreservingTopInset: IndexPath(row: 0, section: invalidSection + 1), animated: true)
+            return
+        }
+        // not empty cart and new store compared to previous cart.
+        if !ApplicationDependency.manager.isEmptyCart
+            && Int64(viewModel.storeID)
+            != ApplicationDependency.manager.cartManager.currentStoreID {
+            showSwitchStoreAlert()
+            return
+        }
+        addToOrder()
+    }
 
+    func addToOrder() {
+        PaymentActivityHUD.shared.show(initialMessage: "Adding...", viewToAdd: self.view)
+        viewModel.addItemToCart { (errorMsg) in
+            if let errorMsg = errorMsg {
+                PaymentActivityHUD.shared.hide()
+                self.showNetworkErrorAlert(errorMsg: errorMsg)
+                return
+            }
+            ApplicationDependency.manager.informMainTabbarVCUpdateCart()
+            PaymentActivityHUD.shared.showSuccess(message: "Added!", completion: {
+                self.delegate?.dismiss()
+            })
+        }
+    }
+
+    func showSwitchStoreAlert() {
+        let alert = UIAlertController(title: "Start new Order?", message: "You currently have an item from another menu in your Order Cart. Would you like to clear your existing Order Cart and start a new one?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            self.addToOrder()
+        }))
+        alert.view.tintColor = ApplicationDependency.manager.theme.colors.doorDashRed
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    func showNetworkErrorAlert(errorMsg: String) {
+        let alert = UIAlertController(title: "Error", message: errorMsg, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -179,8 +220,6 @@ extension ItemDetailInfoViewController {
         bottomViewContainer.backgroundColor = theme.colors.white
 
         bottomViewContainer.addSubview(addToOrderButton)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(addToOrderButtonTapped))
-        addToOrderButton.addGestureRecognizer(tap)
     }
 
     private func setupSkeletonLoadingView() {
@@ -228,11 +267,21 @@ extension ItemDetailInfoViewController: ListAdapterDataSource {
         case is ItemDetailOverviewPresentingModel:
             return ItemDetailOverviewSectionController()
         case is ItemDetailMultipleChoicePresentingModel:
-            return ItemDetailMultipleChoiceSectionController()
+            let controller = ItemDetailMultipleChoiceSectionController()
+            controller.updateBlance = { cents in
+                self.viewModel.updateCurrentBalance(cents: cents)
+                self.updateAddToOrderButtonText()
+            }
+            return controller
         case is ItemDetailAddInstructionPresentingModel:
             return ItemDetailAddInstructionSectionController()
         case is ItemDetailSelectQuantityPresentingModel:
-            return ItemDetailSelectQuantitySectionController()
+            let controller = ItemDetailSelectQuantitySectionController()
+            controller.updateQuantity = { newQuantity in
+                self.viewModel.updateQuantityAndBalance(newQuantity: newQuantity)
+                self.updateAddToOrderButtonText()
+            }
+            return controller
         default:
             return ItemDetailOverviewSectionController()
         }
@@ -275,11 +324,12 @@ extension ItemDetailInfoViewController: UIScrollViewDelegate {
             at: indexPath
         )
         let sectionTopInset = layout.sectionInset.top
+        let navBarAdjustment = self.viewModel.headerImageList == nil ? 0 : navigationBar.frame.height
         collectionView.setContentOffset(
             CGPoint(x: 0,
                     y: attri.frame.origin.y
                        - sectionTopInset
-                       - navigationBar.frame.height
+                       - navBarAdjustment
                        - (attriHeader?.frame.height ?? 0)),
             animated: animated)
     }

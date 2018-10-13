@@ -37,6 +37,7 @@ PODS:
   - SnapKit (4.0.0)
   - SwiftDate (5.0.9)
   - SwiftyJSON (4.1.0)
+  - SwipeCellKit (2.5.0)
   - XCGLogger (6.1.0):
     - XCGLogger/Core (= 6.1.0)
   - XCGLogger/Core (6.1.0):
@@ -57,6 +58,7 @@ DEPENDENCIES:
   - SnapKit
   - SwiftDate
   - SwiftyJSON
+  - SwipeCellKit
   - XCGLogger
 
 SPEC REPOS:
@@ -77,6 +79,7 @@ SPEC REPOS:
     - SnapKit
     - SwiftDate
     - SwiftyJSON
+    - SwipeCellKit
     - XCGLogger
 
 SPEC CHECKSUMS:
@@ -96,8 +99,9 @@ SPEC CHECKSUMS:
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SwiftDate: 52b718d32ec006861a2be2756cbfa482d438e781
   SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
+  SwipeCellKit: d8f2617538ce3021cb0a11d1b93856a06a2f2e20
   XCGLogger: 7f7f43f15dfe3a305fa1342b7dc29af656289abd
 
-PODFILE CHECKSUM: d488cd521381487f6fe6a3eb7e2649a23e34e7d2
+PODFILE CHECKSUM: cf68e7310fb6a9aac7de509dbc1be237ff577cbb
 
 COCOAPODS: 1.5.3

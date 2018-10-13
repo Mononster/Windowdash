@@ -11,13 +11,15 @@ final class MenuItemOptionViewModel {
     let model: MenuItemOption
     let optionName: String
     var priceDisplay: String?
+    let priceCents: Int64
 
     init(model: MenuItemOption) {
         self.model = model
         self.optionName = model.name
-        self.priceDisplay = model.priceDisplay
-        if model.price.centsAmount == 0 || model.priceDisplay == "$0.00" {
+        self.priceDisplay = model.price.displayString
+        if model.price.money.cents == 0 || model.price.displayString == "$0.00" {
             self.priceDisplay = nil
         }
+        self.priceCents = model.price.money.cents
     }
 }

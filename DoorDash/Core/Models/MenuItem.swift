@@ -6,15 +6,50 @@
 //  Copyright © 2018 Monster. All rights reserved.
 //
 
-public enum MoneyFieldCodingKeys: String, CodingKey {
-    case currency
-    case unitAmount = "unit_amount"
-    case displayString = "display_string"
+struct MonetaryField: Codable {
+    enum MoneyFieldCodingKeys: String, CodingKey {
+        case currency
+        case unitAmount = "unit_amount"
+        case displayString = "display_string"
+    }
+
+    let displayString: String
+    let money: Money
+
+    init(displayString: String,
+         money: Money) {
+        self.displayString = displayString
+        self.money = money
+    }
+
+    init() {
+        self.displayString = "$0.00"
+        self.money = Money.zero
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: MoneyFieldCodingKeys.self)
+        let moneyCents: Int64 = try values.decodeIfPresent(Int64.self, forKey: .unitAmount) ?? 0
+        let currency = try values.decodeIfPresent(String.self, forKey: .currency) ?? "USD"
+        let moneyDisplayString: String = try values.decodeIfPresent(String.self, forKey: .displayString) ?? "$0.00"
+        self.init(displayString: moneyDisplayString,
+                  money: Money(cents: moneyCents,
+                               currency: Currency(rawValue: currency) ?? .USD))
+    }
+
+    func encode(to encoder: Encoder) throws {}
 }
 
 enum MenuItemExtraSelectionMode: String {
     case singleSelect = "single_select"
     case multiSelect = "multi_select"
+}
+
+enum MenuItemSoldOutSubstitutionPreference: String {
+    case merchantRecommendation = "substitute"
+    case refund = "refund"
+    case contactMe = "contact"
+    case cancelOrder = "cancel"
 }
 
 struct MenuItemOption: Codable {
@@ -29,19 +64,16 @@ struct MenuItemOption: Codable {
     let id: Int64
     let name: String
     let optionDescription: String?
-    let price: Money
-    let priceDisplay: String
+    let price: MonetaryField
 
     init(id: Int64,
          name: String,
          optionDescription: String?,
-         price: Money,
-         priceDisplay: String) {
+         price: MonetaryField) {
         self.id = id
         self.name = name
         self.optionDescription = optionDescription
         self.price = price
-        self.priceDisplay = priceDisplay
     }
 
     init(from decoder: Decoder) throws {
@@ -49,15 +81,11 @@ struct MenuItemOption: Codable {
         let id: Int64 = try values.decode(Int64.self, forKey: .id)
         let name: String = try values.decodeIfPresent(String.self, forKey: .name) ?? ""
         let optionDescription: String? = try values.decodeIfPresent(String.self, forKey: .optionDescription)
-        let moneyContainer = try values.nestedContainer(keyedBy: MoneyFieldCodingKeys.self, forKey: .priceMonetaryFields)
-        let moneyCents: Int64 = try moneyContainer.decodeIfPresent(Int64.self, forKey: .unitAmount) ?? 0
-        let currency = try moneyContainer.decodeIfPresent(String.self, forKey: .currency) ?? "USD"
-        let moneyDisplayString: String = try moneyContainer.decodeIfPresent(String.self, forKey: .displayString) ?? "$0.00"
+        let price: MonetaryField = try values.decode(MonetaryField.self, forKey: .priceMonetaryFields)
         self.init(id: id,
                   name: name,
                   optionDescription: optionDescription,
-                  price: Money(cents: moneyCents, currency: Currency(rawValue: currency) ?? .USD),
-                  priceDisplay: moneyDisplayString)
+                  price: price)
     }
 
     func encode(to encoder: Encoder) throws {}
@@ -144,8 +172,7 @@ struct MenuItem: Codable {
     let name: String
     let itemDescription: String?
     let imageURL: String
-    let price: Money
-    let priceDisplay: String
+    let price: MonetaryField
     let isActive: Bool
     let isPopular: Bool?
     let extras: [MenuItemExtra]
@@ -154,8 +181,7 @@ struct MenuItem: Codable {
          name: String,
          itemDescription: String?,
          imageURL: String,
-         price: Money,
-         priceDisplay: String,
+         price: MonetaryField,
          isActive: Bool,
          isPopular: Bool?,
          extras: [MenuItemExtra]) {
@@ -164,7 +190,6 @@ struct MenuItem: Codable {
         self.itemDescription = itemDescription
         self.imageURL = imageURL
         self.price = price
-        self.priceDisplay = priceDisplay
         self.isActive = isActive
         self.extras = extras
         self.isPopular = isPopular
@@ -176,9 +201,7 @@ struct MenuItem: Codable {
         let name: String = try values.decodeIfPresent(String.self, forKey: .name) ?? ""
         let itemDescription: String? = try values.decodeIfPresent(String.self, forKey: .itemDescription)
         let imageURL: String = try values.decodeIfPresent(String.self, forKey: .imageURL) ?? ""
-        let moneyContainer = try values.nestedContainer(keyedBy: MoneyFieldCodingKeys.self, forKey: .priceMonetaryFields)
-        let moneyCents: Int64 = try moneyContainer.decodeIfPresent(Int64.self, forKey: .unitAmount) ?? 0
-        let moneyDisplayString: String = try moneyContainer.decodeIfPresent(String.self, forKey: .displayString) ?? "$0.00"
+        let money = try values.decodeIfPresent(MonetaryField.self, forKey: .priceMonetaryFields) ?? MonetaryField()
         let isActive: Bool = try values.decodeIfPresent(Bool.self, forKey: .isActive) ?? false
         let isPopular: Bool? = try values.decodeIfPresent(Bool.self, forKey: .isPopular)
         let extras: [MenuItemExtra] = try values.decodeIfPresent([MenuItemExtra].self, forKey: .extras) ?? []
@@ -186,8 +209,7 @@ struct MenuItem: Codable {
                   name: name,
                   itemDescription: itemDescription,
                   imageURL: imageURL,
-                  price: Money(cents: moneyCents, currency: .USD),
-                  priceDisplay: moneyDisplayString,
+                  price: money,
                   isActive: isActive,
                   isPopular: isPopular,
                   extras: extras)

@@ -82,12 +82,12 @@ public class Money: Comparable {
     public var cents: Int64
     public var moneyLocale: Locale = Locale.current
 
-    public init(cents: Int64, currency: Currency) {
+    public init(cents: Int64, currency: Currency = .USD) {
         self.cents = cents
         self.currency = currency
     }
 
-    public init?(cents: String, currency: Currency) {
+    public init?(cents: String, currency: Currency = .USD) {
         guard let centsValue = Int64(cents) else {
             return nil
         }

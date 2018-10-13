@@ -10,11 +10,16 @@ import UIKit
 import IGListKit
 
 final class ItemDetailOptionPresentingModel {
+
+    let id: Int64
     let optionName: String
     let price: String?
+    let priceCents: Int64
     var isSelected: Bool = false
 
-    init(optionName: String, price: String?) {
+    init(id: Int64, optionName: String, priceCents: Int64, price: String?) {
+        self.id = id
+        self.priceCents = priceCents
         self.optionName = optionName
         self.price = price
     }
@@ -67,6 +72,8 @@ final class ItemDetailMultipleChoiceSectionController: ListSectionController {
 
     private var model: ItemDetailMultipleChoicePresentingModel?
 
+    var updateBlance: ((Int64) -> ())?
+
     override init() {
         super.init()
         supplementaryViewSource = self
@@ -110,6 +117,9 @@ final class ItemDetailMultipleChoiceSectionController: ListSectionController {
             }
         }
         for option in self.model?.options ?? [] {
+            if option.isSelected {
+                self.updateBlance?(-option.priceCents)
+            }
             option.isSelected = false
         }
     }
@@ -123,6 +133,7 @@ final class ItemDetailMultipleChoiceSectionController: ListSectionController {
             self.updateCellSelectedState()
             option.isSelected = true
             cell.updateCell(selected: true)
+            self.updateBlance? (option.priceCents)
         }
         
         if model.selectionMode == .multiSelect {
@@ -130,6 +141,11 @@ final class ItemDetailMultipleChoiceSectionController: ListSectionController {
             guard model.numSelectedOptions < model.maxNumberOptions || option.isSelected else {
                 cell.presentInvalidSeletion()
                 return
+            }
+            if option.isSelected {
+                self.updateBlance?(-option.priceCents)
+            } else {
+                self.updateBlance?(option.priceCents)
             }
             cell.updateCell(selected: !cell.cellSelected)
             option.isSelected = !option.isSelected

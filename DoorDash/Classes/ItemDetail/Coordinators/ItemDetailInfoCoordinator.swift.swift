@@ -8,11 +8,17 @@
 
 import UIKit
 
+protocol ItemDetailInfoCoordinatorDelegate: class {
+    func didDismiss(in coordinator: ItemDetailInfoCoordinator)
+}
+
 final class ItemDetailInfoCoordinator: Coordinator {
 
     let router: Router
     var coordinators: [Coordinator] = []
     let rootViewController: ItemDetailInfoViewController
+
+    weak var delegate: ItemDetailInfoCoordinatorDelegate?
 
     init(rootViewController: ItemDetailInfoViewController,
          router: Router) {
@@ -34,5 +40,6 @@ extension ItemDetailInfoCoordinator: ItemDetailInfoViewControllerDelegate {
 
     func dismiss() {
         self.router.dismissModule()
+        self.delegate?.didDismiss(in: self)
     }
 }

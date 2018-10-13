@@ -22,7 +22,7 @@ final class MenuItemViewModel {
 
     init(item: MenuItem) {
         self.model = item
-        self.priceDisplay = model.priceDisplay
+        self.priceDisplay = model.price.displayString
         self.nameDisplay = model.name
         self.itemDescriptionDisplay = model.itemDescription
         self.imageURL = URL(string: model.imageURL)

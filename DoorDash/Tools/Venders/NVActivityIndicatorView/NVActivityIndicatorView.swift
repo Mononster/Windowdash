@@ -27,50 +27,10 @@
 
 import UIKit
 
-/**
- Enum of animation types used for activity indicator view.
-
- - Blank:                   Blank animation.
- - BallPulse:               BallPulse animation.
- - BallGridPulse:           BallGridPulse animation.
- - BallClipRotate:          BallClipRotate animation.
- - SquareSpin:              SquareSpin animation.
- - BallClipRotatePulse:     BallClipRotatePulse animation.
- - BallClipRotateMultiple:  BallClipRotateMultiple animation.
- - BallPulseRise:           BallPulseRise animation.
- - BallRotate:              BallRotate animation.
- - CubeTransition:          CubeTransition animation.
- - BallZigZag:              BallZigZag animation.
- - BallZigZagDeflect:       BallZigZagDeflect animation.
- - BallTrianglePath:        BallTrianglePath animation.
- - BallScale:               BallScale animation.
- - LineScale:               LineScale animation.
- - LineScaleParty:          LineScaleParty animation.
- - BallScaleMultiple:       BallScaleMultiple animation.
- - BallPulseSync:           BallPulseSync animation.
- - BallBeat:                BallBeat animation.
- - LineScalePulseOut:       LineScalePulseOut animation.
- - LineScalePulseOutRapid:  LineScalePulseOutRapid animation.
- - BallScaleRipple:         BallScaleRipple animation.
- - BallScaleRippleMultiple: BallScaleRippleMultiple animation.
- - BallSpinFadeLoader:      BallSpinFadeLoader animation.
- - LineSpinFadeLoader:      LineSpinFadeLoader animation.
- - TriangleSkewSpin:        TriangleSkewSpin animation.
- - Pacman:                  Pacman animation.
- - BallGridBeat:            BallGridBeat animation.
- - SemiCircleSpin:          SemiCircleSpin animation.
- - BallRotateChase:         BallRotateChase animation.
- - Orbit:                   Orbit animation.
- - AudioEqualizer:          AudioEqualizer animation.
- - CircleStrokeSpin:        CircleStrokeSpin animation.
- */
 public enum NVActivityIndicatorType: Int {
-    /**
-     Stroke.
-     
-     - returns: Instance of NVActivityIndicatorAnimationCircleStrokeSpin.
-     */
+
     case circleStrokeSpin
+    case ballClipRotate
 
     static let allTypes = [circleStrokeSpin.rawValue].map { NVActivityIndicatorType(rawValue: $0)! }
 
@@ -79,6 +39,8 @@ public enum NVActivityIndicatorType: Int {
         switch self {
         case .circleStrokeSpin:
             return NVActivityIndicatorAnimationCircleStrokeSpin()
+        case .ballClipRotate:
+            return NVActivityIndicatorAnimationBallClipRotate()
         }
     }
 }
@@ -176,38 +138,14 @@ public final class NVActivityIndicatorView: UIView {
     @IBInspectable public var padding: CGFloat = NVActivityIndicatorView.DEFAULT_PADDING
 
     /// Current status of animation, read-only.
-    @available(*, deprecated: 3.1)
-    public var animating: Bool { return isAnimating }
-
-    /// Current status of animation, read-only.
     private(set) public var isAnimating: Bool = false
 
-    /**
-     Returns an object initialized from data in a given unarchiver.
-     self, initialized using the data in decoder.
-
-     - parameter decoder: an unarchiver object.
-
-     - returns: self, initialized using the data in decoder.
-     */
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         backgroundColor = UIColor.clear
         isHidden = true
     }
 
-    /**
-     Create a activity indicator view.
-
-     Appropriate NVActivityIndicatorView.DEFAULT_* values are used for omitted params.
-
-     - parameter frame:   view's frame.
-     - parameter type:    animation type.
-     - parameter color:   color of activity indicator view.
-     - parameter padding: padding of activity indicator view.
-
-     - returns: The activity indicator view.
-     */
     public init(frame: CGRect, type: NVActivityIndicatorType? = nil, color: UIColor? = nil, padding: CGFloat? = nil) {
         self.type = type ?? NVActivityIndicatorView.DEFAULT_TYPE
         self.color = color ?? NVActivityIndicatorView.DEFAULT_COLOR
@@ -216,16 +154,6 @@ public final class NVActivityIndicatorView: UIView {
         isHidden = true
     }
 
-    // Fix issue #62
-    // Intrinsic content size is used in autolayout
-    // that causes mislayout when using with MBProgressHUD.
-    /**
-     Returns the natural size for the receiving view, considering only properties of the view itself.
-
-     A size indicating the natural size for the receiving view based on its intrinsic properties.
-
-     - returns: A size indicating the natural size for the receiving view based on its intrinsic properties.
-     */
     public override var intrinsicContentSize: CGSize {
         return CGSize(width: bounds.width, height: bounds.height)
     }
@@ -256,6 +184,25 @@ public final class NVActivityIndicatorView: UIView {
         isHidden = true
         isAnimating = false
         layer.sublayers?.removeAll()
+    }
+
+    public final func presentSuccessAnimation() {
+        guard type == .ballClipRotate else {
+            return
+        }
+        for layer in layer.sublayers ?? [] {
+            guard let layer = layer as? CAShapeLayer else {
+                break
+            }
+            //layer.removeAnimation(forKey: "NVActivityIndicatorAnimationBallClipRotateAnimation")
+            //layer.stopAnimation(forKey: "NVActivityIndicatorAnimationBallClipRotateAnimation")
+//            layer.path.
+//            let animation = CABasicAnimation(keyPath: "strokeEnd")
+//            animation.fromValue = 0
+//            animation.toValue = 1
+//            animation.duration = 15
+//            layer.add(animation, forKey: nil)
+        }
     }
 
     // MARK: Internal

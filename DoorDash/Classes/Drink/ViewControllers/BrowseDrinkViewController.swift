@@ -10,20 +10,8 @@ import UIKit
 import SnapKit
 import IGListKit
 
-private let titles: [String] = [
-    "Popular items", "Appetizers", "Small Plates + California", "Soups", "Salads", "Power Bowls", "Original Hand-Tossed Pizzas", "Crispy Thin Crust Pizzas", "Gluten-Free Pizzas", "Pastas", "Main Plates", "CPKids", "Desserts", "Additions and Extras", "Beverages", "Sides and Add Ons"
-]
-
-final class BrowseDrinkViewController: BaseViewController {
-
-    private let segmentNavigateView: SegmentNavigateView
-    
+final class BrowseDrinkViewController: BaseViewController, NVActivityIndicatorViewable {
     override init() {
-        segmentNavigateView = SegmentNavigateView(
-            frame: CGRect(
-                x: 0, y: UIDevice.current.statusBarHeight,
-                width: UIScreen.main.bounds.width, height: 45)
-        )
         super.init()
     }
 
@@ -33,13 +21,17 @@ final class BrowseDrinkViewController: BaseViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        segmentNavigateView.setTitles(titles: titles)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+            PaymentActivityHUD.shared.show(initialMessage: "Adding...", viewToAdd: self.view)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                PaymentActivityHUD.shared.showSuccess(message: "Added!", completion: nil)
+            }
+        }
     }
 }
 
 extension BrowseDrinkViewController {
 
     private func setupUI() {
-        self.view.addSubview(segmentNavigateView)
     }
 }

@@ -14,6 +14,8 @@ final class ApplicationDependency {
     static var safeAreaPadding: CGFloat = 0
 
     let theme = Theme()
+    let cartThumbnailViewHeight: CGFloat = 50
+
     lazy var coordinator: AppCoordinator = {
         let navigationController = DoorDashNavigationController()
         let router = Router(navigationController: navigationController)
@@ -21,9 +23,27 @@ final class ApplicationDependency {
                               router: router)
     }()
 
+    lazy var cartManager: CartManager = {
+        return CartManager()
+    }()
+
+    lazy var isEmptyCart: Bool = {
+        guard let mainTabbarVC = coordinator.getMainTabbarController() else {
+            return true
+        }
+        return mainTabbarVC.viewModel.cartViewModel?.isEmptyCart ?? true
+    }()
+
     private init() {
         if #available(iOS 11.0, *) {
             ApplicationDependency.safeAreaPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
         }
+    }
+
+    func informMainTabbarVCUpdateCart() {
+        guard let mainTabbarVC = coordinator.getMainTabbarController() else {
+            return
+        }
+        mainTabbarVC.loadData()
     }
 }

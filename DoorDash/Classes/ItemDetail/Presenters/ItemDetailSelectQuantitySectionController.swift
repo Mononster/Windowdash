@@ -57,6 +57,8 @@ final class ItemDetailSelectQuantitySectionController: ListSectionController {
 
     private var model: ItemDetailSelectQuantityPresentingModel?
 
+    var updateQuantity: ((Int) -> ())?
+
     override init() {
         super.init()
         self.inset = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
@@ -82,12 +84,14 @@ final class ItemDetailSelectQuantitySectionController: ListSectionController {
             cell.adjustQuantityView.setupView(numberOfItems: model.quantityDisplay,
                                               isMinusButtonDisabled: model.isMinusDisable,
                                               isAddButtonDisabled: model.isAddDisable)
+            self.updateQuantity?(model.quantity)
         }
         cell.adjustQuantityView.minusButtonTapped = {
             model.decreaseQuantity()
             cell.adjustQuantityView.setupView(numberOfItems: model.quantityDisplay,
                                               isMinusButtonDisabled: model.isMinusDisable,
                                               isAddButtonDisabled: model.isAddDisable)
+            self.updateQuantity?(model.quantity)
         }
         return cell
     }

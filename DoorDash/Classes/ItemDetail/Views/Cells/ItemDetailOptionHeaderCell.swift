@@ -44,7 +44,7 @@ final class ItemDetailOptionHeaderCell: UICollectionViewCell {
             }
             descriptionLabel.snp.remakeConstraints { (make) in
                 make.leading.equalTo(nameLabel)
-                make.top.equalTo(self.snp.centerY).offset(8)
+                make.top.equalTo(self.snp.centerY).offset(10)
                 make.trailing.equalToSuperview().offset(-leading)
             }
         } else {

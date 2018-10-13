@@ -211,6 +211,8 @@ public final class NVActivityIndicatorPresenter {
         return label
     }()
 
+    private var currentIndicatorView: NVActivityIndicatorView?
+
     fileprivate var state: State = .stopped
     fileprivate var data: ActivityData? // Shared activity data across states
 
@@ -253,6 +255,7 @@ public final class NVActivityIndicatorPresenter {
     public final func setMessage(_ message: String?) {
         waitingToStartGroup.notify(queue: DispatchQueue.main) {
             self.messageLabel.text = message
+            self.currentIndicatorView?.presentSuccessAnimation()
         }
     }
 
@@ -271,7 +274,7 @@ public final class NVActivityIndicatorPresenter {
             type: activityData.type,
             color: activityData.color,
             padding: activityData.padding)
-
+        self.currentIndicatorView = activityIndicatorView
         activityIndicatorView.startAnimating()
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(activityIndicatorView)

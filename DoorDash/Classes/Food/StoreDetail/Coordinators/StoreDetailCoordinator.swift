@@ -41,7 +41,15 @@ extension StoreDetailCoordinator: StoreDetailViewControllerDelegate {
             router: Router()
         )
         coordinator.start()
+        coordinator.delegate = self
         addCoordinator(coordinator)
         self.router.present(coordinator)
+    }
+}
+
+extension StoreDetailCoordinator: ItemDetailInfoCoordinatorDelegate {
+
+    func didDismiss(in coordinator: ItemDetailInfoCoordinator) {
+        self.removeCoordinator(coordinator)
     }
 }

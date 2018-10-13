@@ -46,7 +46,7 @@ extension ItemDetailAddToOrderButton {
         addSubview(titleLabel)
         titleLabel.backgroundColor = .clear
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.white
-        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.medium18
         titleLabel.textAlignment = .center
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.5
@@ -55,7 +55,7 @@ extension ItemDetailAddToOrderButton {
         addSubview(priceLabel)
         priceLabel.backgroundColor = .clear
         priceLabel.textColor = ApplicationDependency.manager.theme.colors.white
-        priceLabel.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        priceLabel.font = ApplicationDependency.manager.theme.fontSchema.medium18
         priceLabel.textAlignment = .right
         priceLabel.adjustsFontSizeToFitWidth = true
         priceLabel.minimumScaleFactor = 0.5

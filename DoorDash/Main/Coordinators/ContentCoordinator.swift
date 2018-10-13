@@ -123,7 +123,22 @@ extension ContentCoordinator {
 }
 
 extension ContentCoordinator: MainTabBarControllerDelegate {
+    func showOrderCart() {
+        let orderCartCoordinator = OrderCartCoordinator(
+            rootViewController: OrderCartViewController(),
+            router: Router()
+        )
+        orderCartCoordinator.start()
+        orderCartCoordinator.delegate = self
+        addCoordinator(orderCartCoordinator)
+        self.router.present(orderCartCoordinator)
+    }
+}
 
+extension ContentCoordinator: OrderCartCoordinatorDelegate {
+    func didDismiss(in coordinator: OrderCartCoordinator) {
+        self.removeCoordinator(coordinator)
+    }
 }
 
 extension ContentCoordinator: UserAccountCoordinatorDelegate {

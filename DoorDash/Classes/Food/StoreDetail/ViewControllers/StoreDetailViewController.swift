@@ -105,6 +105,12 @@ extension StoreDetailViewController {
         adapter.collectionView = collectionView
         collectionView.backgroundColor = theme.colors.white
         collectionView.alwaysBounceVertical = true
+        if !ApplicationDependency.manager.isEmptyCart {
+            collectionView.contentInset = UIEdgeInsets(
+                top: 0, left: 0,
+                bottom: ApplicationDependency.manager.cartThumbnailViewHeight, right: 0
+            )
+        }
     }
 
     private func setupSkeletonLoadingView() {
@@ -131,7 +137,6 @@ extension StoreDetailViewController: UIScrollViewDelegate {
         for menuControl in viewModel.menuControls {
             if menuControl.withinRange(pos: offset) {
                 // scroll to this cell
-                //print("Section Index: \(menuControl.sectionIndex) \(menuControl.debugName)")
                 menuPresenter.adjustMenuNavigator(section: menuControl.sectionIndex)
                 break
             }
