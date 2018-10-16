@@ -39,6 +39,7 @@ final class AddItemOptionRequestModel {
 final class AddItemToCartRequestModel {
 
     let storeID: String
+    let itemUpdateID: String
     let itemID: String
     let cartID: String
     let subsititutionMethod: MenuItemSoldOutSubstitutionPreference
@@ -47,6 +48,7 @@ final class AddItemToCartRequestModel {
     let specialInstructions: String
 
     init(storeID: String,
+         itemUpdateID: String,
          itemID: String,
          cartID: String,
          subsititutionMethod: MenuItemSoldOutSubstitutionPreference,
@@ -54,6 +56,7 @@ final class AddItemToCartRequestModel {
          options: [AddItemOptionRequestModel],
          specialInstructions: String) {
         self.storeID = storeID
+        self.itemUpdateID = itemUpdateID
         self.itemID = itemID
         self.cartID = cartID
         self.subsititutionMethod = subsititutionMethod
@@ -91,6 +94,8 @@ final class CartAPIService: DoorDashAPIService {
         case getCurrentCartID
         case createCart
         case getCartDetail(request: FetchCartRequestModel)
+        case removeItem(id: Int64)
+        case updateItem(request: AddItemToCartRequestModel)
 
         var baseURL: URL {
             return ApplicationEnvironment.current.networkConfig.hostURL
@@ -106,6 +111,10 @@ final class CartAPIService: DoorDashAPIService {
                 return "v2/order_carts/"
             case .getCartDetail(let request):
                 return "v2/order_carts/\(request.cartID)/"
+            case .removeItem(let id):
+                return "v2/order_items/\(id)/"
+            case .updateItem(let request):
+                return "v2/order_items/\(request.itemUpdateID)/"
             }
         }
 
@@ -115,6 +124,10 @@ final class CartAPIService: DoorDashAPIService {
                 return .post
             case .getCurrentCartID, .getCartDetail:
                 return .get
+            case .removeItem:
+                return .delete
+            case .updateItem:
+                return .patch
             }
         }
 
@@ -131,12 +144,18 @@ final class CartAPIService: DoorDashAPIService {
                     parameters: params,
                     encoding: CustomParameterEncoding.queryWithDuplicateKeys
                 )
+            case .removeItem:
+                return .requestPlain
+            case .updateItem(let request):
+                let params = request.convertToPostParams()
+                return .requestParameters(parameters: params, encoding: JSONEncoding.default)
             }
         }
 
         var sampleData: Data {
             switch self {
-            case .addToCart, .getCurrentCartID, .createCart, .getCartDetail:
+            case .addToCart, .getCurrentCartID, .createCart, .getCartDetail, .removeItem,
+                 .updateItem:
                 return Data()
             }
         }
@@ -150,8 +169,10 @@ final class CartAPIService: DoorDashAPIService {
 extension CartAPIService {
 
     func addItemToCart(request: AddItemToCartRequestModel,
+                       isUpdate: Bool,
                        completion: @escaping (Error?) -> ()) {
-        cartAPIProvider.request(.addToCart(request: request)) { result in
+        let target: CartAPIService.CartAPITarget = isUpdate ? .updateItem(request: request) : .addToCart(request: request)
+        cartAPIProvider.request(target) { result in
             switch result {
             case .success(let response):
                 guard response.statusCode == 200 else {
@@ -224,6 +245,23 @@ extension CartAPIService {
                 }
             case .failure(let error):
                 completion(nil, error)
+            }
+        }
+    }
+
+    func removeItemFromCart(id: Int64,
+                            completion: @escaping (Error?) -> ()) {
+        cartAPIProvider.request(.removeItem(id: id)) { result in
+            switch result {
+            case .success(let response):
+                guard response.statusCode == 204 else {
+                    let error = self.handleError(response: response)
+                    completion(error)
+                    return
+                }
+                completion(nil)
+            case .failure(let error):
+                completion(error)
             }
         }
     }

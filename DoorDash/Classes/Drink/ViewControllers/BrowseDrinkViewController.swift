@@ -21,12 +21,6 @@ final class BrowseDrinkViewController: BaseViewController, NVActivityIndicatorVi
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-            PaymentActivityHUD.shared.show(initialMessage: "Adding...", viewToAdd: self.view)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                PaymentActivityHUD.shared.showSuccess(message: "Added!", completion: nil)
-            }
-        }
     }
 }
 

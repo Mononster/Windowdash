@@ -33,7 +33,16 @@ final class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        loadData()
+        load()
+    }
+
+    func load() {
+        if let savedCart = viewModel.loadSavedCart() {
+            self.cartThumbnailView.setupText(description: savedCart.title)
+            self.showCartThumbnailView()
+        } else {
+            loadData()
+        }
     }
 
     func loadData() {
@@ -86,7 +95,7 @@ final class MainTabBarController: UITabBarController {
     private func updateExistingViewInsets(cartThumbnailHeight: CGFloat) {
         for vc in self.children {
             guard let navVC = vc as? DoorDashNavigationController,
-                let mainVC = navVC.viewControllers.first else {
+                let mainVC = navVC.viewControllers.first, mainVC.isViewLoaded else {
                     continue
             }
             for subview in mainVC.view.subviews {

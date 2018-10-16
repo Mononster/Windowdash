@@ -30,9 +30,12 @@ final class MainTabBarViewModel {
                     return
                 }
                 self.cartViewModel = cartVM
-                cartVM.printInfo()
                 completion(nil)
             })
         }
+    }
+
+    func loadSavedCart() -> CartThumbnail? {
+        return ApplicationDependency.manager.cartManager.getCartInfoFromUserDefaults()
     }
 }

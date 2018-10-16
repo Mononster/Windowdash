@@ -187,22 +187,6 @@ public final class NVActivityIndicatorView: UIView {
     }
 
     public final func presentSuccessAnimation() {
-        guard type == .ballClipRotate else {
-            return
-        }
-        for layer in layer.sublayers ?? [] {
-            guard let layer = layer as? CAShapeLayer else {
-                break
-            }
-            //layer.removeAnimation(forKey: "NVActivityIndicatorAnimationBallClipRotateAnimation")
-            //layer.stopAnimation(forKey: "NVActivityIndicatorAnimationBallClipRotateAnimation")
-//            layer.path.
-//            let animation = CABasicAnimation(keyPath: "strokeEnd")
-//            animation.fromValue = 0
-//            animation.toValue = 1
-//            animation.duration = 15
-//            layer.add(animation, forKey: nil)
-        }
     }
 
     // MARK: Internal

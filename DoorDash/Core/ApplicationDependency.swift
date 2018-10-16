@@ -11,7 +11,7 @@ import UIKit
 final class ApplicationDependency {
 
     static let manager = ApplicationDependency()
-    static var safeAreaPadding: CGFloat = 0
+    var safeAreaPadding: CGFloat = 0
 
     let theme = Theme()
     let cartThumbnailViewHeight: CGFloat = 50
@@ -36,7 +36,7 @@ final class ApplicationDependency {
 
     private init() {
         if #available(iOS 11.0, *) {
-            ApplicationDependency.safeAreaPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+            safeAreaPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
         }
     }
 
@@ -45,5 +45,9 @@ final class ApplicationDependency {
             return
         }
         mainTabbarVC.loadData()
+    }
+
+    func cleanWhenUserLogout() {
+        cartManager.removeCartInfoFromUserDefaults()
     }
 }

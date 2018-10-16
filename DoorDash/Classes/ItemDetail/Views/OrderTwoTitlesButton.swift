@@ -1,6 +1,6 @@
 
 //
-//  ItemDetailAddToOrderButton.swift
+//  OrderTwoTitlesButton.swift
 //  DoorDash
 //
 //  Created by Marvin Zhan on 2018-10-08.
@@ -10,7 +10,7 @@
 import UIKit
 import SnapKit
 
-final class ItemDetailAddToOrderButton: UIView {
+final class OrderTwoTitlesButton: UIView {
 
     private let titleLabel: UILabel
     private let priceLabel: UILabel
@@ -32,9 +32,10 @@ final class ItemDetailAddToOrderButton: UIView {
     }
 }
 
-extension ItemDetailAddToOrderButton {
+extension OrderTwoTitlesButton {
 
     private func setupUI() {
+        self.isUserInteractionEnabled = true
         setupLabels()
         setupConstraints()
         self.layer.cornerRadius = 8
@@ -51,6 +52,7 @@ extension ItemDetailAddToOrderButton {
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.5
         titleLabel.numberOfLines = 1
+        titleLabel.isUserInteractionEnabled = true
 
         addSubview(priceLabel)
         priceLabel.backgroundColor = .clear
@@ -60,6 +62,7 @@ extension ItemDetailAddToOrderButton {
         priceLabel.adjustsFontSizeToFitWidth = true
         priceLabel.minimumScaleFactor = 0.5
         priceLabel.numberOfLines = 1
+        priceLabel.isUserInteractionEnabled = true
     }
 
     private func setupConstraints() {

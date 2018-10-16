@@ -10,9 +10,9 @@ import Foundation
 
 final class CartManager {
 
+    private let cartStorageKey = "com.DoorDash.cartThumbnailStorageKey"
     private let service: CartAPIService
-
-    private var currentCart: Cart?
+    private var currentCartViewModel: CartViewModel?
 
     var currentStoreID: Int64?
     var currentCartID: Int64?
@@ -37,7 +37,8 @@ final class CartManager {
                 return
             }
 
-            self.currentCart = cart
+            self.currentCartViewModel = CartViewModel(model: cart)
+            self.saveCartInfoToUserDefaults()
             self.currentStoreID = cart.storeOrderCarts.first?.store.id
             completion(CartViewModel(model: cart), nil)
         }
@@ -76,5 +77,43 @@ final class CartManager {
             self.currentCartID = id
             completion(nil)
         }
+    }
+
+    func removeItemFromCart(id: Int64, completion: @escaping (String?) -> ()) {
+        service.removeItemFromCart(id: id) { error in
+            if let error = error as? CartAPIServiceError {
+                completion(error.errorMessage)
+                return
+            }
+            completion(nil)
+        }
+    }
+}
+
+extension CartManager {
+
+    func saveCartInfoToUserDefaults() {
+        guard let cart = currentCartViewModel else {
+            return
+        }
+        let cartThumbnail = CartThumbnail(id: cart.model.id,
+                                          isEmpty: cart.isEmptyCart,
+                                          title: cart.storeNameAndQuantityDisplay)
+        UserDefaults.standard.set(object: cartThumbnail, forKey: cartStorageKey)
+        UserDefaults.standard.synchronize()
+    }
+
+    func getCartInfoFromUserDefaults() -> CartThumbnail? {
+        guard let cart = UserDefaults.standard.object(type: CartThumbnail.self, with: cartStorageKey) else {
+            return nil
+        }
+        if cart.isEmpty { return nil }
+        self.currentCartID = cart.id
+        return cart
+    }
+
+    func removeCartInfoFromUserDefaults() {
+        UserDefaults.standard.removeObject(forKey: cartStorageKey)
+        UserDefaults.standard.synchronize()
     }
 }

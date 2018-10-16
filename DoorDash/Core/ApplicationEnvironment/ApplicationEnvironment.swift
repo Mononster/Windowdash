@@ -11,8 +11,8 @@ import SwiftyJSON
 import Alamofire
 
 struct ApplicationEnvironment {
-    internal static let currentEnvironmentStorageKey = "com.DoorDash.AppEnvironment.current"
-    internal static let currentUserStorageKey = "com.DoorDash.AppEnvironment.current.user"
+    static let currentEnvironmentStorageKey = "com.DoorDash.AppEnvironment.current"
+    static let currentUserStorageKey = "com.DoorDash.AppEnvironment.current.user"
 
     private static var internalEnvironmentStack: [Environment] = [Environment.production]
     static var current: Environment! {
@@ -124,6 +124,7 @@ struct ApplicationEnvironment {
         let dataStore = current.dataStore
         dataStore.destroyAndRecreateDataStore()
         current.userDefaults.removeObject(forKey: currentUserStorageKey)
+        ApplicationDependency.manager.cleanWhenUserLogout()
         replaceCurrentEnvironment(current.logout())
     }
 }

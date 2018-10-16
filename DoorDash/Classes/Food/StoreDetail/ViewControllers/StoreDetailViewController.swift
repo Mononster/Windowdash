@@ -15,6 +15,11 @@ protocol StoreDetailViewControllerDelegate: class {
     func showItemDetail(itemID: String, storeID: String)
 }
 
+enum StoreDetailViewControllerStyle {
+    case withCustomNavBar
+    case nativeNavBar
+}
+
 final class StoreDetailViewController: BaseViewController {
 
     lazy var adapter: ListAdapter = {
@@ -25,11 +30,13 @@ final class StoreDetailViewController: BaseViewController {
     private let navigationBar: CustomNavigationBar
     private let collectionView: UICollectionView
     private let viewModel: StoreDetailViewModel
+    private let style: StoreDetailViewControllerStyle
     private let menuPresenter: StoreDetailMenuSectionController
 
     weak var delegate: StoreDetailViewControllerDelegate?
 
-    init(storeID: String) {
+    init(storeID: String, style: StoreDetailViewControllerStyle) {
+        self.style = style
         let layout = UICollectionViewFlowLayout()
         layout.sectionHeadersPinToVisibleBounds = true
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -52,6 +59,10 @@ final class StoreDetailViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    deinit {
+        print("StoreDetailViewController deinit")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -64,19 +75,19 @@ final class StoreDetailViewController: BaseViewController {
     }
 
     private func bindModels() {
-        self.viewModel.fetchStore { (errorMsg) in
-            self.skeletonLoadingView.hide()
+        self.viewModel.fetchStore { [weak self] errorMsg in
+            self?.skeletonLoadingView.hide()
             if let errorMsg = errorMsg {
                 print(errorMsg)
                 return
             }
-            self.adapter.performUpdates(animated: true)
+            self?.adapter.performUpdates(animated: true)
         }
     }
 
     private func setupActions() {
-        navigationBar.onClickLeftButton = {
-            self.delegate?.dismiss()
+        navigationBar.onClickLeftButton = { [weak self] in
+            self?.delegate?.dismiss()
         }
     }
 }
@@ -84,7 +95,9 @@ final class StoreDetailViewController: BaseViewController {
 extension StoreDetailViewController {
 
     private func setupUI() {
-        setupNavigationBar()
+        if self.style == .withCustomNavBar {
+            setupNavigationBar()
+        }
         setupCollectionView()
         setupSkeletonLoadingView()
         setupConstraints()
@@ -120,12 +133,15 @@ extension StoreDetailViewController {
     private func setupConstraints() {
         collectionView.snp.makeConstraints { (make) in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(navigationBar.snp.bottom)
+            if self.style == .withCustomNavBar {
+                make.top.equalTo(navigationBar.snp.bottom)
+            } else {
+                make.top.equalToSuperview()
+            }
         }
 
         skeletonLoadingView.snp.makeConstraints { (make) in
-            make.top.equalTo(navigationBar.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.edges.equalTo(collectionView)
         }
     }
 }

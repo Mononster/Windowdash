@@ -26,7 +26,7 @@ final class ItemDetailInfoViewController: BaseViewController {
     private let collectionView: UICollectionView
     private let menuImageDisplayView: InfiniteScrollView
     private let bottomViewContainer: UIView
-    private let addToOrderButton: ItemDetailAddToOrderButton
+    private let addToOrderButton: OrderTwoTitlesButton
     private let gradientView: GradientView
 
     private let menuImageDisplayViewHeight = 1 / 3 * UIScreen.main.bounds.height
@@ -35,12 +35,16 @@ final class ItemDetailInfoViewController: BaseViewController {
 
     weak var delegate: ItemDetailInfoViewControllerDelegate?
 
-    init(itemID: String, storeID: String, mode: ItemDetailEntranceMode) {
+    init(itemID: String,
+         storeID: String,
+         mode: ItemDetailEntranceMode,
+         selectedData: ItemSelectedData? = nil) {
         viewModel = ItemDetailInfoViewModel(
             service: SearchStoreItemAPIService(),
             itemID: itemID,
             storeID: storeID,
-            mode: mode
+            mode: mode,
+            selectedData: selectedData
         )
         collectionView = UICollectionView(
             frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()
@@ -52,7 +56,7 @@ final class ItemDetailInfoViewController: BaseViewController {
                           height: menuImageDisplayViewHeight))
         navigationBar = CustomNavigationBar.create()
         skeletonLoadingView = SkeletonLoadingView()
-        addToOrderButton = ItemDetailAddToOrderButton()
+        addToOrderButton = OrderTwoTitlesButton()
         gradientView = GradientView()
         bottomViewContainer = UIView()
         super.init()
@@ -63,6 +67,10 @@ final class ItemDetailInfoViewController: BaseViewController {
 
     required convenience init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        print("ItemDetailInfoViewController deinit")
     }
 
     override func viewDidLoad() {
@@ -81,7 +89,10 @@ final class ItemDetailInfoViewController: BaseViewController {
     }
 
     private func bindModels() {
-        self.viewModel.fetchItem { (errorMsg) in
+        self.viewModel.fetchItem { [weak self] errorMsg in
+            guard let `self` = self else {
+                return
+            }
             self.skeletonLoadingView.hide()
             if let errorMsg = errorMsg {
                 print(errorMsg)
@@ -107,13 +118,12 @@ final class ItemDetailInfoViewController: BaseViewController {
             }
             self.updateAddToOrderButtonText()
             self.adapter.performUpdates(animated: true)
-
         }
     }
 
     private func setupActions() {
-        navigationBar.onClickLeftButton = {
-            self.delegate?.dismiss()
+        navigationBar.onClickLeftButton = { [weak self] in
+            self?.delegate?.dismiss()
         }
         let tap = UITapGestureRecognizer(target: self, action: #selector(addToOrderButtonTapped))
         addToOrderButton.addGestureRecognizer(tap)
@@ -143,16 +153,18 @@ final class ItemDetailInfoViewController: BaseViewController {
     }
 
     func addToOrder() {
-        PaymentActivityHUD.shared.show(initialMessage: "Adding...", viewToAdd: self.view)
-        viewModel.addItemToCart { (errorMsg) in
+        let addingText = viewModel.mode == .fromCart ? "Updating" : "Adding..."
+        let addedText = viewModel.mode == .fromCart ? "Updated!" : "Added!"
+        PaymentActivityHUD.shared.show(initialMessage: addingText, viewToAdd: self.view)
+        viewModel.addItemToCart { [weak self] errorMsg in
             if let errorMsg = errorMsg {
                 PaymentActivityHUD.shared.hide()
-                self.showNetworkErrorAlert(errorMsg: errorMsg)
+                self?.showNetworkErrorAlert(errorMsg: errorMsg)
                 return
             }
             ApplicationDependency.manager.informMainTabbarVCUpdateCart()
-            PaymentActivityHUD.shared.showSuccess(message: "Added!", completion: {
-                self.delegate?.dismiss()
+            PaymentActivityHUD.shared.showSuccess(message: addedText, completion: {
+                self?.delegate?.dismiss()
             })
         }
     }
@@ -160,8 +172,8 @@ final class ItemDetailInfoViewController: BaseViewController {
     func showSwitchStoreAlert() {
         let alert = UIAlertController(title: "Start new Order?", message: "You currently have an item from another menu in your Order Cart. Would you like to clear your existing Order Cart and start a new one?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-            self.addToOrder()
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self] action in
+            self?.addToOrder()
         }))
         alert.view.tintColor = ApplicationDependency.manager.theme.colors.doorDashRed
         self.present(alert, animated: true, completion: nil)
@@ -268,18 +280,18 @@ extension ItemDetailInfoViewController: ListAdapterDataSource {
             return ItemDetailOverviewSectionController()
         case is ItemDetailMultipleChoicePresentingModel:
             let controller = ItemDetailMultipleChoiceSectionController()
-            controller.updateBlance = { cents in
-                self.viewModel.updateCurrentBalance(cents: cents)
-                self.updateAddToOrderButtonText()
+            controller.updateBlance = { [weak self] cents in
+                self?.viewModel.updateCurrentBalance(cents: cents)
+                self?.updateAddToOrderButtonText()
             }
             return controller
         case is ItemDetailAddInstructionPresentingModel:
             return ItemDetailAddInstructionSectionController()
         case is ItemDetailSelectQuantityPresentingModel:
             let controller = ItemDetailSelectQuantitySectionController()
-            controller.updateQuantity = { newQuantity in
-                self.viewModel.updateQuantityAndBalance(newQuantity: newQuantity)
-                self.updateAddToOrderButtonText()
+            controller.updateQuantity = { [weak self] newQuantity in
+                self?.viewModel.updateQuantityAndBalance(newQuantity: newQuantity)
+                self?.updateAddToOrderButtonText()
             }
             return controller
         default:

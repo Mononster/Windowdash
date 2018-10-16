@@ -44,14 +44,24 @@ class BaseViewController: UIViewController {
         self.view.addSubview(loadingIndicator)
         loadingIndicator.isHidden = true
         loadingIndicator.snp.makeConstraints { (make) in
-            make.centerX.centerY.equalToSuperview()
+            make.centerX.equalToSuperview()
             make.width.height.equalTo(60)
+            if self.navigationController?.navigationBar.isHidden == false {
+                make.centerY.equalToSuperview().offset(-ApplicationDependency.manager.theme.navigationBarHeight)
+            } else {
+                make.centerY.equalToSuperview()
+            }
         }
         self.view.addSubview(pageLoadingIndicator)
         pageLoadingIndicator.isHidden = true
         pageLoadingIndicator.snp.makeConstraints { (make) in
-            make.centerX.centerY.equalToSuperview()
+            make.centerX.equalToSuperview()
             make.width.height.equalTo(80)
+            if self.navigationController?.navigationBar.isHidden == false {
+                make.centerY.equalToSuperview().offset(-ApplicationDependency.manager.theme.navigationBarHeight)
+            } else {
+                make.centerY.equalToSuperview()
+            }
         }
     }
 
@@ -60,7 +70,12 @@ class BaseViewController: UIViewController {
         tableViewPlaceHolder.isHidden = true
         tableViewPlaceHolder.separatorStyle = .singleLine
         tableViewPlaceHolder.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview()
+            make.leading.bottom.trailing.equalToSuperview()
+            if self.navigationController?.navigationBar.isHidden == false {
+                make.top.equalToSuperview().offset(-ApplicationDependency.manager.theme.navigationBarHeight)
+            } else {
+                make.top.equalToSuperview()
+            }
         }
     }
 
@@ -70,6 +85,12 @@ class BaseViewController: UIViewController {
 
     @objc func adjustViewWhenKeyboardDismiss(notification: NSNotification) {
 
+    }
+
+    func presentErrorAlertView(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+        self.present(alert, animated: true, completion: nil)
     }
 }
 

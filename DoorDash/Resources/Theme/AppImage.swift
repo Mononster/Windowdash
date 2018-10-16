@@ -31,6 +31,8 @@ protocol ImageAsset {
     var minusItemIcon: UIImage { get }
     var addItemUnselectedIcon: UIImage { get }
     var minusItemUnselecetedIcon: UIImage { get }
+    var blackCircleInfoIcon: UIImage { get }
+    var lightgrayInfoIcon: UIImage { get }
 }
 
 struct DefaultImageAsset: ImageAsset {
@@ -120,5 +122,13 @@ struct DefaultImageAsset: ImageAsset {
 
     var minusItemUnselecetedIcon: UIImage {
         return UIImage(named: "minus_item_unselected")!
+    }
+
+    var blackCircleInfoIcon: UIImage {
+        return UIImage(named: "black_circle_info")!
+    }
+
+    var lightgrayInfoIcon: UIImage {
+        return UIImage(named: "lightgray_circle_info")!
     }
 }

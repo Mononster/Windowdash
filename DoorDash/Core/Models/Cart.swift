@@ -259,6 +259,7 @@ struct CartOrderItem: Codable {
     }
 
     enum ItemInfoCodingKeys: String, CodingKey {
+        case id
         case name
         case priceMonetaryFields = "price_monetary_fields"
     }
@@ -270,17 +271,21 @@ struct CartOrderItem: Codable {
         }
 
         enum OrderItemExtraOptionCodingKeys: String, CodingKey {
+            case id
             case name
             case priceMonetaryFields = "price_monetary_fields"
         }
 
+        let optionID: Int64
         let quantity: Int
         let name: String
         let price: MonetaryField
 
-        init(quantity: Int,
+        init(optionID: Int64,
+             quantity: Int,
              name: String,
              price: MonetaryField) {
+            self.optionID = optionID
             self.quantity = quantity
             self.name = name
             self.price = price
@@ -294,26 +299,30 @@ struct CartOrderItem: Codable {
                 MonetaryField.self, forKey: .priceMonetaryFields
                 ) ?? MonetaryField()
             let name: String = try extraOptionContainer.decodeIfPresent(String.self, forKey: .name) ?? ""
-            self.init(quantity: quantity, name: name, price: priceMonetaryFields)
+            let optionID: Int64 = try extraOptionContainer.decode(Int64.self, forKey: .id)
+            self.init(optionID: optionID, quantity: quantity, name: name, price: priceMonetaryFields)
         }
 
         func encode(to encoder: Encoder) throws {}
     }
 
-    let id: Int64
+    let itemUpdateID: Int64
+    let itemID: Int64
     let quantity: Int
     let unitPriceMonetaryFields: MonetaryField
     let itemBasePriceMonetaryFields: MonetaryField
     let itemName: String
     let itemExtraOptions: [OrderItemOption]
 
-    init(id: Int64,
+    init(itemUpdateID: Int64,
+         itemID: Int64,
          quantity: Int,
          unitPriceMonetaryFields: MonetaryField,
          itemBasePriceMonetaryFields: MonetaryField,
          itemName: String,
          itemExtraOptions: [OrderItemOption]) {
-        self.id = id
+        self.itemUpdateID = itemUpdateID
+        self.itemID = itemID
         self.quantity = quantity
         self.unitPriceMonetaryFields = unitPriceMonetaryFields
         self.itemBasePriceMonetaryFields = itemBasePriceMonetaryFields
@@ -323,9 +332,10 @@ struct CartOrderItem: Codable {
 
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: OrderItemCodingKeys.self)
-        let id: Int64 = try values.decode(Int64.self, forKey: .id)
         let quantity: Int = try values.decode(Int.self, forKey: .quantity)
+        let itemUpdateID: Int64 = try values.decode(Int64.self, forKey: .id)
         let itemContainer = try values.nestedContainer(keyedBy: ItemInfoCodingKeys.self, forKey: .item)
+        let itemID: Int64 = try itemContainer.decode(Int64.self, forKey: .id)
         let itemBasePriceMonetaryFields: MonetaryField = try itemContainer.decodeIfPresent(
             MonetaryField.self, forKey: .priceMonetaryFields
             ) ?? MonetaryField()
@@ -334,7 +344,8 @@ struct CartOrderItem: Codable {
             ) ?? MonetaryField()
         let itemName: String = try itemContainer.decodeIfPresent(String.self, forKey: .name) ?? ""
         let itemExtraOptions: [OrderItemOption] = try values.decodeIfPresent([OrderItemOption].self, forKey: .options) ?? []
-        self.init(id: id,
+        self.init(itemUpdateID: itemUpdateID,
+                  itemID: itemID,
                   quantity: quantity,
                   unitPriceMonetaryFields: unitPriceMonetaryFields,
                   itemBasePriceMonetaryFields: itemBasePriceMonetaryFields,
@@ -435,6 +446,7 @@ struct Cart: Codable {
         case subTotalMonetaryFields = "subtotal_monetary_fields"
         case tipSuggestions = "tip_suggestions"
         case serviceRateDetails = "service_rate_details"
+        case serviceFeeMonetaryFields = "service_fee_monetary_fields"
         case storeOrderCarts = "store_order_carts"
         case deliveryAvailability = "delivery_availability"
         case deliveryFeeDetails = "delivery_fee_details"
@@ -445,6 +457,7 @@ struct Cart: Codable {
     let minOrderSubtotalMoney: MonetaryField
     let minOrderFeeMoney: MonetaryField
     let taxAmountMoney: MonetaryField
+    let serviceFeeMoney: MonetaryField
     let deliveryMoney: MonetaryField
     let subTotalMoney: MonetaryField
 
@@ -460,6 +473,7 @@ struct Cart: Codable {
          minOrderFeeMoney: MonetaryField,
          taxAmountMoney: MonetaryField,
          deliveryMoney: MonetaryField,
+         serviceFeeMoney: MonetaryField,
          subTotalMoney: MonetaryField,
          tipSuggestions: CartTipSuggestion?,
          serviceRateDetails: CartServiceRateDetails?,
@@ -472,6 +486,7 @@ struct Cart: Codable {
         self.minOrderFeeMoney = minOrderFeeMoney
         self.taxAmountMoney = taxAmountMoney
         self.deliveryMoney = deliveryMoney
+        self.serviceFeeMoney = serviceFeeMoney
         self.subTotalMoney = subTotalMoney
         self.tipSuggestions = tipSuggestions
         self.serviceRateDetails = serviceRateDetails
@@ -489,6 +504,7 @@ struct Cart: Codable {
         let taxAmountMoney: MonetaryField = try values.decodeIfPresent(MonetaryField.self, forKey: .taxAmountMonetaryFields) ?? MonetaryField()
         let deliveryMoney: MonetaryField = try values.decodeIfPresent(MonetaryField.self, forKey: .deliveryMonetaryFields) ??   MonetaryField()
         let subTotalMoney: MonetaryField = try values.decodeIfPresent(MonetaryField.self, forKey: .subTotalMonetaryFields) ?? MonetaryField()
+        let serviceFeeMoney: MonetaryField = try values.decodeIfPresent(MonetaryField.self, forKey: .serviceFeeMonetaryFields) ?? MonetaryField()
         let tipSuggestions: CartTipSuggestion? = try values.decodeIfPresent(CartTipSuggestion.self, forKey: .tipSuggestions)
         let serviceRateDetails: CartServiceRateDetails? = try values.decodeIfPresent(CartServiceRateDetails.self, forKey: .serviceRateDetails)
         let storeOrderCarts: [CartStoreOrder] = try values.decodeIfPresent([CartStoreOrder].self, forKey: .storeOrderCarts) ?? []
@@ -500,6 +516,7 @@ struct Cart: Codable {
                   minOrderFeeMoney: minOrderFeeMoney,
                   taxAmountMoney: taxAmountMoney,
                   deliveryMoney: deliveryMoney,
+                  serviceFeeMoney: serviceFeeMoney,
                   subTotalMoney: subTotalMoney,
                   tipSuggestions: tipSuggestions,
                   serviceRateDetails: serviceRateDetails,

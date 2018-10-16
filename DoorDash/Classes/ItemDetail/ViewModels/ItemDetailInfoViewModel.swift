@@ -13,6 +13,21 @@ enum ItemDetailEntranceMode {
     case fromCart
 }
 
+final class ItemSelectedData {
+
+    let optionIDs: [Int64]
+    let quantity: Int
+    let itemUpdateID: Int64
+    var instructions: String?
+
+    init(itemUpdateID: Int64, optionIDs: [Int64], quantity: Int, instructions: String?) {
+        self.itemUpdateID = itemUpdateID
+        self.optionIDs = optionIDs
+        self.quantity = quantity
+        self.instructions = instructions
+    }
+}
+
 final class ItemDetailInfoViewModel: PresentableViewModel {
 
     enum UIStats: CGFloat {
@@ -24,6 +39,7 @@ final class ItemDetailInfoViewModel: PresentableViewModel {
     private let itemID: String
     private var presentingExtraModels: [ItemDetailMultipleChoicePresentingModel] = []
     private var basePriceCents: Int64 = 0
+    private var selectedData: ItemSelectedData?
     private var selectedQuantity: Int = 1
 
     let storeID: String
@@ -33,17 +49,20 @@ final class ItemDetailInfoViewModel: PresentableViewModel {
     var headerImageList: IGPreviewPhotoList?
     var currentTotal: Money = Money.zero
     let addToOrderButtonDisplayTitle: String
+    let mode: ItemDetailEntranceMode
 
     init(service: SearchStoreItemAPIService,
          itemID: String,
          storeID: String,
          mode: ItemDetailEntranceMode,
-         selectedQuantity: Int = 1) {
+         selectedData: ItemSelectedData? = nil) {
         self.service = service
         self.itemID = itemID
         self.storeID = storeID
         self.addToOrderButtonDisplayTitle = mode == .fromCart ? "Update Item" : "Add to Order"
-        self.selectedQuantity = selectedQuantity
+        self.selectedQuantity = selectedData?.quantity ?? 1
+        self.selectedData = selectedData
+        self.mode = mode
     }
 
     private func generateData() {
@@ -68,12 +87,14 @@ final class ItemDetailInfoViewModel: PresentableViewModel {
     private func generateMultipleChoices(item: MenuItemViewModel) {
         for extra in item.extras {
             let options: [ItemDetailOptionPresentingModel] = extra.options.map { option in
-                return ItemDetailOptionPresentingModel(
+                let optionModel = ItemDetailOptionPresentingModel(
                     id: option.model.id,
                     optionName: option.optionName,
                     priceCents: option.priceCents,
                     price: option.priceDisplay
                 )
+                self.updateOptionPreselectedState(option: optionModel)
+                return optionModel
             }
             let presentingModel = ItemDetailMultipleChoicePresentingModel(
                 mode: extra.model.selectionMode,
@@ -86,6 +107,18 @@ final class ItemDetailInfoViewModel: PresentableViewModel {
             )
             sectionData.append(presentingModel)
             presentingExtraModels.append(presentingModel)
+        }
+    }
+
+    func updateOptionPreselectedState(option: ItemDetailOptionPresentingModel) {
+        guard let selectedData = selectedData else {
+            return
+        }
+
+        for selectedOption in selectedData.optionIDs {
+            if option.id == selectedOption {
+                option.isSelected = true
+            }
         }
     }
 
@@ -119,6 +152,7 @@ final class ItemDetailInfoViewModel: PresentableViewModel {
         }
         let request = AddItemToCartRequestModel(
             storeID: storeID,
+            itemUpdateID: String(self.selectedData?.itemUpdateID ?? 0),
             itemID: itemID,
             cartID: String(cartID),
             subsititutionMethod: .contactMe,
@@ -126,7 +160,7 @@ final class ItemDetailInfoViewModel: PresentableViewModel {
             options: options,
             specialInstructions: specialInstruction
         )
-        CartAPIService().addItemToCart(request: request) { (error) in
+        CartAPIService().addItemToCart(request: request, isUpdate: self.selectedData != nil) { (error) in
             if let error = error as? APIServiceError {
                 completion(error.errorMessage)
                 return
@@ -148,7 +182,7 @@ final class ItemDetailInfoViewModel: PresentableViewModel {
     func fetchItem(completion: @escaping (String?) -> ()) {
         let request = FetchStoreItemRequestModel(storeID: storeID, itemID: itemID)
         self.service.fetchStoreOverview(request: request) { (item, error) in
-            if let error = error as? SearchStoreItemAPIServiceError  {
+            if let error = error as? APIServiceError  {
                 completion(error.errorMessage)
                 return
             }
@@ -159,9 +193,29 @@ final class ItemDetailInfoViewModel: PresentableViewModel {
             }
             self.basePriceCents = item.price.money.cents
             self.currentTotal = item.price.money
+            self.addPreselectedOptionsToTotal(item: item)
             self.item = MenuItemViewModel(item: item)
             self.generateData()
             completion(nil)
         }
+    }
+
+    func addPreselectedOptionsToTotal(item: MenuItem) {
+        guard let selectedData = selectedData else {
+            return
+        }
+
+        var selectedOptionPriceCents: Int64 = 0
+        for extra in item.extras {
+            for option in extra.options {
+                for selectedOption in selectedData.optionIDs {
+                    if option.id == selectedOption {
+                        selectedOptionPriceCents += option.price.money.cents
+                    }
+                }
+            }
+        }
+        self.basePriceCents = item.price.money.cents + selectedOptionPriceCents
+        self.currentTotal = item.price.money + Money(cents: selectedOptionPriceCents)
     }
 }

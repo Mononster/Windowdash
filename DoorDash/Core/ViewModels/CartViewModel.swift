@@ -9,13 +9,32 @@
 final class CartViewModel {
 
     let model: Cart
+    var storeID: String?
     var storeDisplayName: String?
     var totalItems: Int = 0
     var storeNameAndQuantityDisplay: String = ""
+    var taxAndFeeDetailDisplay: String = ""
     var isEmptyCart: Bool = true
+    var subTotalPriceDisplay: String
+    var taxAndFeePriceDisplay: String
+    var deliveryPirceDisplay: String
+    var totalBeforeTaxDisplay: String
+
+    var isPromoApplied: Bool = false
+    var promoHintsTitle: String?
 
     init(model: Cart) {
         self.model = model
+        subTotalPriceDisplay = model.subTotalMoney.displayString
+        let taxAndFeesCents = model.taxAmountMoney.money.cents + model.serviceFeeMoney.money.cents
+        let taxAndFeeMoney = Money(cents: taxAndFeesCents)
+        taxAndFeePriceDisplay = taxAndFeeMoney.toFloatString()
+        deliveryPirceDisplay = model.deliveryMoney.displayString
+        totalBeforeTaxDisplay = model.totalBeforeTipMoney.displayString
+        if let cents = model.deliveryFeeDetails?.discount?.amount.money.cents, cents != 0{
+            isPromoApplied = true
+            deliveryPirceDisplay = model.deliveryFeeDetails?.discount?.amount.displayString ?? ""
+        }
         setup(model: model)
     }
 
@@ -26,14 +45,27 @@ final class CartViewModel {
             return
         }
         storeDisplayName = orderCart.store.name
+        storeID = String(orderCart.store.id)
+        for promo in orderCart.store.merchantPromotions {
+            if promo.deliveryFee.cents == 0
+                && model.subTotalMoney.money.cents < promo.minimumOrderCartSubtotal.cents {
+                let neededMoneyToGetPromo = Money(
+                    cents: promo.minimumOrderCartSubtotal.cents - model.subTotalMoney.money.cents
+                )
+                promoHintsTitle = "Add \(neededMoneyToGetPromo.toFloatString()) to get free delivery"
+            }
+        }
         for order in orderCart.orderDetails {
             for item in order.orderItems {
                 totalItems += item.quantity
             }
+
         }
-        isEmptyCart = orderCart.orderDetails.count == 0
+        isEmptyCart = orderCart.orderDetails.first?.orderItems.count == 0
         let itemDescription = totalItems == 1 ? "item" : "items"
         storeNameAndQuantityDisplay = "\(storeDisplayName ?? "") (\(totalItems) \(itemDescription))"
+
+        taxAndFeeDetailDisplay = "Tax: \(model.taxAmountMoney.displayString)\nService Fee: \(model.serviceFeeMoney.displayString)\n\n\(model.serviceRateDetails?.message ?? "")"
     }
 
     func printInfo() {

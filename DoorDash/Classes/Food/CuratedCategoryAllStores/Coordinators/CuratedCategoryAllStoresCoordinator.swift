@@ -36,7 +36,7 @@ extension CuratedCategoryAllStoresCoordinator: CuratedCategoryAllStoresViewContr
 
     func showDetailStorePage(id: String) {
         let coordinator = StoreDetailCoordinator(
-            rootViewController: StoreDetailViewController(storeID: id),
+            rootViewController: StoreDetailViewController(storeID: id, style: .withCustomNavBar),
             router: self.router
         )
         coordinator.start()

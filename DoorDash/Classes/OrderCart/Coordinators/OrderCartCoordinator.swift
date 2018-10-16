@@ -28,7 +28,8 @@ final class OrderCartCoordinator: Coordinator {
 
     func start() {
         self.rootViewController.delegate = self
-        self.router.setRootModule(rootViewController, hideBar: true)
+        self.router.setNavigationBarStyle(style: .mainTheme)
+        self.router.setRootModule(rootViewController)
     }
 
     func toPresentable() -> UIViewController {
@@ -42,5 +43,48 @@ extension OrderCartCoordinator: OrderCartViewControllerDelegate {
         self.router.dismissModule()
         self.delegate?.didDismiss(in: self)
     }
+
+    func presentStorePage(storeID: String) {
+        let coordinator = StoreDetailCoordinator(
+            rootViewController: StoreDetailViewController(storeID: storeID, style: .nativeNavBar),
+            router: self.router
+        )
+        coordinator.start()
+        addCoordinator(coordinator)
+        self.router.push(coordinator, animated: true) {
+            self.removeCoordinator(coordinator)
+        }
+    }
+
+    func presentCheckoutPage() {
+        let coordinator = CheckoutCoordinator(
+            rootViewController: CheckoutViewController(),
+            router: self.router
+        )
+        coordinator.start()
+        addCoordinator(coordinator)
+        self.router.push(coordinator, animated: true) {
+            self.removeCoordinator(coordinator)
+        }
+    }
+
+    func presentItemDetailPage(itemID: String,
+                               storeID: String,
+                               selectedData: ItemSelectedData?) {
+        let coordinator = ItemDetailInfoCoordinator(
+            rootViewController: ItemDetailInfoViewController(itemID: itemID, storeID: storeID, mode: .fromCart, selectedData: selectedData),
+            router: Router()
+        )
+        coordinator.start()
+        coordinator.delegate = self
+        addCoordinator(coordinator)
+        self.router.present(coordinator)
+    }
 }
 
+extension OrderCartCoordinator: ItemDetailInfoCoordinatorDelegate {
+
+    func didDismiss(in coordinator: ItemDetailInfoCoordinator) {
+        self.removeCoordinator(coordinator)
+    }
+}

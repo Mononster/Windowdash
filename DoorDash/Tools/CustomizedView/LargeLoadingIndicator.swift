@@ -49,7 +49,7 @@ final class LargeLoadingIndicator: UIView {
 
     func hide() {
         self.alpha = 1
-            self.nvIndicatorView.stopAnimating()
+        self.nvIndicatorView.stopAnimating()
         UIView.animate(withDuration: 0.1, delay: 0, options: [.curveEaseInOut], animations: {
             self.alpha = 0
         }, completion: { finished in
@@ -69,7 +69,7 @@ extension LargeLoadingIndicator {
     private func setupContainer() {
         self.addSubview(containerView)
         containerView.layer.cornerRadius = 6
-        containerView.backgroundColor = ApplicationDependency.manager.theme.colors.loadingBackgroundColor.withAlphaComponent(0.4)
+        containerView.backgroundColor = ApplicationDependency.manager.theme.colors.lightLoadingBackgroundColor
     }
 
     private func setupLoadingView() {

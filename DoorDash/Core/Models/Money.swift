@@ -175,6 +175,10 @@ public class Money: Comparable {
     }
 }
 
+public func + (lhs: Money, rhs: Money) -> Money {
+    return Money(cents: lhs.cents + rhs.cents)
+}
+
 public func < (lhs: Money, rhs: Money) -> Bool {
     return lhs.cents < rhs.cents
 }
