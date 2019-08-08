@@ -41,7 +41,7 @@ final class SkeletonLoadingView: UIView {
     func hide() {
         self.hideSkeleton()
         self.isHidden = true
-        self.removeFromSuperview()
+        //self.removeFromSuperview()
     }
 }
 
@@ -66,10 +66,7 @@ extension SkeletonLoadingView {
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.backgroundColor = ApplicationDependency.manager.theme.colors.white
-        tableView.register(
-            UINib(nibName: "SkeletonLoadingTitleTableViewCell", bundle: nil),
-            forCellReuseIdentifier: SkeletonLoadingTitleTableViewCell.identifier
-        )
+        tableView.register(SkeletonLoadingTitleTableViewCell.self, forCellReuseIdentifier: SkeletonLoadingTitleTableViewCell.identifier)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 150
         tableView.isUserInteractionEnabled = false
@@ -77,7 +74,7 @@ extension SkeletonLoadingView {
 
     private func setupConstraints() {
         tableView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(30)
+            make.top.equalToSuperview().offset(12)
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
@@ -91,9 +88,7 @@ extension SkeletonLoadingView: SkeletonTableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SkeletonLoadingTitleTableViewCell.identifier, for: indexPath) as! SkeletonLoadingTitleTableViewCell
-        cell.label.text = "UILabel: wtf"
-        cell.defaultImageView.isSkeletonable = true
-        cell.label.isSkeletonable = true
+        cell.isSkeletonable = true
         return cell
     }
 

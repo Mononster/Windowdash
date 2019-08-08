@@ -38,7 +38,7 @@ extension RefineLocationTitleCell {
         titleLabel.numberOfLines = 1
         titleLabel.minimumScaleFactor = 0.5
         titleLabel.textAlignment = .center
-        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.medium15
+        titleLabel.font = ApplicationDependency.manager.theme.fonts.medium15
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.black
         titleLabel.text = "Refine your location by dragging the pin."
     }

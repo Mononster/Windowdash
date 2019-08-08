@@ -23,7 +23,7 @@ public extension String {
 	///   - style: style to apply
 	///   - range: range to apply (nil means entire string's range)
 	/// - Returns: an NSMutableAttributedString instance
-	public func set(style: Style, range: NSRange? = nil) -> NSMutableAttributedString {
+    func set(style: Style, range: NSRange? = nil) -> NSMutableAttributedString {
 		guard let range = range else { // apply to entire string
 			return NSMutableAttributedString(string: self, attributes: style.attributes)
 		}
@@ -38,7 +38,7 @@ public extension String {
 	///
 	/// - Parameter styles: styles to apply
 	/// - Returns: a new attributed string
-	public func set(styles: Style...) -> NSMutableAttributedString {
+    func set(styles: Style...) -> NSMutableAttributedString {
 		return self.set(stylesArray: Array(styles))
 	}
 	
@@ -46,7 +46,7 @@ public extension String {
 	///
 	/// - Parameter styles: styles to apply
 	/// - Returns: a new attributed string
-	public func set(stylesArray styles: [Style]) -> NSMutableAttributedString {
+    func set(stylesArray styles: [Style]) -> NSMutableAttributedString {
 		let attributedString = NSMutableAttributedString(string: self)
 		let range = NSMakeRange(0, attributedString.length)
 		attributedString.addAttributes(styles.attributesDictionary, range: range)
@@ -60,7 +60,7 @@ public extension String {
 	///   - pattern: pattern to search via regexp
 	///   - options: options of pattern matching
 	/// - Returns: a new attributed string instance
-	public func set(styles: Style..., pattern: String, options: NSRegularExpression.Options = .caseInsensitive) -> NSMutableAttributedString {
+    func set(styles: Style..., pattern: String, options: NSRegularExpression.Options = .caseInsensitive) -> NSMutableAttributedString {
 		guard let regexp = RegExpPatternStyles(pattern: pattern, opts: options, styles: styles) else {
 			return NSMutableAttributedString(string: self)
 		}
@@ -74,7 +74,7 @@ public extension String {
 	///   - regExpStyles: regular expression array to apply in order
 	///   - default: optional default style to apply in first place before evaluating all expressions
 	/// - Returns: a parsed attributed string
-	public func set(regExpStyles: [RegExpPatternStyles], default dStyle: Style? = nil) -> NSMutableAttributedString {
+    func set(regExpStyles: [RegExpPatternStyles], default dStyle: Style? = nil) -> NSMutableAttributedString {
 		let attr_str = (dStyle != nil ? self.set(style: dStyle!) : NSMutableAttributedString(string: self))
 		let allRange = Range<String.Index>(uncheckedBounds: (self.startIndex,self.endIndex))
 		
@@ -98,7 +98,7 @@ public extension String {
 	///
 	/// - Parameter styles: styles to apply
 	/// - Returns: attributed string, nil if parse fails
-	public func renderTags(withStyles styles: [Style]) -> NSMutableAttributedString? {
+    func renderTags(withStyles styles: [Style]) -> NSMutableAttributedString? {
 		return MarkupString(source: self)?.render(withStyles: styles)
 	}
 	
@@ -106,7 +106,7 @@ public extension String {
 	///
 	/// - Parameter styles: styles to apply
 	/// - Returns: a new MarkupString instances, nil if parsing fails
-	public func parse(andSet styles: Style...) -> MarkupString? {
+    func parse(andSet styles: Style...) -> MarkupString? {
 		return MarkupString(source: self, styles: styles)
 	}
 	
@@ -116,7 +116,7 @@ public extension String {
 	///
 	/// - Returns: a new instance of MarkupString
 	/// - Throws: throws if parse fail
-	public func parse() -> MarkupString? {
+    func parse() -> MarkupString? {
 		return MarkupString(source: self)
 	}
 	
@@ -125,7 +125,7 @@ public extension String {
 	///
 	/// - Parameter tag: name of the tag
 	/// - Returns: self enclosed between given open/close tag name
-	public func tagged(_ tag: String) -> String {
+    func tagged(_ tag: String) -> String {
 		return "<\(tag)>\(self)</\(tag)>"
 	}
 	
@@ -134,7 +134,7 @@ public extension String {
 	///
 	/// - Parameter style: style to apply
 	/// - Returns: self enclosed between given open/close tag name defined in Style
-	public func tagged(_ style: Style) -> String {
+    func tagged(_ style: Style) -> String {
 		return "<\(style.name.value)>\(self)</\(style.name.value)>"
 	}
 	
@@ -146,7 +146,7 @@ public extension String {
 	///   - pattern: pattern to search for content to enclose in tag
 	///   - options: options for pattern mathing
 	/// - Returns: enclosed string
-	public func tagged(_ style: Style, pattern: String, options: NSRegularExpression.Options = .caseInsensitive) -> String {
+    func tagged(_ style: Style, pattern: String, options: NSRegularExpression.Options = .caseInsensitive) -> String {
 		do {
 			var taggedString = self
 			let regex = try NSRegularExpression(pattern: pattern, options: options)

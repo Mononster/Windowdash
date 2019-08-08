@@ -27,12 +27,9 @@ final class ApplicationDependency {
         return CartManager()
     }()
 
-    lazy var isEmptyCart: Bool = {
-        guard let mainTabbarVC = coordinator.getMainTabbarController() else {
-            return true
-        }
-        return mainTabbarVC.viewModel.cartViewModel?.isEmptyCart ?? true
-    }()
+    var isEmptyCart: Bool {
+        return cartManager.currentCartViewModel?.isEmptyCart ?? true
+    }
 
     private init() {
         if #available(iOS 11.0, *) {

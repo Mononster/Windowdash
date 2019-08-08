@@ -17,8 +17,8 @@ final class StoreDetailOverviewCell: UICollectionViewCell {
     private let ratingNumberLabel: UILabel
 
     static let heightWithoutLabels: CGFloat = 8 + 10 + 8 + 20 + 8
-    static let nameFont: UIFont = ApplicationDependency.manager.theme.fontSchema.bold30
-    static let descriptionFont: UIFont = ApplicationDependency.manager.theme.fontSchema.medium16
+    static let nameFont: UIFont = ApplicationDependency.manager.theme.fonts.bold30
+    static let descriptionFont: UIFont = ApplicationDependency.manager.theme.fonts.medium16
 
     override init(frame: CGRect) {
         storeNameLabel = UILabel()
@@ -78,7 +78,7 @@ extension StoreDetailOverviewCell {
 
         addSubview(ratingNumberLabel)
         ratingNumberLabel.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
-        ratingNumberLabel.font = ApplicationDependency.manager.theme.fontSchema.medium14
+        ratingNumberLabel.font = ApplicationDependency.manager.theme.fonts.medium14
         ratingNumberLabel.textAlignment = .left
         ratingNumberLabel.adjustsFontSizeToFitWidth = true
         ratingNumberLabel.minimumScaleFactor = 0.5

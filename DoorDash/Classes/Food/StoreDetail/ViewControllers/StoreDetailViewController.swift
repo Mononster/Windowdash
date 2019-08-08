@@ -15,11 +15,6 @@ protocol StoreDetailViewControllerDelegate: class {
     func showItemDetail(itemID: String, storeID: String)
 }
 
-enum StoreDetailViewControllerStyle {
-    case withCustomNavBar
-    case nativeNavBar
-}
-
 final class StoreDetailViewController: BaseViewController {
 
     lazy var adapter: ListAdapter = {
@@ -30,12 +25,13 @@ final class StoreDetailViewController: BaseViewController {
     private let navigationBar: CustomNavigationBar
     private let collectionView: UICollectionView
     private let viewModel: StoreDetailViewModel
-    private let style: StoreDetailViewControllerStyle
+    private let style: BaseViewControllerStyle
     private let menuPresenter: StoreDetailMenuSectionController
+    private var initLoading: Bool = true
 
     weak var delegate: StoreDetailViewControllerDelegate?
 
-    init(storeID: String, style: StoreDetailViewControllerStyle) {
+    init(storeID: String, style: BaseViewControllerStyle) {
         self.style = style
         let layout = UICollectionViewFlowLayout()
         layout.sectionHeadersPinToVisibleBounds = true
@@ -71,7 +67,11 @@ final class StoreDetailViewController: BaseViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        skeletonLoadingView.show()
+        super.viewDidAppear(animated)
+        if initLoading {
+            skeletonLoadingView.show()
+            initLoading = false
+        }
     }
 
     private func bindModels() {

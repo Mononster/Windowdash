@@ -66,7 +66,7 @@ extension OrderCartPriceDisplayCell {
     private func setupTitleLabel() {
         addSubview(titleLabel)
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        titleLabel.font = ApplicationDependency.manager.theme.fonts.medium16
         titleLabel.textAlignment = .left
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.5
@@ -76,7 +76,7 @@ extension OrderCartPriceDisplayCell {
     private func setupPriceLabel() {
         self.addSubview(priceLabel)
         priceLabel.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
-        priceLabel.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        priceLabel.font = ApplicationDependency.manager.theme.fonts.medium16
         priceLabel.textAlignment = .right
         priceLabel.adjustsFontSizeToFitWidth = true
         priceLabel.minimumScaleFactor = 0.5
@@ -92,7 +92,7 @@ extension OrderCartPriceDisplayCell {
     private func setupPromoAppliedLabel() {
         addSubview(promoIndicatorLabel)
         promoIndicatorLabel.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
-        promoIndicatorLabel.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        promoIndicatorLabel.font = ApplicationDependency.manager.theme.fonts.medium16
         promoIndicatorLabel.textAlignment = .right
         promoIndicatorLabel.adjustsFontSizeToFitWidth = true
         promoIndicatorLabel.minimumScaleFactor = 0.5

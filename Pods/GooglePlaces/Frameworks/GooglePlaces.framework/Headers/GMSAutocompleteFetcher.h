@@ -1,6 +1,6 @@
 //
 //  GMSAutocompleteFetcher.h
-//  Google Places API for iOS
+//  Google Places SDK for iOS
 //
 //  Copyright 2016 Google Inc.
 //
@@ -17,8 +17,9 @@
 #import "GMSAutocompleteFilter.h"
 
 @class GMSAutocompletePrediction;
+@class GMSAutocompleteSessionToken;
 
-NS_ASSUME_NONNULL_BEGIN;
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  * Protocol for objects that can receive callbacks from GMSAutocompleteFetcher
@@ -85,6 +86,11 @@ NS_ASSUME_NONNULL_BEGIN;
 @property(nonatomic, strong, nullable) GMSAutocompleteFilter *autocompleteFilter;
 
 /**
+ * Provide a |GMSAutocompleteSessionToken| for tracking the specific autocomplete query flow.
+ */
+- (void)provideSessionToken:(GMSAutocompleteSessionToken *)sessionToken;
+
+/**
  * Notify the fetcher that the source text to autocomplete has changed.
  *
  * This method should only be called from the main thread. Calling this method from another thread
@@ -98,4 +104,4 @@ NS_ASSUME_NONNULL_BEGIN;
 
 @end
 
-NS_ASSUME_NONNULL_END;
+NS_ASSUME_NONNULL_END

@@ -83,7 +83,7 @@ extension ConfirmAddressViewController {
         self.view.addSubview(confirmButton)
         confirmButton.setTitle("Confirm Address", for: .normal)
         confirmButton.setTitleColor(theme.colors.white, for: .normal)
-        confirmButton.titleLabel?.font = theme.fontSchema.medium18
+        confirmButton.titleLabel?.font = theme.fonts.medium18
         confirmButton.backgroundColor = theme.colors.doorDashRed
         confirmButton.layer.cornerRadius = 4
         confirmButton.addTarget(self, action: #selector(confirmAddressButtonTapped), for: .touchUpInside)

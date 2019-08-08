@@ -87,7 +87,7 @@ extension PaymentActivityHUD {
         messageLabel.numberOfLines = 1
         messageLabel.minimumScaleFactor = 0.5
         messageLabel.textAlignment = .center
-        messageLabel.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        messageLabel.font = ApplicationDependency.manager.theme.fonts.medium16
     }
 
     private func setupConstraints() {

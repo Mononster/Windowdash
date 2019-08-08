@@ -98,7 +98,7 @@ extension ItemDetailOptionCell {
     private func setupLabels() {
         addSubview(optionNameLabel)
         optionNameLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        optionNameLabel.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        optionNameLabel.font = ApplicationDependency.manager.theme.fonts.medium16
         optionNameLabel.textAlignment = .left
         optionNameLabel.adjustsFontSizeToFitWidth = true
         optionNameLabel.minimumScaleFactor = 0.5
@@ -106,7 +106,7 @@ extension ItemDetailOptionCell {
 
         addSubview(priceLabel)
         priceLabel.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
-        priceLabel.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        priceLabel.font = ApplicationDependency.manager.theme.fonts.medium16
         priceLabel.textAlignment = .right
         priceLabel.adjustsFontSizeToFitWidth = true
         priceLabel.minimumScaleFactor = 0.5

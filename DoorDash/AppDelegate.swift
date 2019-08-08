@@ -39,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.frame = UIScreen.main.bounds
         self.window?.backgroundColor = UIColor.white
         ApplicationDependency.manager.coordinator.start(window: self.window!)
+        print(UUID().uuidString)
         return true
     }
 }

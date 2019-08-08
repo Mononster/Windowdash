@@ -127,7 +127,7 @@ final class UserAccountViewModel {
     }
 
     func generateModelsForNotifications() -> UserAccountPageSectionModel {
-        guard let user = ApplicationEnvironment.current.currentUser else {
+        guard ApplicationEnvironment.current.currentUser != nil else {
             return UserAccountPageSectionModel(models: [], type: .notifications)
         }
         let models = [

@@ -96,7 +96,7 @@ extension InputFormCell {
     private func setupTitleLabel() {
         addSubview(titleLabel)
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.medium15
+        titleLabel.font = ApplicationDependency.manager.theme.fonts.medium15
         titleLabel.textAlignment = .right
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.5
@@ -108,7 +108,7 @@ extension InputFormCell {
         inputField.clearButtonMode = .whileEditing
         inputField.autocorrectionType = .no
         inputField.autocapitalizationType = .none
-        inputField.font = ApplicationDependency.manager.theme.fontSchema.medium15
+        inputField.font = ApplicationDependency.manager.theme.fonts.medium15
         inputField.textColor = ApplicationDependency.manager.theme.colors.black
         inputField.addTarget(self, action: #selector(textFieldDidChange(_:)),
                              for: .editingChanged)

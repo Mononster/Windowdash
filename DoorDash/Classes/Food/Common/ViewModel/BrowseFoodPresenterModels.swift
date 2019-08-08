@@ -37,6 +37,7 @@ final class BrowseFoodAllStoreItem: NSObject, ListDiffable {
     let deliveryTime: String
     let deliveryCost: String
     let shouldAddTopInset: Bool
+    let layout: MenuCollectionViewLayoutKind
     var closeTimeDisplay: String?
     let isClosed: Bool
     var currentScrollOffset: CGPoint?
@@ -51,6 +52,7 @@ final class BrowseFoodAllStoreItem: NSObject, ListDiffable {
          deliveryTime: String,
          deliveryCost: String,
          isClosed: Bool,
+         layout: MenuCollectionViewLayoutKind = .centerOneItem,
          shouldAddTopInset: Bool = true,
          closeTimeDisplay: String? = nil) {
         self.storeID = storeID
@@ -63,6 +65,7 @@ final class BrowseFoodAllStoreItem: NSObject, ListDiffable {
         self.deliveryTime = deliveryTime
         self.deliveryCost = deliveryCost
         self.isClosed = isClosed
+        self.layout = layout
         self.shouldAddTopInset = shouldAddTopInset
         self.closeTimeDisplay = closeTimeDisplay
     }
@@ -95,9 +98,11 @@ final class BrowseFoodAllStoreItems: NSObject, ListDiffable {
 final class BrowseFoodAllStoreHeaderModel: NSObject, ListDiffable {
 
     let title: String
+    let showSeparator: Bool
 
-    init(title: String) {
+    init(title: String, showSeparator: Bool) {
         self.title = title
+        self.showSeparator = showSeparator
     }
 
     func diffIdentifier() -> NSObjectProtocol {

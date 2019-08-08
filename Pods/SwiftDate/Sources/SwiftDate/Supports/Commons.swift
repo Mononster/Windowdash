@@ -1,9 +1,13 @@
 //
-//  DateFormatter.swift
 //  SwiftDate
+//  Parse, validate, manipulate, and display dates, time and timezones in Swift
 //
-//  Created by Daniele Margutti on 06/06/2018.
-//  Copyright © 2018 SwiftDate. All rights reserved.
+//  Created by Daniele Margutti
+//   - Web: https://www.danielemargutti.com
+//   - Twitter: https://twitter.com/danielemargutti
+//   - Mail: hello@danielemargutti.com
+//
+//  Copyright © 2019 Daniele Margutti. Licensed under MIT License.
 //
 
 import Foundation
@@ -16,7 +20,7 @@ public extension DateFormatter {
 	///   - region: region used to pre-configure the cell.
 	///   - format: optional format used to set the `dateFormat` property.
 	/// - Returns: date formatter instance
-	public static func sharedFormatter(forRegion region: Region?, format: String? = nil) -> DateFormatter {
+	static func sharedFormatter(forRegion region: Region?, format: String? = nil) -> DateFormatter {
 		let name = "SwiftDate_\(NSStringFromClass(DateFormatter.self))"
 		let formatter: DateFormatter = threadSharedObject(key: name, create: { return DateFormatter() })
 		if let region = region {
@@ -33,8 +37,8 @@ public extension DateFormatter {
 	/// - Parameter locale: locale to set
 	/// - Returns: number formatter instance
 	@available(iOS 9.0, macOS 10.11, *)
-	public static func sharedOrdinalNumberFormatter(locale: LocaleConvertible) -> NumberFormatter {
-		var formatter: NumberFormatter? = nil
+	static func sharedOrdinalNumberFormatter(locale: LocaleConvertible) -> NumberFormatter {
+		var formatter: NumberFormatter?
 		let name = "SwiftDate_\(NSStringFromClass(NumberFormatter.self))"
 		formatter = threadSharedObject(key: name, create: { return NumberFormatter() })
 		formatter!.numberStyle = .ordinal
@@ -56,7 +60,7 @@ internal func threadSharedObject<T: AnyObject>(key: String, create: () -> T) -> 
 		return cachedObj
 	} else {
 		let newObject = create()
-		Thread.current	.threadDictionary[key] = newObject
+		Thread.current.threadDictionary[key] = newObject
 		return newObject
 	}
 }
@@ -89,9 +93,9 @@ public struct DateFormats {
 		"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'",
 		"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'",
 		"yyyy-MM-dd'T'HH:mm:ss.SSSZ",
-		"yyyy-MM-dd",
 		"yyyy-MM-dd HH:mm:ss",
 		"yyyy-MM-dd HH:mm",
+		"yyyy-MM-dd",
 		"h:mm:ss A",
 		"h:mm A",
 		"MM/dd/yyyy",
@@ -100,8 +104,11 @@ public struct DateFormats {
 		"dddd, MMMM D, yyyy LT",
 		"yyyyyy-MM-dd",
 		"yyyy-MM-dd",
-		"GGGG-[W]WW-E",
-		"GGGG-[W]WW",
+		"yyyy-'W'ww-E",
+		"GGGG-'['W']'ww-E",
+		"yyyy-'W'ww",
+		"GGGG-'['W']'ww",
+		"yyyy'W'ww",
 		"yyyy-ddd",
 		"HH:mm:ss.SSSS",
 		"HH:mm:ss",
@@ -126,8 +133,8 @@ public struct DateFormats {
 	/// The RSS formatted date "EEE, d MMM yyyy HH:mm:ss ZZZ" i.e. "Fri, 09 Sep 2011 15:26:08 +0200"
 	public static let rss: String = "EEE, d MMM yyyy HH:mm:ss ZZZ"
 
-	/// The http header formatted date "EEE, dd MM yyyy HH:mm:ss ZZZ" i.e. "Tue, 15 Nov 1994 12:45:26 GMT"
-	public static let httpHeader: String = "EEE, dd MM yyyy HH:mm:ss ZZZ"
+	/// The http header formatted date "EEE, dd MMM yyyy HH:mm:ss zzz" i.e. "Tue, 15 Nov 1994 12:45:26 GMT"
+	public static let httpHeader: String = "EEE, dd MMM yyyy HH:mm:ss zzz"
 
 	/// A generic standard format date i.e. "EEE MMM dd HH:mm:ss Z yyyy"
 	public static let standard: String = "EEE MMM dd HH:mm:ss Z yyyy"
@@ -137,7 +144,7 @@ public struct DateFormats {
 
 	/// Reset the list of auto formats to the initial settings.
 	public static func resetAutoFormats() {
-		self.autoFormats = DateFormats.builtInAutoFormat
+		autoFormats = DateFormats.builtInAutoFormat
 	}
 
 	/// Parse a new string optionally passing the format in which is encoded. If no format is passed
@@ -156,7 +163,7 @@ public struct DateFormats {
 	public static func parse(string: String, formats: [String], region: Region) -> Date? {
 		let formatter = DateFormatter.sharedFormatter(forRegion: region)
 
-		var parsedDate: Date? = nil
+		var parsedDate: Date?
 		for format in formats {
 			formatter.dateFormat = format
 			formatter.locale = region.locale
@@ -171,66 +178,7 @@ public struct DateFormats {
 
 // MARK: - Calendar Extension
 
-// The code below is part of the Swift.org code. It is included as rangeOfUnit is a very useful
-// function for the startOf and endOf functions.
-// As always we would prefer using Foundation code rather than inventing code ourselves.
-extension Calendar {
-
-	typealias CFType = CFCalendar
-
-	private var _cfObject: CFType {
-		return unsafeBitCast(self as NSCalendar, to: CFCalendar.self)
-	}
-
-	/// Revised API for avoiding usage of AutoreleasingUnsafeMutablePointer.
-	/// The current exposed API in Foundation on Darwin platforms is:
-	/// `public func rangeOfUnit(unit: NSCalendarUnit, startDate datep:
-	/// AutoreleasingUnsafeMutablePointer<NSDate?>, interval tip:
-	/// UnsafeMutablePointer<NSTimeInterval>, forDate date: NSDate) -> Bool`
-	/// which is not implementable on Linux due to the lack of being able to properly implement
-	/// AutoreleasingUnsafeMutablePointer.
-	///
-	/// - parameters:
-	///     - component: the unit to determine the range for
-	///     - date: the date to wrap the unit around
-	/// - returns: the range (date interval) of the unit around the date
-	///
-	/// - Experiment: This is a draft API currently under consideration for official import into
-	///     Foundation as a suitable alternative
-	/// - Note: Since this API is under consideration it may be either removed or revised in the
-	///     near future
-	///
-	internal func rangex(of unit: Calendar.Component, for date: Date) -> (start: Date, duration: TimeInterval)? {
-		guard let cfValue = unit._cfValue else {
-			debugPrint("Passed unit '\(unit)' is not supported for operation")
-			return nil
-		}
-		var start: CFAbsoluteTime = 0.0
-		var ti: CFTimeInterval = 0.0
-		let res: Bool = withUnsafeMutablePointer(to: &start) { startp in
-			withUnsafeMutablePointer(to: &ti) { tip in
-				return CFCalendarGetTimeRangeOfUnit(_cfObject, cfValue, date.timeIntervalSinceReferenceDate, startp, tip)
-			}
-		}
-		if res {
-			return (Date(timeIntervalSinceReferenceDate: start), duration: ti)
-		}
-		return nil
-	}
-
-}
-
 public extension Calendar.Component {
-
-	// swiftlint:disable identifier_name
-	internal var _cfValue: CFCalendarUnit? {
-		guard let value = self.cfCalendarUnit else { return nil }
-		#if os(macOS) || os(iOS)
-		return CFCalendarUnit(rawValue: value)
-		#else
-		return CFCalendarUnit(rawValue: value)
-		#endif
-	}
 
 	internal static func toSet(_ src: [Calendar.Component]) -> Set<Calendar.Component> {
 		var l: Set<Calendar.Component> = []
@@ -238,35 +186,28 @@ public extension Calendar.Component {
 		return l
 	}
 
-	internal var cfCalendarUnit: UInt? {
+	internal var nsCalendarUnit: NSCalendar.Unit {
 		switch self {
-		case .day:				return CFCalendarUnit.day.rawValue
-		case .era:				return CFCalendarUnit.era.rawValue
-		case .year:				return CFCalendarUnit.year.rawValue
-		case .month:			return CFCalendarUnit.month.rawValue
-		case .hour:				return CFCalendarUnit.hour.rawValue
-		case .minute:			return CFCalendarUnit.minute.rawValue
-		case .second:			return CFCalendarUnit.second.rawValue
-		case .weekday:			return CFCalendarUnit.weekday.rawValue
-		case .weekdayOrdinal:	return CFCalendarUnit.weekdayOrdinal.rawValue
-		case .quarter:			return CFCalendarUnit.quarter.rawValue
-		case .weekOfMonth:		return CFCalendarUnit.weekOfMonth.rawValue
-		case .weekOfYear:		return CFCalendarUnit.weekOfYear.rawValue
-		case .yearForWeekOfYear:return CFCalendarUnit.yearForWeekOfYear.rawValue
-		default:				return nil // nanoseconds, calendar and timezone are not supported
+		case .era: return NSCalendar.Unit.era
+		case .year: return NSCalendar.Unit.year
+		case .month: return NSCalendar.Unit.month
+		case .day: return NSCalendar.Unit.day
+		case .hour: return NSCalendar.Unit.hour
+		case .minute: return NSCalendar.Unit.minute
+		case .second: return NSCalendar.Unit.second
+		case .weekday: return NSCalendar.Unit.weekday
+		case .weekdayOrdinal: return NSCalendar.Unit.weekdayOrdinal
+		case .quarter: return NSCalendar.Unit.quarter
+		case .weekOfMonth: return NSCalendar.Unit.weekOfMonth
+		case .weekOfYear: return NSCalendar.Unit.weekOfYear
+		case .yearForWeekOfYear: return NSCalendar.Unit.yearForWeekOfYear
+		case .nanosecond: return NSCalendar.Unit.nanosecond
+		case .calendar: return NSCalendar.Unit.calendar
+		case .timeZone: return NSCalendar.Unit.timeZone
+		@unknown default:
+			fatalError("Unsupported type \(self)")
 		}
 	}
-}
-
-/// This define the weekdays for some functions.
-public enum WeekDay: Int {
-	case sunday = 1
-	case monday = 2
-	case tuesday	= 3
-	case wednesday	= 4
-	case thursday	= 5
-	case friday = 6
-	case saturday	= 7
 }
 
 /// Rounding mode for dates.
@@ -331,27 +272,7 @@ public struct TimeCalculationOptions {
 	}
 }
 
-// MARK: - Hash Generation
-
-// Note: we can remove it for Swift 4.2
-// https://github.com/krzysztofzablocki/Sourcery/blob/a092c4b2a47daee26fa11b8be92e0484a5bc9633/Templates/Tests/Expected/AutoHashable.expected#L7
-internal func combineHashes(_ hashes: [Int]) -> Int {
-	return hashes.reduce(0, combineHashValues)
-}
-
-private func combineHashValues(_ initial: Int, _ other: Int) -> Int {
-	#if arch(x86_64) || arch(arm64)
-	let magic: UInt = 0x9e3779b97f4a7c15
-	#elseif arch(i386) || arch(arm)
-	let magic: UInt = 0x9e3779b9
-	#endif
-	var lhs = UInt(bitPattern: initial)
-	let rhs = UInt(bitPattern: other)
-	lhs ^= rhs &+ magic &+ (lhs << 6) &+ (lhs >> 2)
-	return Int(bitPattern: lhs)
-}
-
-//MARK: - compactMap for Swift 4.0 (not necessary > 4.0)
+// MARK: - compactMap for Swift 4.0 (not necessary > 4.0)
 
 #if swift(>=4.1)
 #else

@@ -94,7 +94,7 @@ extension DynamicHeightNavigationBar {
     private func setupTitleLabel() {
         addSubview(titleLabel)
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.bold30
+        titleLabel.font = ApplicationDependency.manager.theme.fonts.bold30
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.5
         titleLabel.numberOfLines = 1
@@ -104,7 +104,7 @@ extension DynamicHeightNavigationBar {
 
         addSubview(filterLabel)
         filterLabel.textColor = ApplicationDependency.manager.theme.colors.doorDashRed
-        filterLabel.font = ApplicationDependency.manager.theme.fontSchema.medium18
+        filterLabel.font = ApplicationDependency.manager.theme.fonts.medium18
         filterLabel.adjustsFontSizeToFitWidth = true
         filterLabel.textAlignment = .right
         filterLabel.minimumScaleFactor = 0.5

@@ -18,13 +18,11 @@ final class MainTabBarViewModel {
                 completion(error)
                 return
             }
-
-             ApplicationDependency.manager.cartManager.fetchCurrentCart(completion: { (cartVM, errorMsg) in
+            ApplicationDependency.manager.cartManager.fetchCurrentCart(completion: { (cartVM, errorMsg) in
                 if let error = errorMsg {
                     completion(error)
                     return
                 }
-
                 guard let cartVM = cartVM else {
                     completion("WTF NO CARTVM?")
                     return

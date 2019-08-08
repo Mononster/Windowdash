@@ -14,7 +14,7 @@ protocol ImageAsset {
     var facebook: UIImage { get }
     var google: UIImage { get }
     var onboardingImages: [UIImage] { get }
-    var tabbarImages: [UIImage] { get }
+    var tabbarImages: [String] { get }
     var mapPinImage: UIImage { get }
     var rightArrowImage: UIImage { get }
     var grayRoundBackground: UIImage { get }
@@ -33,6 +33,10 @@ protocol ImageAsset {
     var minusItemUnselecetedIcon: UIImage { get }
     var blackCircleInfoIcon: UIImage { get }
     var lightgrayInfoIcon: UIImage { get }
+    var redCheckMark: UIImage { get }
+    var dropDownIndicator: UIImage { get }
+    var orderCartIcon: UIImage { get }
+    var dismissIcon: UIImage { get }
 }
 
 struct DefaultImageAsset: ImageAsset {
@@ -56,8 +60,9 @@ struct DefaultImageAsset: ImageAsset {
     var onboardingImages: [UIImage] {
         return [#imageLiteral(resourceName: "onboarding1"), #imageLiteral(resourceName: "onboarding2"), #imageLiteral(resourceName: "onboarding3"), #imageLiteral(resourceName: "onboarding4"), #imageLiteral(resourceName: "onboarding5")]
     }
-    var tabbarImages: [UIImage] {
-        return [#imageLiteral(resourceName: "tabbar_1"), #imageLiteral(resourceName: "tabbar_2"), #imageLiteral(resourceName: "tabbar_3"), #imageLiteral(resourceName: "tabbar_4"), #imageLiteral(resourceName: "tabbar_5")]
+
+    var tabbarImages: [String] {
+        return ["tabbar_new_1", "tabbar_new_2", "tabbar_new_3", "tabbar_new_4", "tabbar_new_5"]
     }
 
     var mapPinImage: UIImage {
@@ -130,5 +135,21 @@ struct DefaultImageAsset: ImageAsset {
 
     var lightgrayInfoIcon: UIImage {
         return UIImage(named: "lightgray_circle_info")!
+    }
+
+    var redCheckMark: UIImage {
+        return UIImage(named: "right_checkmark")!
+    }
+
+    var dropDownIndicator: UIImage {
+        return UIImage(named: "drop_down_triangle")!
+    }
+
+    var orderCartIcon: UIImage {
+        return UIImage(named: "order_cart")!
+    }
+
+    var dismissIcon: UIImage {
+        return UIImage(named: "icon_close_grey")!
     }
 }

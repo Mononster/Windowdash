@@ -44,7 +44,10 @@ final class OrderCartViewModel: PresentableViewModel {
                 }
             }
         }
-
+        if sectionData.isEmpty {
+            sectionData.append(OrderCartEmptyDataPresentingModel(title: "Your cart is empty"))
+            return
+        }
         sectionData.append(OrderCartAddMoreItemsPresentingModel(title: "Add More Item"))
         sectionData.append(OrderCartPromoCodePresentingModel(title: "Promo Code"))
         let priceDisplays = [
@@ -62,19 +65,23 @@ final class OrderCartViewModel: PresentableViewModel {
         )
     }
 
-    func fetchCurrentCart(completion: @escaping (String?) -> ()) {
+
+    /// Fetch current cart
+    ///
+    /// - Parameter completion: error message and is the cart empty.
+    func fetchCurrentCart(completion: @escaping (String?, Bool) -> ()) {
         ApplicationDependency.manager.cartManager.fetchCurrentCart(completion: { (cartVM, errorMsg) in
             if let error = errorMsg {
-                completion(error)
+                completion(error, true)
                 return
             }
             guard let cartVM = cartVM else {
-                completion("WTF NO CARTVM?")
+                completion("WTF NO CARTVM?", true)
                 return
             }
             self.cartViewModel = cartVM
             self.generateData()
-            completion(nil)
+            completion(nil, self.sectionData.count == 1)
         })
     }
 

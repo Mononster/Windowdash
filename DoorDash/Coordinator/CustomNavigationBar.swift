@@ -70,7 +70,7 @@ final class CustomNavigationBar: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = ApplicationDependency.manager.theme.colors.black
-        label.font = ApplicationDependency.manager.theme.fontSchema.medium18
+        label.font = ApplicationDependency.manager.theme.fonts.medium18
         label.textAlignment = .center
         label.isHidden = true
         return label
@@ -89,6 +89,7 @@ final class CustomNavigationBar: UIView {
         let button = UIButton()
         button.imageView?.contentMode = .center
         button.isHidden = true
+        button.contentHorizontalAlignment = .right
         button.addTarget(self, action: #selector(clickRight), for: .touchUpInside)
         return button
     }()
@@ -228,6 +229,10 @@ extension CustomNavigationBar {
         setRightButton(normal: nil, highlighted: nil, title: title, titleColor: titleColor)
     }
 
+    func setRightButtonEnabled(_ enabled: Bool) {
+        rightButton.isEnabled = enabled
+    }
+
     func setLeftButton(normal: UIImage?, highlighted: UIImage?, title: String?, titleColor: UIColor?) {
         leftButton.isHidden = false
         leftButton.setImage(normal, for: .normal)
@@ -235,7 +240,7 @@ extension CustomNavigationBar {
         leftButton.setTitle(title, for: .normal)
         leftButton.setTitleColor(titleColor, for: .normal)
         leftButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)
-        leftButton.titleLabel?.font = ApplicationDependency.manager.theme.fontSchema.medium18
+        leftButton.titleLabel?.font = ApplicationDependency.manager.theme.fonts.medium18
     }
 
     func setRightButton(normal: UIImage?, highlighted: UIImage?, title: String?, titleColor: UIColor?) {
@@ -244,6 +249,8 @@ extension CustomNavigationBar {
         rightButton.setImage(highlighted, for: .highlighted)
         rightButton.setTitle(title, for: .normal)
         rightButton.setTitleColor(titleColor, for: .normal)
+        rightButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
+        rightButton.titleLabel?.font = ApplicationDependency.manager.theme.fonts.medium18
     }
 }
 

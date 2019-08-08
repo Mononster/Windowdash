@@ -35,7 +35,7 @@
 @class GMSOverlay;
 @class GMSProjection;
 
-NS_ASSUME_NONNULL_BEGIN;
+NS_ASSUME_NONNULL_BEGIN
 
 /** Delegate for events on GMSMapView. */
 @protocol GMSMapViewDelegate<NSObject>
@@ -446,6 +446,11 @@ typedef NS_ENUM(NSUInteger, GMSMapViewPaddingAdjustmentBehavior) {
 @property(nonatomic, strong, nullable) GMSCoordinateBounds *cameraTargetBounds;
 
 /**
+ * Convenience initializer that builds and returns a GMSMapView, with a frame and camera target.
+ */
+- (instancetype)initWithFrame:(CGRect)frame camera:(GMSCameraPosition *)camera;
+
+/**
  * Builds and returns a GMSMapView, with a frame and camera target.
  */
 + (instancetype)mapWithFrame:(CGRect)frame camera:(GMSCameraPosition *)camera;
@@ -512,4 +517,4 @@ extern NSString *const kGMSAccessibilityCompass;
  */
 extern NSString *const kGMSAccessibilityMyLocation;
 
-NS_ASSUME_NONNULL_END;
+NS_ASSUME_NONNULL_END

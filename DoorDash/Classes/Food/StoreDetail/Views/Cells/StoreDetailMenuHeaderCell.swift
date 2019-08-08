@@ -16,7 +16,7 @@ final class StoreDetailMenuHeaderCell: UICollectionViewCell {
     private let separator: Separator
     private let topSeparator: Separator
     static let heightWithoutDescription: CGFloat = 20 + 20 + 4 + 4 + 4
-    static let descriptionLabelFont: UIFont = ApplicationDependency.manager.theme.fontSchema.medium14
+    static let descriptionLabelFont: UIFont = ApplicationDependency.manager.theme.fonts.medium14
 
     override init(frame: CGRect) {
         titleLabel = UILabel()
@@ -51,7 +51,7 @@ extension StoreDetailMenuHeaderCell {
     private func setupLabel() {
         addSubview(titleLabel)
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.extraBold18
+        titleLabel.font = ApplicationDependency.manager.theme.fonts.extraBold18
         titleLabel.textAlignment = .left
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.5

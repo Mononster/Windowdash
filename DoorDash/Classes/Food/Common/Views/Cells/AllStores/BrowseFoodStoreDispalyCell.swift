@@ -140,7 +140,7 @@ extension BrowseFoodStoreDispalyCell {
     private func setupLabels() {
         addSubview(storeNameLabel)
         storeNameLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        storeNameLabel.font = ApplicationDependency.manager.theme.fontSchema.bold18
+        storeNameLabel.font = ApplicationDependency.manager.theme.fonts.bold18
         storeNameLabel.textAlignment = .left
         storeNameLabel.adjustsFontSizeToFitWidth = true
         storeNameLabel.minimumScaleFactor = 0.5
@@ -150,7 +150,7 @@ extension BrowseFoodStoreDispalyCell {
         addSubview(closeTimeLabel)
         closeTimeLabel.isHidden = true
         closeTimeLabel.textColor = ApplicationDependency.manager.theme.colors.doordashDarkCyan
-        closeTimeLabel.font = ApplicationDependency.manager.theme.fontSchema.extraBold12
+        closeTimeLabel.font = ApplicationDependency.manager.theme.fonts.extraBold12
         closeTimeLabel.textAlignment = .left
         closeTimeLabel.adjustsFontSizeToFitWidth = true
         closeTimeLabel.minimumScaleFactor = 0.5
@@ -167,7 +167,7 @@ extension BrowseFoodStoreDispalyCell {
     private func setupLabel(label: UILabel, textAlignment: NSTextAlignment) {
         addSubview(label)
         label.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
-        label.font = ApplicationDependency.manager.theme.fontSchema.medium14
+        label.font = ApplicationDependency.manager.theme.fonts.medium14
         label.textAlignment = textAlignment
         label.numberOfLines = 1
     }

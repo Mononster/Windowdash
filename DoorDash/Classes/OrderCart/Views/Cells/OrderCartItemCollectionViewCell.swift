@@ -19,7 +19,7 @@ final class OrderCartItemCollectionViewCell: SwipeCollectionViewCell {
     private let separator: Separator
 
     static let heightWithoutDescription: CGFloat = 12 + 25 + 4 + 12
-    static let descriptionLabelFont: UIFont = ApplicationDependency.manager.theme.fontSchema.medium12
+    static let descriptionLabelFont: UIFont = ApplicationDependency.manager.theme.fonts.medium12
 
     override init(frame: CGRect) {
         itemNameLabel = UILabel()
@@ -77,7 +77,7 @@ extension OrderCartItemCollectionViewCell {
     private func setupQuantityLabel() {
         contentView.addSubview(quantityLabel)
         quantityLabel.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
-        quantityLabel.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        quantityLabel.font = ApplicationDependency.manager.theme.fonts.medium16
         quantityLabel.textAlignment = .center
         quantityLabel.adjustsFontSizeToFitWidth = true
         quantityLabel.minimumScaleFactor = 0.5
@@ -87,7 +87,7 @@ extension OrderCartItemCollectionViewCell {
     private func setupItemNameLabel() {
         contentView.addSubview(itemNameLabel)
         itemNameLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        itemNameLabel.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        itemNameLabel.font = ApplicationDependency.manager.theme.fonts.medium16
         itemNameLabel.textAlignment = .left
         itemNameLabel.adjustsFontSizeToFitWidth = true
         itemNameLabel.minimumScaleFactor = 0.5
@@ -108,7 +108,7 @@ extension OrderCartItemCollectionViewCell {
     private func setupPriceLabel() {
         contentView.addSubview(priceLabel)
         priceLabel.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
-        priceLabel.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        priceLabel.font = ApplicationDependency.manager.theme.fonts.medium16
         priceLabel.textAlignment = .right
         priceLabel.adjustsFontSizeToFitWidth = true
         priceLabel.minimumScaleFactor = 0.5

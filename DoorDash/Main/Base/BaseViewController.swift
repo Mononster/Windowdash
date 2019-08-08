@@ -14,6 +14,11 @@ typealias KeyboardInfo = (
     duration: Double
 )
 
+enum BaseViewControllerStyle {
+    case withCustomNavBar
+    case nativeNavBar
+}
+
 class BaseViewController: UIViewController {
 
     let theme = ApplicationDependency.manager.theme

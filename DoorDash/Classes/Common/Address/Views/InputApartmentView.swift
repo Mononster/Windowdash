@@ -42,14 +42,14 @@ extension InputApartmentView {
         topLabel.text = "APARTMENT#(OPTIONAL)"
         topLabel.backgroundColor = .clear
         topLabel.numberOfLines = 1
-        topLabel.font = ApplicationDependency.manager.theme.fontSchema.heavy12
+        topLabel.font = ApplicationDependency.manager.theme.fonts.heavy12
         topLabel.textColor = ApplicationDependency.manager.theme.colors.gray.withAlphaComponent(0.9)
     }
 
     private func setupTextField() {
         addSubview(textField)
         textField.layer.borderColor = ApplicationDependency.manager.theme.colors.gray.cgColor
-        textField.font = ApplicationDependency.manager.theme.fontSchema.medium15
+        textField.font = ApplicationDependency.manager.theme.fonts.medium15
         textField.textColor = ApplicationDependency.manager.theme.colors.black
         textField.clearButtonMode = .whileEditing
         textField.autocorrectionType = .no

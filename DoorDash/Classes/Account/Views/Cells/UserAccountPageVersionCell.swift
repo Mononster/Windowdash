@@ -39,7 +39,7 @@ extension UserAccountPageVersionCell {
     private func setupVersionLabel() {
         addSubview(versionLabel)
         versionLabel.textColor = ApplicationDependency.manager.theme.colors.lightGray
-        versionLabel.font = ApplicationDependency.manager.theme.fontSchema.regular12
+        versionLabel.font = ApplicationDependency.manager.theme.fonts.regular12
         versionLabel.textAlignment = .center
         versionLabel.adjustsFontSizeToFitWidth = true
         versionLabel.minimumScaleFactor = 0.5

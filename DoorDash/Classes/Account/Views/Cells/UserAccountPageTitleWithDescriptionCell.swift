@@ -51,7 +51,7 @@ extension UserAccountPageTitleWithDescriptionCell {
     private func setupTitleLabel() {
         addSubview(titleLabel)
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        titleLabel.font = ApplicationDependency.manager.theme.fonts.medium16
         titleLabel.textAlignment = .left
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.5
@@ -61,7 +61,7 @@ extension UserAccountPageTitleWithDescriptionCell {
     private func setupDescriptionLabel() {
         addSubview(descriptionLabel)
         descriptionLabel.textColor = ApplicationDependency.manager.theme.colors.gray
-        descriptionLabel.font = ApplicationDependency.manager.theme.fontSchema.medium12
+        descriptionLabel.font = ApplicationDependency.manager.theme.fonts.medium12
         descriptionLabel.textAlignment = .left
         descriptionLabel.adjustsFontSizeToFitWidth = true
         descriptionLabel.minimumScaleFactor = 0.5

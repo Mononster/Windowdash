@@ -88,3 +88,4 @@ extension OrderCartCoordinator: ItemDetailInfoCoordinatorDelegate {
         self.removeCoordinator(coordinator)
     }
 }
+

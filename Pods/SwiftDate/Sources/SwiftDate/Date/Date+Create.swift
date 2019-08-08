@@ -1,9 +1,13 @@
 //
-//  Date+Operations.swift
 //  SwiftDate
+//  Parse, validate, manipulate, and display dates, time and timezones in Swift
 //
-//  Created by Daniele Margutti on 06/06/2018.
-//  Copyright © 2018 SwiftDate. All rights reserved.
+//  Created by Daniele Margutti
+//   - Web: https://www.danielemargutti.com
+//   - Twitter: https://twitter.com/danielemargutti
+//   - Mail: hello@danielemargutti.com
+//
+//  Copyright © 2019 Daniele Margutti. Licensed under MIT License.
 //
 
 import Foundation
@@ -14,7 +18,7 @@ public extension Date {
 	///
 	/// - Parameter list: list of dates
 	/// - Returns: a tuple with the index of the oldest date and its instance.
-	public static func oldestIn(list: [Date]) -> Date? {
+	static func oldestIn(list: [Date]) -> Date? {
 		guard list.count > 0 else { return nil }
 		guard list.count > 1 else { return list.first! }
 		return list.min(by: {
@@ -22,11 +26,11 @@ public extension Date {
 		})
 	}
 
-	/// Return the oldest date in given list.
+	/// Return the newest date in given list.
 	///
 	/// - Parameter list: list of dates
 	/// - Returns: a tuple with the index of the oldest date and its instance.
-	public static func newestIn(list: [Date]) -> Date? {
+	static func newestIn(list: [Date]) -> Date? {
 		guard list.count > 0 else { return nil }
 		guard list.count > 1 else { return list.first! }
 		return list.max(by: {
@@ -43,7 +47,7 @@ public extension Date {
 	///   - endDate: ending date
 	///   - increment: increment function. It get the last generated date and require a valida `DateComponents` instance which define the increment
 	/// - Returns: array of dates
-	public static func enumerateDates(from startDate: Date, to endDate: Date, increment: ((Date) -> (DateComponents))) -> [Date] {
+	static func enumerateDates(from startDate: Date, to endDate: Date, increment: ((Date) -> (DateComponents))) -> [Date] {
 		var dates: [Date] = []
 		var currentDate = startDate
 
@@ -63,7 +67,7 @@ public extension Date {
 	///   - endDate: ending date
 	///   - increment: components to add
 	/// - Returns: array of dates
-	public static func enumerateDates(from startDate: Date, to endDate: Date, increment: DateComponents) -> [Date] {
+	static func enumerateDates(from startDate: Date, to endDate: Date, increment: DateComponents) -> [Date] {
 		return Date.enumerateDates(from: startDate, to: endDate, increment: { _ in
 			return increment
 		})
@@ -73,16 +77,16 @@ public extension Date {
 	///
 	/// - Parameter style: rounding mode.
 	/// - Returns: rounded date
-	public func dateRoundedAt(at style: RoundDateMode) -> Date {
-		return self.inDefaultRegion().dateRoundedAt(style).date
+	func dateRoundedAt(at style: RoundDateMode) -> Date {
+		return inDefaultRegion().dateRoundedAt(style).date
 	}
 
 	/// Returns a new DateInRegion that is initialized at the start of a specified unit of time.
 	///
 	/// - Parameter unit: time unit value.
 	/// - Returns: instance at the beginning of the time unit; `self` if fails.
-	public func dateAtStartOf(_ unit: Calendar.Component) -> Date {
-		return self.inDefaultRegion().dateAtStartOf(unit).date
+	func dateAtStartOf(_ unit: Calendar.Component) -> Date {
+		return inDefaultRegion().dateAtStartOf(unit).date
 	}
 
 	/// Return a new DateInRegion that is initialized at the start of the specified components
@@ -90,7 +94,7 @@ public extension Date {
 	///
 	/// - Parameter units: sequence of transformations as time unit components
 	/// - Returns: new date at the beginning of the passed components, intermediate results if fails.
-	public func dateAtStartOf(_ units: [Calendar.Component]) -> Date {
+	func dateAtStartOf(_ units: [Calendar.Component]) -> Date {
 		return units.reduce(self) { (currentDate, currentUnit) -> Date in
 			return currentDate.dateAtStartOf(currentUnit)
 		}
@@ -101,8 +105,8 @@ public extension Date {
 	/// - parameter unit: A TimeUnit value.
 	///
 	/// - returns: A new Moment instance.
-	public func dateAtEndOf(_ unit: Calendar.Component) -> Date {
-		return self.inDefaultRegion().dateAtEndOf(unit).date
+	func dateAtEndOf(_ unit: Calendar.Component) -> Date {
+		return inDefaultRegion().dateAtEndOf(unit).date
 	}
 
 	/// Return a new DateInRegion that is initialized at the end of the specified components
@@ -110,7 +114,7 @@ public extension Date {
 	///
 	/// - Parameter units: sequence of transformations as time unit components
 	/// - Returns: new date at the end of the passed components, intermediate results if fails.
-	public func dateAtEndOf(_ units: [Calendar.Component]) -> Date {
+	func dateAtEndOf(_ units: [Calendar.Component]) -> Date {
 		return units.reduce(self) { (currentDate, currentUnit) -> Date in
 			return currentDate.dateAtEndOf(currentUnit)
 		}
@@ -120,7 +124,7 @@ public extension Date {
 	///
 	/// - Parameter components: components to alter with their new values.
 	/// - Returns: new altered `DateInRegion` instance
-	public func dateBySet(_ components: [Calendar.Component: Int]) -> Date? {
+	func dateBySet(_ components: [Calendar.Component: Int]) -> Date? {
 		return DateInRegion(self, region: SwiftDate.defaultRegion).dateBySet(components)?.date
 	}
 
@@ -130,18 +134,19 @@ public extension Date {
 	///   - hour: hour to set (`nil` to leave it unaltered)
 	///   - min: min to set (`nil` to leave it unaltered)
 	///   - secs: sec to set (`nil` to leave it unaltered)
+	///   - ms: milliseconds to set (`nil` to leave it unaltered)
 	///   - options: options for calculation
 	/// - Returns: new altered `DateInRegion` instance
-	public func dateBySet(hour: Int?, min: Int?, secs: Int?, options: TimeCalculationOptions = TimeCalculationOptions()) -> Date? {
+	func dateBySet(hour: Int?, min: Int?, secs: Int?, ms: Int? = nil, options: TimeCalculationOptions = TimeCalculationOptions()) -> Date? {
 		let srcDate = DateInRegion(self, region: SwiftDate.defaultRegion)
-		return srcDate.dateBySet(hour: hour, min: min, secs: secs, options: options)?.date
+		return srcDate.dateBySet(hour: hour, min: min, secs: secs, ms: ms, options: options)?.date
 	}
 
 	/// Creates a new instance by truncating the components
 	///
 	/// - Parameter components: components to truncate.
 	/// - Returns: new date with truncated components.
-	public func dateTruncated(_ components: [Calendar.Component]) -> Date? {
+	func dateTruncated(_ components: [Calendar.Component]) -> Date? {
 		return DateInRegion(self, region: SwiftDate.defaultRegion).dateTruncated(at: components)?.date
 	}
 
@@ -149,7 +154,7 @@ public extension Date {
 	///
 	/// - Parameter component: The component to be truncated from.
 	/// - Returns: new date with truncated components.
-	public func dateTruncated(from component: Calendar.Component) -> Date? {
+	func dateTruncated(from component: Calendar.Component) -> Date? {
 		return DateInRegion(self, region: SwiftDate.defaultRegion).dateTruncated(from: component)?.date
 	}
 
@@ -160,7 +165,7 @@ public extension Date {
 	///   - count: value of the offset.
 	///   - component: component to offset.
 	/// - Returns: new altered date.
-	public func dateByAdding(_ count: Int, _ component: Calendar.Component) -> DateInRegion {
+	func dateByAdding(_ count: Int, _ component: Calendar.Component) -> DateInRegion {
 		return DateInRegion(self, region: SwiftDate.defaultRegion).dateByAdding(count, component)
 	}
 
@@ -168,16 +173,78 @@ public extension Date {
 	///
 	/// - Parameter type: related date to obtain.
 	/// - Returns: instance of the related date.
-	public func dateAt(_ type: DateRelatedType) -> Date {
-		return self.inDefaultRegion().dateAt(type).date
+	func dateAt(_ type: DateRelatedType) -> Date {
+		return inDefaultRegion().dateAt(type).date
 	}
 
 	/// Create a new date at now and extract the related date using passed rule type.
 	///
 	/// - Parameter type: related date to obtain.
 	/// - Returns: instance of the related date.
-	public static func nowAt(_ type: DateRelatedType) -> Date {
+	static func nowAt(_ type: DateRelatedType) -> Date {
 		return Date().dateAt(type)
 	}
+
+	/// Return the dates for a specific weekday inside given month of specified year.
+	/// Ie. get me all the saturdays of Feb 2018.
+	/// NOTE: Values are returned in order.
+	///
+	/// - Parameters:
+	///   - weekday: weekday target.
+	///   - month: month target.
+	///   - year: year target.
+	///   - region: region target, omit to use `SwiftDate.defaultRegion`
+	/// - Returns: Ordered list of the dates for given weekday into given month.
+	static func datesForWeekday(_ weekday: WeekDay, inMonth month: Int, ofYear year: Int,
+									   region: Region = SwiftDate.defaultRegion) -> [Date] {
+		let fromDate = DateInRegion(Date(year: year, month: month, day: 1, hour: 0, minute: 0), region: region)
+		let toDate = fromDate.dateAt(.endOfMonth)
+		return DateInRegion.datesForWeekday(weekday, from: fromDate, to: toDate, region: region).map { $0.date }
+	}
+
+	/// Return the dates for a specific weekday inside a specified date range.
+	/// NOTE: Values are returned in order.
+	///
+	/// - Parameters:
+	///   - weekday: weekday target.
+	///   - startDate: from date of the range.
+	///   - endDate: to date of the range.
+	///   - region: region target, omit to use `SwiftDate.defaultRegion`
+	/// - Returns: Ordered list of the dates for given weekday in passed range.
+	static func datesForWeekday(_ weekday: WeekDay, from startDate: Date, to endDate: Date,
+									   region: Region = SwiftDate.defaultRegion) -> [Date] {
+		let fromDate = DateInRegion(startDate, region: region)
+		let toDate = DateInRegion(endDate, region: region)
+		return DateInRegion.datesForWeekday(weekday, from: fromDate, to: toDate, region: region).map { $0.date }
+	}
+
+    /// Returns the date at the given week number and week day preserving smaller components (hour, minute, seconds)
+    ///
+    /// For example: to get the third friday of next month
+    ///         let today = DateInRegion()
+    ///         let result = today.dateAt(weekdayOrdinal: 3, weekday: .friday, monthNumber: today.month + 1)
+    ///
+    /// - Parameters:
+    ///     - weekdayOrdinal: the week number (by set position in a recurrence rule)
+    ///     - weekday: WeekDay
+    ///     - monthNumber: a number from 1 to 12 representing the month, optional parameter
+    ///     - yearNumber: a number representing the year, optional parameter
+    /// - Returns: new date created with the given parameters
+    func dateAt(weekdayOrdinal: Int, weekday: WeekDay, monthNumber: Int? = nil,
+                yearNumber: Int? = nil) -> Date {
+        let date = DateInRegion(self, region: region)
+        return date.dateAt(weekdayOrdinal: weekdayOrdinal, weekday: weekday, monthNumber: monthNumber, yearNumber: yearNumber).date
+    }
+
+    /// Returns the next weekday preserving smaller components (hour, minute, seconds)
+    ///
+    /// - Parameters:
+    ///   - weekday: weekday to get.
+    ///   - region: region target, omit to use `SwiftDate.defaultRegion`
+    /// - Returns: `Date`
+    func nextWeekday(_ weekday: WeekDay, region: Region = SwiftDate.defaultRegion) -> Date {
+        let date = DateInRegion(self, region: region)
+        return date.nextWeekday(weekday).date
+    }
 
 }

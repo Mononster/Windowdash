@@ -12,8 +12,8 @@ import SnapKit
 final class SegmentNavigateView: UIScrollView {
 
     let titleColor: UIColor = ApplicationDependency.manager.theme.colors.darkGray
-    let titleFont: UIFont = ApplicationDependency.manager.theme.fontSchema.medium16
-    let titleSelectedFont: UIFont = ApplicationDependency.manager.theme.fontSchema.bold16
+    let titleFont: UIFont = ApplicationDependency.manager.theme.fonts.medium16
+    let titleSelectedFont: UIFont = ApplicationDependency.manager.theme.fonts.bold16
     let titleSelectedColor: UIColor = ApplicationDependency.manager.theme.colors.doorDashRed
     let sliderViewHeight: CGFloat = 4
     var currentIndex: Int = 0

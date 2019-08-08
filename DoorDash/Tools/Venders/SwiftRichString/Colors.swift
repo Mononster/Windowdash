@@ -46,7 +46,7 @@ public extension SRColor {
 	/// Initialize a new color using given rgba string representation of color with alpha of the form #RRGGBBAA/#RRGGBB
 	/// Return nil if it no valid.
 	/// - return: valid SRColor or nil
-	public convenience init?(hex: String, alpha: Float, default dColor: SRColor = SRColor.black) {
+    convenience init?(hex: String, alpha: Float, default dColor: SRColor = SRColor.black) {
 		guard hex.hasPrefix("#") else {
 			self.init(cgColor: dColor.cgColor)
 			return

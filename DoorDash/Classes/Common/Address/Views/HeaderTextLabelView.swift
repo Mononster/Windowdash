@@ -37,7 +37,7 @@ extension HeaderTextLabelView {
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
         titleLabel.minimumScaleFactor = 0.6
-        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.regular15
+        titleLabel.font = ApplicationDependency.manager.theme.fonts.regular15
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.black.withAlphaComponent(0.8)
 
         titleLabel.snp.makeConstraints { (make) in

@@ -40,7 +40,7 @@ extension BrowseFoodHeaderWithSubTitleViewCell {
     private func setupLabel() {
         addSubview(titleLabel)
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.extraBold18
+        titleLabel.font = ApplicationDependency.manager.theme.fonts.extraBold18
         titleLabel.textAlignment = .left
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.5
@@ -48,7 +48,7 @@ extension BrowseFoodHeaderWithSubTitleViewCell {
 
         addSubview(descriptionLabel)
         descriptionLabel.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
-        descriptionLabel.font = ApplicationDependency.manager.theme.fontSchema.medium14
+        descriptionLabel.font = ApplicationDependency.manager.theme.fonts.medium14
         descriptionLabel.textAlignment = .left
         descriptionLabel.adjustsFontSizeToFitWidth = true
         descriptionLabel.minimumScaleFactor = 0.5

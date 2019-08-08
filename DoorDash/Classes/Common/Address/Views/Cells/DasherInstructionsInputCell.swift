@@ -44,7 +44,7 @@ extension DasherInstructionsInputCell {
         textView.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
         textView.backgroundColor = ApplicationDependency.manager.theme.colors.white
         textView.setBorder(.all, color: ApplicationDependency.manager.theme.colors.separatorGray, borderWidth: 0.4)
-        textView.font = ApplicationDependency.manager.theme.fontSchema.bold12
+        textView.font = ApplicationDependency.manager.theme.fonts.bold12
         textView.delegate = self
     }
 
@@ -63,14 +63,14 @@ extension DasherInstructionsInputCell: UITextViewDelegate {
         if textView.textColor == ApplicationDependency.manager.theme.colors.doorDashDarkGray {
             textView.text = nil
             textView.textColor = ApplicationDependency.manager.theme.colors.black
-            textView.font = ApplicationDependency.manager.theme.fontSchema.medium14
+            textView.font = ApplicationDependency.manager.theme.fonts.medium14
         }
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             textView.text = " DASHER INSTRUCTIONS"
-            textView.font = ApplicationDependency.manager.theme.fontSchema.bold12
+            textView.font = ApplicationDependency.manager.theme.fonts.bold12
             textView.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
         } else {
             //comment = textView.text

@@ -10,6 +10,7 @@ final class StoreListViewModel {
 
     var allStores: [StoreViewModel] = []
     var isLoadingMoreStores = false
+    var numStores: Int = 0
     
     private var serverPageOffset: Int? = 0
     private var serverFetchLimit: Int = 50
@@ -19,6 +20,8 @@ final class StoreListViewModel {
     private let service: BrowseFoodAPIService
     private let query: String?
     private let curatedCateogryID: String?
+    private var filterOptions: [StoreFilterRequestModel] = []
+    private var layout: MenuCollectionViewLayoutKind = .centerOneItem
 
     init(service: BrowseFoodAPIService,
          serverFetchLimit: Int = 50,
@@ -27,6 +30,21 @@ final class StoreListViewModel {
         self.service = service
         self.query = query
         self.curatedCateogryID = curatedCateogryID
+    }
+
+    func setFilterOptions(models: [StoreFilterRequestModel]) {
+        reset()
+        self.filterOptions = models
+    }
+
+    private func reset() {
+        self.serverFetchLimit = 50
+        self.serverPageOffset = 0
+        self.localPageOffset = 0
+        self.localFetchLimit = 10
+        self.allStores.removeAll()
+        self.numStores = 0
+        self.isLoadingMoreStores = false
     }
 
     func loadMoreStores(completion: @escaping ([BrowseFoodAllStoreItem], Bool) -> ()) {
@@ -41,14 +59,17 @@ final class StoreListViewModel {
         }
     }
 
-    func fetchFirstList(completion: @escaping ([BrowseFoodAllStoreItem], String?) -> ()) {
+    func fetchFirstList(addTopInset: Bool = true,
+                        completion: @escaping ([BrowseFoodAllStoreItem], String?) -> ()) {
         fetchStores { (errorMsg) in
             if let error = errorMsg {
                 completion([], error)
                 return
             }
             self.generatePresentingStores { (stores) in
-                let items = self.generateDataForAllStores(stores: stores)
+                let items = self.generateDataForAllStores(
+                    stores: stores, addTopInset: addTopInset
+                )
                 completion(items, nil)
             }
         }
@@ -67,15 +88,16 @@ final class StoreListViewModel {
         }
         let request = FetchAllStoresRequestModel(
             limit: serverFetchLimit, offset: pageOffset, latitude: lat, longitude: lng,
-            sortOption: .asap, query: query, curatedCateogryID: curatedCateogryID
+            sortOption: .asap, query: query, curatedCateogryID: curatedCateogryID, filters: filterOptions
         )
-        service.fetchAllStores(request: request) { (response, error) in
+        service.fetchAllStores(request: request, isFiltered: !filterOptions.isEmpty) { (response, error) in
             if let error = error as? BrowseFoodAPIServiceError {
                 completion(error.errorMessage)
                 return
             }
             if let response = response {
                 self.serverPageOffset = response.nextOffset
+                self.numStores = response.numStores
                 self.allStores.append(contentsOf: response.stores.map { store in
                     StoreViewModel(store: store)
                 })
@@ -92,7 +114,7 @@ final class StoreListViewModel {
             if !addTopInset && i == 0 {
                 shouldAddInset = false
             }
-            let item = store.convertToPresenterItem(shouldAddInset: shouldAddInset)
+            let item = store.convertToPresenterItem(shouldAddInset: shouldAddInset, layout: self.layout)
             items.append(item)
         }
         return items

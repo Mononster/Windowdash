@@ -23,26 +23,78 @@ final class CheckoutViewModel: PresentableViewModel {
     var totalFee: Money = .zero
 
     private func generateData() {
-        guard let viewModel = cartViewModel else {
+        guard let viewModel = cartViewModel,
+            let user = ApplicationEnvironment.current.currentUser,
+            let address = user.defaultAddress else {
             return
         }
         calcTipAmount(viewModel: viewModel)
         self.sectionData.removeAll()
+        let userDefaultAddress = address.shortName
+        let deliveryInstruction = address.driverInstructions ?? "Add"
+        sectionData.append(CheckoutDeliveryDetailsPresentingModel(
+            details: [
+                CheckoutDeliveryDetailModel(
+                    type: .map, subTitle: "", lat: address.latitude, lng: address.longitude),
+                CheckoutDeliveryDetailModel(type: .address, subTitle: userDefaultAddress),
+                CheckoutDeliveryDetailModel(type: .deliveryInstructions, subTitle: deliveryInstruction),
+                CheckoutDeliveryDetailModel(type: .eta, subTitle: viewModel.deliveryTimeDisplay)
+            ]
+        ))
+        generatePaymentSection()
+    }
+
+    func refreshPaymentSection() {
+        sectionData.removeLast()
+        generatePaymentSection()
+    }
+
+    func generatePaymentSection() {
+        guard let user = ApplicationEnvironment.current.currentUser else {
+            return
+        }
+        var cardTitle: String = "Add Card"
+        if let card = user.defaultCard {
+            cardTitle = PaymentMethodViewModel(model: card).displayTitle
+        }
+        sectionData.append(
+            CheckoutPaymentPresentingModel(
+                dasherTipValue: dasherTip.toFloatString(),
+                dasherTips: dasherTipSelections,
+                currentSelectedTipIndex: dasherTipDefaultIndex,
+                cardInfo: cardTitle
+            )
+        )
+    }
+
+    func updateSelectedTipValue(index: Int) {
+        guard index < dasherTipSelections.count else {
+            return
+        }
+        sectionData.removeLast()
+        updateAmountInfo(tipIndex: index)
+        generatePaymentSection()
     }
 
     func calcTipAmount(viewModel: CartViewModel) {
-        guard let tipSuggestion = viewModel.model.tipSuggestions else {
+        updateAmountInfo(tipIndex: viewModel.model.tipSuggestions?.defaultIndex ?? 0)
+    }
+
+    func updateAmountInfo(tipIndex: Int) {
+        guard let viewModel = cartViewModel,
+            let tipSuggestion = viewModel.model.tipSuggestions else {
             return
         }
-        dasherTipDefaultIndex = tipSuggestion.defaultIndex
+        dasherTipSelections.removeAll()
+        dasherTipDefaultIndex = tipIndex
         for value in tipSuggestion.tipValues {
             if tipSuggestion.type == .amount {
-                dasherTipSelections.append(String(value))
+                dasherTipSelections.append(Money(cents: value).toFloatString())
             } else {
                 dasherTipSelections.append(String(value) + "%")
             }
         }
-        let defaultTipValue = tipSuggestion.tipValues[safe: tipSuggestion.defaultIndex] ?? 0
+        let defaultTipValue = tipSuggestion.tipValues[safe: tipIndex] ?? 0
         if tipSuggestion.type == .amount {
             self.dasherTip = Money(cents: defaultTipValue)
         } else {

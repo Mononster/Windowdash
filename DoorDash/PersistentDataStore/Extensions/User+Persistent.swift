@@ -54,6 +54,7 @@ extension User: PersistentModel {
             firstName: persistent.firstName ?? "",
             email: persistent.email ?? "",
             defaultAddress: address,
+            defaultCard: nil,
             isGuest: persistent.isGuest
         )
     }

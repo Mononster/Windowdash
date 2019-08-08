@@ -42,7 +42,7 @@ public enum PhoneModel: String {
 }
 
 public extension UIDevice {
-    public var type: PhoneModel {
+    var type: PhoneModel {
         var systemInfo = utsname()
         uname(&systemInfo)
         let modelCode = withUnsafePointer(to: &systemInfo.machine) {
@@ -119,15 +119,15 @@ public extension UIDevice {
         return model
     }
 
-    public var statusBarHeight: CGFloat {
+    var statusBarHeight: CGFloat {
         return UIApplication.shared.statusBarFrame.height
     }
 
-    public var verticalPadding: CGFloat {
+    var verticalPadding: CGFloat {
         return statusBarHeight - 20.0
     }
 
-    public var hasNotch: Bool {
+    var hasNotch: Bool {
         return statusBarHeight == 44.0
     }
 }

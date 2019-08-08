@@ -51,7 +51,7 @@ extension SignupHomeNavigationBar {
     private func setupNavigationBar() {
         self.addSubview(segmentedControl)
         segmentedControl.setTitleTextAttributes(
-            [NSAttributedString.Key.font: theme.fontSchema.medium14], for: .normal
+            [NSAttributedString.Key.font: theme.fonts.medium14], for: .normal
         )
         segmentedControl.tintColor = theme.colors.doorDashRed
         segmentedControl.backgroundColor = theme.colors.white
@@ -65,7 +65,7 @@ extension SignupHomeNavigationBar {
         skipButton.backgroundColor = .clear
         skipButton.setTitle("Skip", for: .normal)
         skipButton.setTitleColor(theme.colors.doorDashRed, for: .normal)
-        skipButton.titleLabel?.font = theme.fontSchema.medium16
+        skipButton.titleLabel?.font = theme.fonts.medium16
     }
 
     private func setupSeparator() {

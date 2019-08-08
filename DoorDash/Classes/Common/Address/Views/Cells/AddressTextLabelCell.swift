@@ -42,7 +42,7 @@ extension AddressTextLabelCell {
         addSubview(titleLabel)
         titleLabel.backgroundColor = .clear
         titleLabel.numberOfLines = 1
-        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.medium15
+        titleLabel.font = ApplicationDependency.manager.theme.fonts.medium15
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.black
 
         titleLabel.snp.makeConstraints { (make) in

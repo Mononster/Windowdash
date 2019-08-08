@@ -47,7 +47,7 @@ extension OrderTwoTitlesButton {
         addSubview(titleLabel)
         titleLabel.backgroundColor = .clear
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.white
-        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.medium18
+        titleLabel.font = ApplicationDependency.manager.theme.fonts.medium18
         titleLabel.textAlignment = .center
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.5
@@ -57,7 +57,7 @@ extension OrderTwoTitlesButton {
         addSubview(priceLabel)
         priceLabel.backgroundColor = .clear
         priceLabel.textColor = ApplicationDependency.manager.theme.colors.white
-        priceLabel.font = ApplicationDependency.manager.theme.fontSchema.medium18
+        priceLabel.font = ApplicationDependency.manager.theme.fonts.medium18
         priceLabel.textAlignment = .right
         priceLabel.adjustsFontSizeToFitWidth = true
         priceLabel.minimumScaleFactor = 0.5

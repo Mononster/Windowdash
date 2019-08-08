@@ -61,7 +61,7 @@ final class OrderCartViewController: BaseViewController {
         if showLoadingIndicator {
             pageLoadingIndicator.show()
         }
-        viewModel.fetchCurrentCart { (errorMsg) in
+        viewModel.fetchCurrentCart { (errorMsg, isCartEmpty) in
             self.pageLoadingIndicator.hide()
             self.setupUIInteractionState(enable: true)
             if let errorMsg = errorMsg {
@@ -70,8 +70,8 @@ final class OrderCartViewController: BaseViewController {
             }
             self.navigationItem.title = self.viewModel.cartViewModel?.storeDisplayName
             self.adapter.performUpdates(animated: true)
-            self.gradientButtonView.isHidden = false
-            self.continueButton.isHidden = false
+            self.gradientButtonView.isHidden = isCartEmpty
+            self.continueButton.isHidden = isCartEmpty
             self.updateContinueButtonText()
             ApplicationDependency.manager.informMainTabbarVCUpdateCart()
         }
@@ -131,10 +131,10 @@ extension OrderCartViewController {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         let leftBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissButtonTapped))
-        leftBarButton.setTitleTextAttributes([NSAttributedString.Key.font: theme.fontSchema.medium18], for: .normal)
+        leftBarButton.setTitleTextAttributes([NSAttributedString.Key.font: theme.fonts.medium18], for: .normal)
         self.navigationItem.setLeftBarButtonItems([leftBarButton], animated: false)
         let backBarButton = UIBarButtonItem(title: "My Cart", style: .plain, target: nil, action: nil)
-        backBarButton.setTitleTextAttributes([NSAttributedString.Key.font: theme.fontSchema.medium18], for: .normal)
+        backBarButton.setTitleTextAttributes([NSAttributedString.Key.font: theme.fonts.medium18], for: .normal)
         self.navigationItem.backBarButtonItem = backBarButton
     }
 
@@ -226,6 +226,8 @@ extension OrderCartViewController: ListAdapterDataSource {
             return OrderCartPromoCodeSectionController()
         case is OrderCartPriceDisplayPresentingModel:
             return OrderCartPriceDisplaySectionController()
+        case is OrderCartEmptyDataPresentingModel:
+            return OrderCartEmptyDataSectionController()
         default:
             return OrderCartItemSectionController()
         }

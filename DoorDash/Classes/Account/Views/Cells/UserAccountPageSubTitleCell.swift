@@ -40,7 +40,7 @@ extension UserAccountPageSubTitleCell {
     private func setupTitleLabel() {
         addSubview(titleLabel)
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.extraBold16
+        titleLabel.font = ApplicationDependency.manager.theme.fonts.extraBold16
         titleLabel.textAlignment = .left
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.5

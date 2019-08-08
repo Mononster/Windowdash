@@ -41,6 +41,24 @@ extension CheckoutCoordinator: CheckoutViewControllerDelegate {
         self.router.popModule()
         self.delegate?.didDismiss(in: self)
     }
+
+    func showPaymentPage() {
+        let coordinator = PaymentMethodsCoordinator(
+            rootViewController: PaymentMethodsViewController(style: .nativeNavBar, hideApplePayTitle: true),
+            router: self.router
+        )
+        coordinator.start()
+        coordinator.delegate = self
+        addCoordinator(coordinator)
+        self.router.push(coordinator, animated: true) {
+            self.removeCoordinator(coordinator)
+        }
+    }
 }
 
+extension CheckoutCoordinator: PaymentMethodsCoordinatorDelegate {
 
+    func didDismiss(in coordinator: PaymentMethodsCoordinator) {
+        self.rootViewController.refreshData()
+    }
+}

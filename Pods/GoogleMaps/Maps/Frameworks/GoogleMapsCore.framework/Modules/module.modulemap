@@ -1,8 +1,7 @@
 framework module GoogleMapsCore {
   export *
-  module * { export *}
+  module * { export * }
   link "z"
-  link framework "Accelerate"
   link framework "CoreData"
   link framework "CoreFoundation"
   link framework "CoreGraphics"
@@ -15,4 +14,5 @@ framework module GoogleMapsCore {
   link framework "OpenGLES"
   link framework "QuartzCore"
   link framework "Security"
-  link framework "SystemConfiguration"}
+  link framework "SystemConfiguration"
+}

@@ -41,7 +41,7 @@ extension SignupButtonCell {
     private func setupButton() {
         addSubview(button)
         button.setTitleColor(ApplicationDependency.manager.theme.colors.white, for: .normal)
-        button.titleLabel?.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        button.titleLabel?.font = ApplicationDependency.manager.theme.fonts.medium16
         button.backgroundColor = ApplicationDependency.manager.theme.colors.doorDashRed
         button.layer.cornerRadius = 4
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)

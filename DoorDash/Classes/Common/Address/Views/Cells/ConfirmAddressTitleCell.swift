@@ -46,7 +46,7 @@ extension ConfirmAddressTitleCell {
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 1
         titleLabel.minimumScaleFactor = 0.5
-        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.bold24
+        titleLabel.font = ApplicationDependency.manager.theme.fonts.bold24
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.black
     }
 
@@ -56,7 +56,7 @@ extension ConfirmAddressTitleCell {
         subTitleLabel.textAlignment = .center
         subTitleLabel.numberOfLines = 1
         subTitleLabel.minimumScaleFactor = 0.5
-        subTitleLabel.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        subTitleLabel.font = ApplicationDependency.manager.theme.fonts.medium16
         subTitleLabel.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
     }
 

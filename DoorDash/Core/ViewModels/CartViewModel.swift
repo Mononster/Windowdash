@@ -12,13 +12,15 @@ final class CartViewModel {
     var storeID: String?
     var storeDisplayName: String?
     var totalItems: Int = 0
-    var storeNameAndQuantityDisplay: String = ""
+    var storeNameDisplay: String = ""
+    var quantityDisplay: String = ""
     var taxAndFeeDetailDisplay: String = ""
     var isEmptyCart: Bool = true
     var subTotalPriceDisplay: String
     var taxAndFeePriceDisplay: String
     var deliveryPirceDisplay: String
     var totalBeforeTaxDisplay: String
+    var deliveryTimeDisplay: String = ""
 
     var isPromoApplied: Bool = false
     var promoHintsTitle: String?
@@ -26,9 +28,8 @@ final class CartViewModel {
     init(model: Cart) {
         self.model = model
         subTotalPriceDisplay = model.subTotalMoney.displayString
-        let taxAndFeesCents = model.taxAmountMoney.money.cents + model.serviceFeeMoney.money.cents
-        let taxAndFeeMoney = Money(cents: taxAndFeesCents)
-        taxAndFeePriceDisplay = taxAndFeeMoney.toFloatString()
+        let taxAndFeesMoney = model.taxAmountMoney.money + model.serviceFeeMoney.money + model.minOrderFeeMoney.money
+        taxAndFeePriceDisplay = taxAndFeesMoney.toFloatString()
         deliveryPirceDisplay = model.deliveryMoney.displayString
         totalBeforeTaxDisplay = model.totalBeforeTipMoney.displayString
         if let cents = model.deliveryFeeDetails?.discount?.amount.money.cents, cents != 0{
@@ -63,9 +64,20 @@ final class CartViewModel {
         }
         isEmptyCart = orderCart.orderDetails.first?.orderItems.count == 0
         let itemDescription = totalItems == 1 ? "item" : "items"
-        storeNameAndQuantityDisplay = "\(storeDisplayName ?? "") (\(totalItems) \(itemDescription))"
+        storeNameDisplay = "\(storeDisplayName ?? "")"
+        quantityDisplay = "\(totalItems) \(itemDescription)"
 
         taxAndFeeDetailDisplay = "Tax: \(model.taxAmountMoney.displayString)\nService Fee: \(model.serviceFeeMoney.displayString)\n\n\(model.serviceRateDetails?.message ?? "")"
+
+        if model.deliveryAvailability?.asapAvailable ?? false {
+            deliveryTimeDisplay = "ASAP"
+            if let rangeA = model.deliveryAvailability?.asapMinutesRange?[safe: 0],
+                let rangeB = model.deliveryAvailability?.asapMinutesRange?[safe: 1] {
+                deliveryTimeDisplay += " (" + String(rangeA) + " - " + String(rangeB) + "mins)"
+            }
+        } else {
+            deliveryTimeDisplay = "Choose delivery time"
+        }
     }
 
     func printInfo() {

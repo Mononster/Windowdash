@@ -1,9 +1,13 @@
 //
-//  TimePeriod.swift
 //  SwiftDate
+//  Parse, validate, manipulate, and display dates, time and timezones in Swift
 //
-//  Created by Daniele Margutti on 14/06/2018.
-//  Copyright © 2018 SwiftDate. All rights reserved.
+//  Created by Daniele Margutti
+//   - Web: https://www.danielemargutti.com
+//   - Twitter: https://twitter.com/danielemargutti
+//   - Mail: hello@danielemargutti.com
+//
+//  Copyright © 2019 Daniele Margutti. Licensed under MIT License.
 //
 
 import Foundation
@@ -90,8 +94,8 @@ open class TimePeriod: TimePeriodProtocol {
 	/// - Returns: The new, shifted `TimePeriod`
 	public func shifted(by timeInterval: TimeInterval) -> TimePeriod {
 		let timePeriod = TimePeriod()
-		timePeriod.start = self.start?.addingTimeInterval(timeInterval)
-		timePeriod.end = self.end?.addingTimeInterval(timeInterval)
+		timePeriod.start = start?.addingTimeInterval(timeInterval)
+		timePeriod.end = end?.addingTimeInterval(timeInterval)
 		return timePeriod
 	}
 
@@ -102,8 +106,8 @@ open class TimePeriod: TimePeriodProtocol {
 	/// - Returns: new period
 	public func shifted(by components: DateComponents) -> TimePeriod {
 		let timePeriod = TimePeriod()
-		timePeriod.start = (self.hasStart ? (self.start! + components) : nil)
-		timePeriod.end = (self.hasEnd ? (self.end! + components) : nil)
+		timePeriod.start = (hasStart ? (start! + components) : nil)
+		timePeriod.end = (hasEnd ? (end! + components) : nil)
 		return timePeriod
 	}
 
@@ -119,14 +123,14 @@ open class TimePeriod: TimePeriodProtocol {
 		let timePeriod = TimePeriod()
 		switch anchor {
 		case .beginning:
-			timePeriod.start = self.start
-			timePeriod.end = self.end?.addingTimeInterval(timeInterval)
+			timePeriod.start = start
+			timePeriod.end = end?.addingTimeInterval(timeInterval)
 		case .center:
-			timePeriod.start = self.start?.addingTimeInterval(-timeInterval)
-			timePeriod.end = self.end?.addingTimeInterval(timeInterval)
+			timePeriod.start = start?.addingTimeInterval(-timeInterval)
+			timePeriod.end = end?.addingTimeInterval(timeInterval)
 		case .end:
-			timePeriod.start = self.start?.addingTimeInterval(-timeInterval)
-			timePeriod.end = self.end
+			timePeriod.start = start?.addingTimeInterval(-timeInterval)
+			timePeriod.end = end
 		}
 		return timePeriod
 	}
@@ -172,4 +176,24 @@ open class TimePeriod: TimePeriodProtocol {
 		return left.equals(right)
 	}
 
+}
+
+public extension TimePeriod {
+
+    /// The start date of the time period
+    var startDate: Date? {
+        return start?.date
+    }
+
+    /// The end date of the time period
+    var endDate: Date? {
+        return end?.date
+    }
+
+    /// Create a new time period with the given start date, end date and region (default is UTC)
+    convenience init(startDate: Date, endDate: Date, region: Region = Region.UTC) {
+        let start = DateInRegion(startDate, region: region)
+        let end = DateInRegion(endDate, region: region)
+        self.init(start: start, end: end)
+    }
 }

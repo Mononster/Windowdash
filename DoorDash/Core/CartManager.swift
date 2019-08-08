@@ -12,7 +12,7 @@ final class CartManager {
 
     private let cartStorageKey = "com.DoorDash.cartThumbnailStorageKey"
     private let service: CartAPIService
-    private var currentCartViewModel: CartViewModel?
+    var currentCartViewModel: CartViewModel?
 
     var currentStoreID: Int64?
     var currentCartID: Int64?
@@ -98,7 +98,8 @@ extension CartManager {
         }
         let cartThumbnail = CartThumbnail(id: cart.model.id,
                                           isEmpty: cart.isEmptyCart,
-                                          title: cart.storeNameAndQuantityDisplay)
+                                          title: cart.storeNameDisplay,
+                                          quantity: cart.quantityDisplay)
         UserDefaults.standard.set(object: cartThumbnail, forKey: cartStorageKey)
         UserDefaults.standard.synchronize()
     }

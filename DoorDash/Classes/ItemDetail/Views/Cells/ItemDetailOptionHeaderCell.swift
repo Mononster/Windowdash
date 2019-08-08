@@ -15,7 +15,7 @@ final class ItemDetailOptionHeaderCell: UICollectionViewCell {
     private let descriptionLabel: UILabel
     private let requiredLabel: PaddingLabel
 
-    static let descriptionLabelFont: UIFont = ApplicationDependency.manager.theme.fontSchema.medium16
+    static let descriptionLabelFont: UIFont = ApplicationDependency.manager.theme.fonts.medium16
 
     override init(frame: CGRect) {
         nameLabel = UILabel()
@@ -68,7 +68,7 @@ extension ItemDetailOptionHeaderCell {
     private func setupLabels() {
         addSubview(nameLabel)
         nameLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        nameLabel.font = ApplicationDependency.manager.theme.fontSchema.extraBold17
+        nameLabel.font = ApplicationDependency.manager.theme.fonts.extraBold17
         nameLabel.textAlignment = .left
         nameLabel.adjustsFontSizeToFitWidth = true
         nameLabel.minimumScaleFactor = 0.5
@@ -87,7 +87,7 @@ extension ItemDetailOptionHeaderCell {
     private func setupRequiredLabel() {
         addSubview(requiredLabel)
         requiredLabel.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
-        requiredLabel.font = ApplicationDependency.manager.theme.fontSchema.medium14
+        requiredLabel.font = ApplicationDependency.manager.theme.fonts.medium14
         requiredLabel.textAlignment = .right
         requiredLabel.adjustsFontSizeToFitWidth = true
         requiredLabel.minimumScaleFactor = 0.5

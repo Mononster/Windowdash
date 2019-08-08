@@ -80,7 +80,7 @@ extension AdjustItemQuantityView {
     private func setupLabel() {
         addSubview(displayLabel)
         displayLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        displayLabel.font = ApplicationDependency.manager.theme.fontSchema.bold18
+        displayLabel.font = ApplicationDependency.manager.theme.fonts.bold18
         displayLabel.textAlignment = .center
         displayLabel.adjustsFontSizeToFitWidth = true
         displayLabel.minimumScaleFactor = 0.5

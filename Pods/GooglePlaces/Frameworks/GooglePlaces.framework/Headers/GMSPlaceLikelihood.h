@@ -1,6 +1,6 @@
 //
 //  GMSPlaceLikelihood.h
-//  Google Places API for iOS
+//  Google Places SDK for iOS
 //
 //  Copyright 2016 Google Inc.
 //
@@ -11,9 +11,9 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN;
-
 @class GMSPlace;
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  * Represents a |GMSPlace| and the relative likelihood of the place being the best match within the
@@ -38,4 +38,4 @@ NS_ASSUME_NONNULL_BEGIN;
 
 @end
 
-NS_ASSUME_NONNULL_END;
+NS_ASSUME_NONNULL_END

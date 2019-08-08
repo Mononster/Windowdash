@@ -61,6 +61,7 @@ public struct User {
         case email
         case defaultAddress = "default_address"
         case isGuest = "is_guest"
+        case defaultCard = "default_card"
     }
 
     public let id: Int64
@@ -69,6 +70,7 @@ public struct User {
     public let firstName: String
     public let email: String
     public let defaultAddress: DeliveryAddress?
+    public let defaultCard: PaymentMethod?
     public let isGuest: Bool
 
     public init(id: Int64,
@@ -77,6 +79,7 @@ public struct User {
                 firstName: String,
                 email: String,
                 defaultAddress: DeliveryAddress?,
+                defaultCard: PaymentMethod?,
                 isGuest: Bool) {
         self.id = id
         self.phoneNumber = phoneNumber
@@ -84,6 +87,7 @@ public struct User {
         self.firstName = firstName
         self.email = email
         self.defaultAddress = defaultAddress
+        self.defaultCard = defaultCard
         self.isGuest = isGuest
     }
 }
@@ -97,6 +101,7 @@ extension User: Codable {
         let lastName: String = try values.decode(String.self, forKey: .lastName)
         let email: String = try values.decode(String.self, forKey: .email)
         let defaultAddress: DeliveryAddress? = try values.decodeIfPresent(DeliveryAddress.self, forKey: .defaultAddress)
+        let defaultCard: PaymentMethod? = try values.decodeIfPresent(PaymentMethod.self, forKey: .defaultCard)
         let isGuest: Bool = try values.decode(Bool.self, forKey: .isGuest)
         self.init(id: id,
                   phoneNumber: phoneNumber,
@@ -104,6 +109,7 @@ extension User: Codable {
                   firstName: firstName,
                   email: email,
                   defaultAddress: defaultAddress,
+                  defaultCard: defaultCard,
                   isGuest: isGuest)
     }
 
@@ -127,7 +133,8 @@ extension User {
             self.lastName == otherUser.lastName &&
             self.email == otherUser.email &&
             self.defaultAddress == otherUser.defaultAddress &&
-            self.isGuest == otherUser.isGuest
+            self.isGuest == otherUser.isGuest &&
+            self.defaultCard == otherUser.defaultCard
     }
 }
 

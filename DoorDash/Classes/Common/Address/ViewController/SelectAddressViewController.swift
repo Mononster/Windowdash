@@ -102,7 +102,7 @@ extension SelectAddressViewController {
         saveAddressButon.isHidden = true
         saveAddressButon.setTitle("Save Address", for: .normal)
         saveAddressButon.setTitleColor(theme.colors.white, for: .normal)
-        saveAddressButon.titleLabel?.font = theme.fontSchema.medium18
+        saveAddressButon.titleLabel?.font = theme.fonts.medium18
         saveAddressButon.backgroundColor = theme.colors.doorDashRed
         saveAddressButon.layer.cornerRadius = 4
         saveAddressButon.addTarget(self, action: #selector(saveAddressButtonTapped), for: .touchUpInside)

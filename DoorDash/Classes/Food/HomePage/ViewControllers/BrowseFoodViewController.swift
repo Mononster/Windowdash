@@ -24,25 +24,29 @@ final class BrowseFoodViewController: BaseViewController {
     }()
 
     private let skeletonLoadingView: SkeletonLoadingView
-    private let navigationBar: DynamicHeightNavigationBar
+    private let navigationBar: BrowsePageNavigationBar
     private let navigationBarHeight: CGFloat
     private let navigattionBarMinHeight: CGFloat
     private let collectionView: UICollectionView
+    private let sortSelectionView: SortOptionSelectionView
     private var previousOffset: CGFloat = 0
     private let viewModel: BrowseFoodViewModel
+    private let sortSectionController: StoreSortHorizontalSectionController
 
     weak var delegate: BrowseFoodViewControllerDelegate?
 
     override init() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        navigationBarHeight = UIScreen.main.bounds.height / 4.4
-        navigattionBarMinHeight = ApplicationDependency.manager.theme.navigationBarHeight
-        navigationBar = DynamicHeightNavigationBar(
+        navigationBarHeight = ApplicationDependency.manager.theme.navigationBarHeight
+        navigattionBarMinHeight = 20
+        navigationBar = BrowsePageNavigationBar(
             frame: CGRect(x: 0, y: 0,
                           width: UIScreen.main.bounds.width, height: navigationBarHeight)
         )
         viewModel = BrowseFoodViewModel(service: BrowseFoodAPIService())
+        sortSelectionView = SortOptionSelectionView()
         skeletonLoadingView = SkeletonLoadingView()
+        sortSectionController = StoreSortHorizontalSectionController()
         super.init()
         adapter.dataSource = self
         adapter.scrollViewDelegate = self
@@ -52,30 +56,75 @@ final class BrowseFoodViewController: BaseViewController {
         super.viewDidLoad()
         setupUI()
         bindModels()
-
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-//            ApplicationDependency.manager.coordinator
-//                .getMainTabbarController()?.showCartThumbnailView()
-//        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        skeletonLoadingView.show()
+        if !viewModel.showedSkeleton {
+            self.showSkeleton(coverAll: true)
+            viewModel.showedSkeleton = true
+        }
     }
 
     private func bindModels() {
-        self.navigationBar.addressView.addressContentLabel.text = viewModel.generateUserAddressContent()
-        viewModel.fetchMainViewLayout { errorMsg in
+        self.navigationBar.updateTexts(
+            address: viewModel.generateUserAddressContent(),
+            numShops: "Loading..."
+        )
+        viewModel.fetchMainViewLayout { [weak self] errorMsg in
+            guard let `self` = self else {
+                return
+            }
             if let errorMsg = errorMsg {
                 log.error(errorMsg)
                 return
             }
 
             DispatchQueue.main.async {
+                self.navigationBar.updateTexts(
+                    address: self.viewModel.generateUserAddressContent(),
+                    numShops: self.viewModel.getCurrentNumStoreDisplay()
+                )
                 self.skeletonLoadingView.hide()
                 self.adapter.performUpdates(animated: false)
             }
         }
+    }
+
+    private func loadStores() {
+        self.showSkeleton(coverAll: false)
+        self.viewModel.loadStores(completion: { [weak self] errorMsg in
+            guard let `self` = self else {
+                return
+            }
+            if let errorMsg = errorMsg {
+                log.error(errorMsg)
+                return
+            }
+            DispatchQueue.main.async {
+                self.adapter.performUpdates(animated: false, completion: { finished in
+                    self.skeletonLoadingView.hide()
+                })
+            }
+        })
+    }
+
+    private func showSkeleton(coverAll: Bool) {
+        if coverAll {
+            skeletonLoadingView.snp.remakeConstraints { (make) in
+                make.top.equalTo(navigationBar.snp.bottom)
+                make.leading.trailing.bottom.equalToSuperview()
+            }
+        } else {
+            let cuisineCategoryHeight = AnimatedCuisineItemSectionController.heightWithoutImage +
+                BrowseFoodViewModel.UIConfigure.getCuisineItemSize(collectionViewWidth: self.view.frame.width)
+            let filtersHeight = StoreSortBaseCell.Constants().containerHeight
+            skeletonLoadingView.snp.remakeConstraints { (make) in
+                make.top.equalTo(navigationBar.snp.bottom).offset(cuisineCategoryHeight + filtersHeight)
+                make.leading.trailing.bottom.equalToSuperview()
+            }
+        }
+        self.view.layoutIfNeeded()
+        self.skeletonLoadingView.show()
     }
 }
 
@@ -121,6 +170,24 @@ extension BrowseFoodViewController {
     }
 }
 
+extension BrowseFoodViewController {
+
+    private func presentSortSelectionView(item: StoreSortItemPresentingModel) {
+        let viewModel = SortOptionSelectionViewModel(
+            model: item,
+            viewResult:
+        { [weak self] filter in
+            guard !filter.selectedValues.isEmpty else { return }
+            item.title = filter.selectedValues.joined(separator: ", ")
+            self?.sortSectionController.selectSortItem(filter, selected: true)
+            self?.viewModel.updateFilter(item: filter)
+            self?.loadStores()
+        })
+        sortSelectionView.configData(viewModel: viewModel)
+        sortSelectionView.show()
+    }
+}
+
 extension BrowseFoodViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let topInset = navigationBarHeight
@@ -146,13 +213,42 @@ extension BrowseFoodViewController: ListAdapterDataSource {
                 self.delegate?.showCuisineAllStores(cuisine: cuisine)
             }
             return controller
+        case is CuisinePage:
+            let controller = AnimatedCuisineCarouselSectionController()
+            controller.didSelectCuisine = { [weak self] cuisine in
+                guard let `self` = self else { return }
+                self.viewModel.updateCuisineFilter(
+                    name: cuisine?.friendlyName.lowercased() ?? "",
+                    selected: cuisine != nil
+                )
+                self.loadStores()
+            }
+            return controller
+        case is StoreSortHorizontalPresentingModel:
+            sortSectionController.openSelectionView = { [weak self] item in
+                self?.presentSortSelectionView(item: item)
+            }
+            sortSectionController.didSelectItem = { [weak self] item in
+                self?.viewModel.updateFilter(item: item)
+                self?.loadStores()
+            }
+            return sortSectionController
         case is StoreCarouselItems:
             let controller = StoreCarouselSectionController()
-            controller.seeAllButtonTapped = { id, name, description in
-                self.delegate?.showCuratedCategoryAllStores(id: id, name: name, description: description)
+            controller.seeAllButtonTapped = { [weak self] id, name, description in
+                self?.delegate?.showCuratedCategoryAllStores(id: id, name: name, description: description)
             }
-            controller.didSelectItem = { storeID in
-                self.delegate?.showDetailStorePage(id: storeID)
+            controller.didSelectItem = { [weak self]  storeID in
+                self?.delegate?.showDetailStorePage(id: storeID)
+            }
+            return controller
+        case is StoreHorizontalCarouselItems:
+            let controller = StoreHorizontalCarouselSectionController()
+            controller.seeAllButtonTapped = { [weak self] id, name, description in
+                self?.delegate?.showCuratedCategoryAllStores(id: id, name: name, description: description)
+            }
+            controller.didSelectItem = { [weak self] storeID in
+                self?.delegate?.showDetailStorePage(id: storeID)
             }
             return controller
         case is BrowseFoodAllStoreItem:
@@ -160,10 +256,10 @@ extension BrowseFoodViewController: ListAdapterDataSource {
                 fatalError()
             }
             let controller = BrowseFoodAllStoresSectionController(
-                addInset: item.shouldAddTopInset, menuLayout: .centerOneItem
+                addInset: item.shouldAddTopInset, menuLayout: item.layout
             )
-            controller.didSelectItem = { storeID in
-                self.delegate?.showDetailStorePage(id: storeID)
+            controller.didSelectItem = { [weak self] storeID in
+                self?.delegate?.showDetailStorePage(id: storeID)
             }
             return controller
         case is BrowseFoodAllStoreHeaderModel:

@@ -19,7 +19,7 @@ final class SignupAgreementModel: NSObject, ListDiffable {
 
     func configureText() {
         let linkStyle = Style("link", {
-            $0.font = FontAttribute(font: ApplicationDependency.manager.theme.fontSchema.agreementLabelFont)
+            $0.font = FontAttribute(font: ApplicationDependency.manager.theme.fonts.agreementLabelFont)
             $0.color = ApplicationDependency.manager.theme.colors.linkTextColor
             $0.underline = UnderlineAttribute.init(
                 color: ApplicationDependency.manager.theme.colors.linkTextColor,
@@ -28,7 +28,7 @@ final class SignupAgreementModel: NSObject, ListDiffable {
         })
 
         let regular = Style("regular", {
-            $0.font = FontAttribute(font: ApplicationDependency.manager.theme.fontSchema.agreementLabelFont)
+            $0.font = FontAttribute(font: ApplicationDependency.manager.theme.fonts.agreementLabelFont)
             $0.color = ApplicationDependency.manager.theme.colors.black.withAlphaComponent(0.8)
             $0.align = .center
         })

@@ -47,7 +47,7 @@ extension UserAccountPageTitleAndToggleCell {
     private func setupTitleLabel() {
         addSubview(titleLabel)
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        titleLabel.font = ApplicationDependency.manager.theme.fonts.medium16
         titleLabel.textAlignment = .left
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.5

@@ -13,10 +13,12 @@ protocol ColorSchema {
     var black: UIColor { get }
     var gray: UIColor { get }
     var backgroundGray: UIColor { get }
+    var backgroundDarkGray: UIColor { get }
     var lightGray: UIColor { get }
     var darkGray: UIColor { get }
     var separatorGray: UIColor { get }
     var doorDashRed: UIColor { get }
+    var doorDashDarkRed: UIColor { get }
     var doorDashLightGray: UIColor { get }
     var doorDashGray: UIColor { get }
     var doorDashDarkGray: UIColor { get }
@@ -42,6 +44,10 @@ struct DefaultColors: ColorSchema {
     var backgroundGray: UIColor {
         return UIColor.hex("F4F4F2")
     }
+
+    var backgroundDarkGray: UIColor {
+        return UIColor.hex("eff0f2")
+    }
     
     var gray: UIColor {
         return UIColor.gray
@@ -61,6 +67,10 @@ struct DefaultColors: ColorSchema {
 
     var doorDashRed: UIColor {
         return UIColor.hex("FF2F07")
+    }
+
+    var doorDashDarkRed: UIColor {
+        return UIColor.hex("D70806")
     }
 
     var doorDashLightGray: UIColor {

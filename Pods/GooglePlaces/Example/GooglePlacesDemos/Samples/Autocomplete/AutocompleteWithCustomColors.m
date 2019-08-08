@@ -30,7 +30,9 @@
 @interface AutocompleteWithCustomColors () <GMSAutocompleteViewControllerDelegate>
 @end
 
-@implementation AutocompleteWithCustomColors
+@implementation AutocompleteWithCustomColors {
+  NSMutableArray<UIButton *> *_themeButtons;
+}
 
 + (NSString *)demoTitle {
   return NSLocalizedString(
@@ -152,9 +154,14 @@
                                 constant:0]
       .active = YES;
 
-  [self addResultViewBelow:hotDogThemeButton];
-
   self.definesPresentationContext = YES;
+
+  // Store the theme buttons into array.
+  _themeButtons = [NSMutableArray array];
+  [_themeButtons addObject:brownThemeButton];
+  [_themeButtons addObject:blackThemeButton];
+  [_themeButtons addObject:blueThemeButton];
+  [_themeButtons addObject:hotDogThemeButton];
 }
 
 - (void)openBrownTheme:(UIButton *)button {
@@ -314,6 +321,10 @@
 
   GMSAutocompleteViewController *acController = [[GMSStyledAutocompleteViewController alloc] init];
   acController.delegate = self;
+  acController.autocompleteBoundsMode = self.autocompleteBoundsMode;
+  acController.autocompleteBounds = self.autocompleteBounds;
+  acController.autocompleteFilter = self.autocompleteFilter;
+  acController.placeFields = self.placeFields;
   acController.tableCellBackgroundColor = backgroundColor;
   acController.tableCellSeparatorColor = separatorColor;
   acController.primaryTextColor = primaryTextColor;
@@ -322,6 +333,10 @@
   acController.tintColor = tintColor;
 
   [self presentViewController:acController animated:YES completion:nil];
+  // Hide theme buttons.
+  for (UIButton *button in _themeButtons) {
+    [button setHidden:YES];
+  }
 }
 
 /*

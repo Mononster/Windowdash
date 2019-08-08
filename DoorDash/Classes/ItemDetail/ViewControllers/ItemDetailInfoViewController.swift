@@ -32,6 +32,7 @@ final class ItemDetailInfoViewController: BaseViewController {
     private let menuImageDisplayViewHeight = 1 / 3 * UIScreen.main.bounds.height
     private var navBarStyleChangeThreshold: CGFloat = 0
     private var statusBarStyle: UIStatusBarStyle = .default
+    private var initLoading: Bool = true
 
     weak var delegate: ItemDetailInfoViewControllerDelegate?
 
@@ -76,12 +77,16 @@ final class ItemDetailInfoViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        bindModels()
         setupActions()
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        skeletonLoadingView.show()
+        super.viewDidAppear(animated)
+        if initLoading {
+            skeletonLoadingView.show()
+            bindModels()
+            initLoading = false
+        }
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -143,9 +148,7 @@ final class ItemDetailInfoViewController: BaseViewController {
             return
         }
         // not empty cart and new store compared to previous cart.
-        if !ApplicationDependency.manager.isEmptyCart
-            && Int64(viewModel.storeID)
-            != ApplicationDependency.manager.cartManager.currentStoreID {
+        if !ApplicationDependency.manager.isEmptyCart && Int64(viewModel.storeID) != ApplicationDependency.manager.cartManager.currentStoreID {
             showSwitchStoreAlert()
             return
         }

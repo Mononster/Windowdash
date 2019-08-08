@@ -1,3 +1,55 @@
+Version 3.1.0 - April 2019
+==========================
+Improvements:
+  - Improved GMSAddressComponents API.
+    Now returns array of types associated to each address component.
+    Deprecates the older singular type in favor of the new array of types.
+  - Improved Error Handling.
+    Now returns common error messages from the server back to clients.
+
+Resolved Issues:
+  - Fixed inaccurate references of Places API in code exposed to public.
+
+Version 3.0.1 - January 2019
+==========================
+Resolved Issues:
+  - Fixed an issue with the Places Example app not building due to missing pod.
+
+Version 3.0.0 - January 2019
+==========================
+Features:
+  - New API Methods added.
+    fetchPlaceFromPlaceID: Fetches a place for the specified Place ID.
+    findPlaceLikelihoodsFromCurrentLocationWithPlaceFields: Finds the place
+      where the user's device is currently located.
+    findAutocompletePredictionsFromQuery: Gets a list of predicted places for a
+      particular query string.
+  - New classes added.
+    GMSOpeningHours: Contains the opening hours for a GMSPlace.
+    GMSPlusCode: Represents the location for a GMSPlace in plus codes format.
+    GMSAutocompleteSessionToken: Contains the unique identifier for an
+      autocomplete session.
+  - New class properties added.
+    GMSAddressComponent Now has a new shortName property.
+    GMSPlace Now has the following new properties:
+      GMSOpeningHours Contains open/close hours for a place, along with some
+        descriptive text.
+      GMSPlusCodes Represents the location of the place in plus codes format.
+      userRatingsTotal Lists the number of users who contributed a rating value.
+  - Field masks are now supported for methods that return place details.
+    You can use field masks to specify which types of place data to return
+    (previously all available data would be returned).
+  - Session tokens are now supported for Place Autocomplete.
+  - Please see "https://developers.google.com/places/ios-sdk/client-migration"
+    for more details.
+
+Note:
+  - Support for iOS 8.0 has been dropped. The new minimum is iOS 9.0.
+  - properties placeID, name and types in GMSPlace are nullable now.
+  - property openNowStatus in GMSPlace has been deprecated.
+  - The Place picker feature has been deprecated.
+  - The Add Place API has been removed.
+
 Version 2.7.0 - April 2018
 ==========================
 Note:

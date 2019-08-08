@@ -73,10 +73,14 @@ static CGFloat randf() {
     double delayInSeconds = (i * 0.25);
     dispatch_time_t popTime =
         dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    __weak typeof(self) weakSelf = self;
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
-      GMSVisibleRegion region = [_mapView.projection visibleRegion];
-      GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc] initWithRegion:region];
-      [self addMarkerInBounds:bounds];
+      typeof(self) strongSelf = weakSelf;
+      if (strongSelf) {
+        GMSVisibleRegion region = [strongSelf->_mapView.projection visibleRegion];
+        GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc] initWithRegion:region];
+        [strongSelf addMarkerInBounds:bounds];
+      }
     });
   }
 }

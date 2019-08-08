@@ -11,7 +11,7 @@ import UIKit
 struct Theme {
     let colors: ColorSchema
     let imageAssets: ImageAsset
-    let fontSchema: FontSchema
+    let fonts: FontSchema
     let navigationBarHeight: CGFloat
     let tabBarHeight: CGFloat
     
@@ -20,7 +20,7 @@ struct Theme {
          fontSchema: FontSchema = DefaultFontSchema()) {
         self.colors = colors
         self.imageAssets = imageAssets
-        self.fontSchema = fontSchema
+        self.fonts = fontSchema
 
         self.navigationBarHeight = UIDevice.current.hasNotch ? 88 : 64
         self.tabBarHeight = UIDevice.current.hasNotch ? 83 : 49
@@ -47,6 +47,6 @@ extension Theme {
             titleColor = colors.darkGray
             appearance.isTranslucent = false
         }
-        appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: titleColor, NSAttributedString.Key.font: fontSchema.medium14]
+        appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: titleColor, NSAttributedString.Key.font: fonts.medium14]
     }
 }

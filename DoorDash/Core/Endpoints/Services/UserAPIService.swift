@@ -91,6 +91,7 @@ class UserAPIService: DoorDashAPIService {
         case fetchUserProfile(authToken: AuthToken)
         case fetchUserAccount(uid: String)
         case updateDeliveryLocation(uid: String, location: GMDetailLocation)
+        case fetchStripeCredentials
 
         var baseURL: URL {
             return ApplicationEnvironment.current.networkConfig.hostURL
@@ -108,6 +109,8 @@ class UserAPIService: DoorDashAPIService {
                 return "v2/consumer/"
             case .updateDeliveryLocation(let uid, _):
                 return "v2/consumer/\(uid)/address/"
+            case .fetchStripeCredentials:
+                return "v2/consumer/me/stripe_credentials/"
             }
         }
 
@@ -115,7 +118,7 @@ class UserAPIService: DoorDashAPIService {
             switch self {
             case .login, .register, .guestSignup, .updateDeliveryLocation:
                 return .post
-            case .fetchUserProfile, .fetchUserAccount:
+            case .fetchUserProfile, .fetchUserAccount, .fetchStripeCredentials:
                 return .get
             }
         }
@@ -137,7 +140,7 @@ class UserAPIService: DoorDashAPIService {
                     parameters: ["is_guest": 1,
                                  "password": password],
                     encoding: JSONEncoding.default)
-            case .fetchUserProfile, .fetchUserAccount:
+            case .fetchUserProfile, .fetchUserAccount, .fetchStripeCredentials:
                 return .requestPlain
             case .updateDeliveryLocation(_, let location):
                 var paramters: [String: Any] = [:]
@@ -167,7 +170,8 @@ class UserAPIService: DoorDashAPIService {
                     .data(using: String.Encoding.utf8)!
             case .register(let account):
                 return "{\"email\": \"\(account.accountIdentifier.email)\", \"phone_number\": \"\(account.accountIdentifier.phoneNumber)\", \"password\": \"\(account.password ?? "")\", \"last_name\": \"\(account.accountIdentifier.lastName)\", \"last_name\": \"\(account.accountIdentifier.lastName)\"}".data(using: String.Encoding.utf8)!
-            case .fetchUserProfile, .fetchUserAccount, .updateDeliveryLocation, .guestSignup:
+            case .fetchUserProfile, .fetchUserAccount,
+                 .updateDeliveryLocation, .guestSignup, .fetchStripeCredentials:
                 return Data()
             }
         }
@@ -335,6 +339,23 @@ extension UserAPIService {
                 } catch(let error) {
                     completion(nil, error)
                 }
+            case .failure(let error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    func fetchStripeCredential(completion: @escaping (String?, Error?) -> ()) {
+        userAPIProvider.request(.fetchStripeCredentials) { result in
+            switch result {
+            case .success(let response):
+                guard response.statusCode == 200,
+                    let token = JSON(response.data)["public_key"].string else {
+                    let error = self.handleError(response: response)
+                    completion(nil, error)
+                    return
+                }
+                completion(token, nil)
             case .failure(let error):
                 completion(nil, error)
             }

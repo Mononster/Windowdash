@@ -81,14 +81,14 @@ public extension NSMutableAttributedString {
 	/// - Parameters:
 	///   - string: string to append
 	///   - style: style to apply to the entire string before appending it to self
-	public func append(string: String, style: Style) {
+    func append(string: String, style: Style) {
 		self.append(string.set(style: style))
 	}
 	
 	/// Append a MarkupString instance to an exesting NSMutableAttributedString (self)
 	///
 	/// - Parameter string: string to append
-	public func append(markup string: MarkupString, styles: Style...) {
+    func append(markup string: MarkupString, styles: Style...) {
 		self.append(string.render(withStyles: styles))
 	}
 	
@@ -98,7 +98,7 @@ public extension NSMutableAttributedString {
 	///   - style: style to add
 	///   - range: range of characters where add passed style
 	/// - Returns: self to allow any chain
-	public func add(style: Style, range: Range<String.Index>? = nil) -> NSMutableAttributedString {
+    func add(style: Style, range: Range<String.Index>? = nil) -> NSMutableAttributedString {
 		self.addAttributes(style.attributes, range: self.string.nsRange(from: range))
 		return self
 	}
@@ -109,7 +109,7 @@ public extension NSMutableAttributedString {
 	///
 	/// - Parameter styles: styles to apply
 	/// - Returns: self to allow any chain
-	public func add(styles: Style...) -> NSMutableAttributedString {
+    func add(styles: Style...) -> NSMutableAttributedString {
 		self.addAttributes(styles.attributesDictionary, range: NSMakeRange(0, self.string.count))
 		return self
 	}
@@ -121,7 +121,7 @@ public extension NSMutableAttributedString {
 	///   - style: style to apply
 	///   - range: range to apply
 	/// - Returns: self to allow any chain
-	public func set(style: Style, range: Range<String.Index>? = nil) -> NSMutableAttributedString {
+    func set(style: Style, range: Range<String.Index>? = nil) -> NSMutableAttributedString {
 		self.setAttributes(style.attributes, range: self.string.nsRange(from: range))
 		return self
 	}
@@ -132,7 +132,7 @@ public extension NSMutableAttributedString {
 	///
 	/// - Parameter styles: styles to apply
 	/// - Returns: self to allow any chain
-	public func set(styles: Style...) -> NSMutableAttributedString {
+    func set(styles: Style...) -> NSMutableAttributedString {
 		self.setAttributes(styles.attributesDictionary, range: NSMakeRange(0, self.string.count))
 		return self
 	}
@@ -144,7 +144,7 @@ public extension NSMutableAttributedString {
 	///   - style: style to remove
 	///   - range: range to remove
 	/// - Returns: self to allow any chain
-	public func remove(style: Style, range: Range<String.Index>? = nil) -> NSMutableAttributedString {
+    func remove(style: Style, range: Range<String.Index>? = nil) -> NSMutableAttributedString {
 		style.attributes.keys.forEach({
 			self.removeAttribute($0, range: self.string.nsRange(from: range))
 		})

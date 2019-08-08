@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0930"
+   LastUpgradeVersion = "1030"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2AE84DA7BEADF9020EA5B7F66CCF3411"
+               BlueprintIdentifier = "39450D88B8E2750F23C12DA4256C132E"
                BuildableName = "Pods_DoorDash.framework"
                BlueprintName = "Pods-DoorDash"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2AE84DA7BEADF9020EA5B7F66CCF3411"
+            BlueprintIdentifier = "39450D88B8E2750F23C12DA4256C132E"
             BuildableName = "Pods_DoorDash.framework"
             BlueprintName = "Pods-DoorDash"
             ReferencedContainer = "container:Pods.xcodeproj">

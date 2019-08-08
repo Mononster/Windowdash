@@ -51,4 +51,21 @@ extension UserAccountCoordinator: UserAccountViewControllerDelegate {
     func userLoggedOut() {
         self.delegate?.userLoggedOut()
     }
+
+    func showPageForType(type: UserAccountPageType) {
+        switch type {
+        case .paymentCards:
+            let coordinator = PaymentMethodsCoordinator(
+                rootViewController: PaymentMethodsViewController(style: .withCustomNavBar),
+                router: self.router
+            )
+            coordinator.start()
+            addCoordinator(coordinator)
+            self.router.push(coordinator, animated: true) {
+                self.removeCoordinator(coordinator)
+            }
+        default:
+            break
+        }
+    }
 }

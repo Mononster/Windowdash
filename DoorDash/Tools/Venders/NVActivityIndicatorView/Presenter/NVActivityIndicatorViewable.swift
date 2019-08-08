@@ -39,7 +39,7 @@ public extension NVActivityIndicatorViewable where Self: UIViewController {
     /// Current status of animation, read-only.
     var isAnimating: Bool { return NVActivityIndicatorPresenter.sharedInstance.isAnimating }
 
-    public func startAnimating(
+    func startAnimating(
         _ size: CGSize? = nil,
         message: String? = nil,
         messageFont: UIFont? = nil,
@@ -70,7 +70,7 @@ public extension NVActivityIndicatorViewable where Self: UIViewController {
 
      - parameter fadeOutAnimation: fade out animation.
      */
-    public func stopAnimating(_ fadeOutAnimation: FadeOutAnimation? = NVActivityIndicatorView.DEFAULT_FADE_OUT_ANIMATION) {
+    func stopAnimating(_ fadeOutAnimation: FadeOutAnimation? = NVActivityIndicatorView.DEFAULT_FADE_OUT_ANIMATION) {
         NVActivityIndicatorPresenter.sharedInstance.stopAnimating(fadeOutAnimation)
     }
 }

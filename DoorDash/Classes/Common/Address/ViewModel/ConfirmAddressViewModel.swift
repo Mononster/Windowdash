@@ -59,6 +59,7 @@ final class ConfirmAddressViewModel {
                 firstName: currentUser.firstName,
                 email: currentUser.email,
                 defaultAddress: address,
+                defaultCard: currentUser.defaultCard,
                 isGuest: currentUser.isGuest
             )
             ApplicationEnvironment.updateCurrentUser(updatedUser: updatedUser)

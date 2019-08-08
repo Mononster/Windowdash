@@ -9,6 +9,7 @@ target 'DoorDash' do
   use_frameworks!
   inhibit_all_warnings!
   pod 'SnapKit'
+  pod 'Stripe'
   pod 'IGListKit'
   pod 'Cache'
   pod 'Alamofire'
@@ -24,4 +25,5 @@ target 'DoorDash' do
   pod 'SkeletonView'
   pod 'SwiftDate'
   pod 'SwipeCellKit'
+  pod 'lottie-ios'
 end

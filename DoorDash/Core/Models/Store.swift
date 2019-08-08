@@ -9,6 +9,38 @@
 import UIKit
 import SwiftDate
 
+public enum QuantumValue: Decodable {
+
+    case double(Double)
+    case string(String)
+
+    public init(from decoder: Decoder) throws {
+        if let double = try? decoder.singleValueContainer().decode(Double.self) {
+            self = .double(double)
+            return
+        }
+
+        if let string = try? decoder.singleValueContainer().decode(String.self) {
+            self = .string(string)
+            return
+        }
+        throw QuantumError.missingValue
+    }
+
+    public enum QuantumError: Error {
+        case missingValue
+    }
+
+    public var displayValue: Double {
+        switch self {
+        case .double(let val):
+            return val
+        case .string(let val):
+            return Double(val) ?? 0
+        }
+    }
+}
+
 public struct Store {
 
     public struct Menu: Codable {
@@ -106,7 +138,7 @@ public struct Store {
     public let nextOpenTime: Date
     public let headerImageURL: String?
     public let isNewlyAdded: Bool
-    public let distanceFromConsumer: Double?
+    public let distanceFromConsumer: QuantumValue?
     public let offersPickup: Bool
     public let menus: [Menu]?
 
@@ -124,7 +156,7 @@ public struct Store {
                 nextOpenTime: Date,
                 headerImageURL: String?,
                 isNewlyAdded: Bool,
-                distanceFromConsumer: Double?,
+                distanceFromConsumer: QuantumValue?,
                 offersPickup: Bool,
                 menus: [Menu]?) {
         self.id = id
@@ -169,7 +201,7 @@ extension Store: Codable {
         let moneyCents: Int64 = try moneyContainer.decodeIfPresent(Int64.self, forKey: .unitAmount) ?? 0
         let moneyDisplayString: String = try moneyContainer.decodeIfPresent(String.self, forKey: .displayString) ?? "$0.00"
         let deliveryStatusContainer = try values.nestedContainer(keyedBy: DeliveryStatus.self, forKey: .deliveryStatus)
-        let distanceFromConsumer = try values.decodeIfPresent(Double.self, forKey: .distanceFromConsumer)
+        let distanceFromConsumer = try values.decodeIfPresent(QuantumValue.self, forKey: .distanceFromConsumer)
         let deliveryRange: [Int64] = try deliveryStatusContainer.decodeIfPresent([Int64].self, forKey: .minuteRate) ?? []
         let isNewlyAdded: Bool = try values.decodeIfPresent(Bool.self, forKey: .isNewlyAdded) ?? false
         let offersPickup: Bool = try values.decodeIfPresent(Bool.self, forKey: .offersPickup) ?? false

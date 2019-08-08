@@ -41,7 +41,7 @@ extension CuratedCategoryHeaderCell {
     private func setupLabel() {
         addSubview(titleLabel)
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.darkGray
-        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.medium14
+        titleLabel.font = ApplicationDependency.manager.theme.fonts.medium14
         titleLabel.textAlignment = .center
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.5

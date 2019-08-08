@@ -36,7 +36,7 @@ class DoorDashNavigationController: UINavigationController {
                 self.navigationBar.barTintColor = theme.colors.white
                 titleColor = theme.colors.black
             }
-            self.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: titleColor, NSAttributedString.Key.font: theme.fontSchema.medium18]
+            self.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: titleColor, NSAttributedString.Key.font: theme.fonts.medium18]
         }
     }
 

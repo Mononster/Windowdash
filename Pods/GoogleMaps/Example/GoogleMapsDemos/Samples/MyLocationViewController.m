@@ -42,8 +42,9 @@
   self.view = _mapView;
 
   // Ask for My Location data after the map has already been added to the UI.
+  GMSMapView *mapView = _mapView;
   dispatch_async(dispatch_get_main_queue(), ^{
-    _mapView.myLocationEnabled = YES;
+    mapView.myLocationEnabled = YES;
   });
 }
 

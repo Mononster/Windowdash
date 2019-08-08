@@ -13,16 +13,19 @@ import IGListKit
 protocol UserAccountViewControllerDelegate: class {
     func showSignupForGuestUser()
     func userLoggedOut()
+    func showPageForType(type: UserAccountPageType)
 }
 
 final class UserAccountViewController: BaseViewController {
 
     lazy var adapter: ListAdapter = {
-        return ListAdapter(updater: ListAdapterUpdater(), viewController: self)
+        let updater = ListAdapterUpdater()
+        return ListAdapter(updater: updater, viewController: self)
     }()
 
     private let collectionView: UICollectionView
     private let viewModel: UserAccountViewModel
+    private var sectionData: [ListDiffable] = []
 
     weak var delegate: UserAccountViewControllerDelegate?
 
@@ -42,6 +45,17 @@ final class UserAccountViewController: BaseViewController {
         fetchUserProfile()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        fetchUserProfile()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.sectionData = []
+        self.adapter.performUpdates(animated: false)
+    }
+
     func fetchUserProfile() {
         guard let currUser = ApplicationEnvironment.current.currentUser else {
             log.error("User should exsist at this point, wtf happend?")
@@ -52,14 +66,36 @@ final class UserAccountViewController: BaseViewController {
             return
         }
         self.pageLoadingIndicator.show()
+        self.tableViewPlaceHolder.isHidden = false
         self.viewModel.fetchUserAccount { (errorMsg) in
             self.pageLoadingIndicator.hide()
+            self.sectionData = [
+                self.viewModel.generateModelsForAccountDetails(),
+                self.viewModel.generateModelsForNotifications(),
+                self.viewModel.generateModelsForMoreSection(),
+                self.viewModel.generateModelsForAppVersionSection()
+            ]
             self.tableViewPlaceHolder.isHidden = true
             if let errorMsg = errorMsg {
                 log.error(errorMsg)
                 return
             }
-            self.adapter.performUpdates(animated: false)
+            self.adapter.performUpdates(animated: true, completion: { _ in
+                //self.animateCells()
+            })
+        }
+    }
+
+    private func animateCells() {
+        for (i, cell) in collectionView.orderedVisibleCells.enumerated() {
+            let originX = cell.frame.minX
+            cell.frame = CGRect(x: -cell.frame.width, y: cell.frame.minY, width: cell.frame.width, height: cell.frame.height)
+            UIView.animate(withDuration: 0.3, delay: Double(i) * 0.15, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [.curveEaseInOut], animations: {
+                cell.frame = CGRect(x: originX, y: cell.frame.minY, width: cell.frame.width, height: cell.frame.height)
+            }, completion: nil)
+//            UIView.animate(withDuration: 1) {
+//
+//            }
         }
     }
 }
@@ -69,7 +105,7 @@ extension UserAccountViewController {
     private func setupUI() {
         setupCollectionView()
         setupConstraints()
-        tableViewPlaceHolder.isHidden = false
+        tableViewPlaceHolder.isHidden = true
         self.view.bringSubviewToFront(tableViewPlaceHolder)
     }
 
@@ -91,19 +127,16 @@ extension UserAccountViewController {
 extension UserAccountViewController: ListAdapterDataSource {
 
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
-        return [
-            viewModel.generateModelsForAccountDetails(),
-            viewModel.generateModelsForNotifications(),
-            viewModel.generateModelsForMoreSection(),
-            viewModel.generateModelsForAppVersionSection()
-        ]
+        return sectionData
     }
 
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
         if let model = object as? UserAccountPageSectionModel {
             switch model.type {
             case .account:
-                return AccountDetailsSectionController()
+                let controller = AccountDetailsSectionController()
+                controller.userTappedSection = userTappedSection
+                return controller
             case .notifications:
                 return AccountNotificationsSectionController()
             case .more:
@@ -122,6 +155,13 @@ extension UserAccountViewController: ListAdapterDataSource {
     }
 }
 
+extension UserAccountViewController {
+
+    private func userTappedSection(type: UserAccountPageType) {
+        self.delegate?.showPageForType(type: type)
+    }
+}
+
 extension UserAccountViewController: AccountMoreSectionControllerDelegate {
 
     func userClickedLogout() {
@@ -135,5 +175,21 @@ extension UserAccountViewController: AccountMoreSectionControllerDelegate {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
 
         self.present(alert, animated: true)
+    }
+}
+
+public extension UICollectionView {
+
+    /// VisibleCells in the order they are displayed on screen.
+    var orderedVisibleCells: [UICollectionViewCell] {
+        return indexPathsForVisibleItems.sorted().compactMap { cellForItem(at: $0) }
+    }
+
+    /// Gets the currently visibleCells of a section.
+    ///
+    /// - Parameter section: The section to filter the cells.
+    /// - Returns: Array of visible UICollectionViewCells in the argument section.
+    func visibleCells(in section: Int) -> [UICollectionViewCell] {
+        return visibleCells.filter { indexPath(for: $0)?.section == section }
     }
 }

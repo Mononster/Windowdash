@@ -16,8 +16,8 @@ final class ItemDetailOverviewCell: UICollectionViewCell {
     private let popularIndicatorLabel: UILabel
     let separator: Separator
 
-    static let nameLabelFont: UIFont = ApplicationDependency.manager.theme.fontSchema.bold30
-    static let descriptionLabelFont: UIFont = ApplicationDependency.manager.theme.fontSchema.medium16
+    static let nameLabelFont: UIFont = ApplicationDependency.manager.theme.fonts.bold30
+    static let descriptionLabelFont: UIFont = ApplicationDependency.manager.theme.fonts.medium16
 
     override init(frame: CGRect) {
         itemNameLabel = UILabel()
@@ -64,7 +64,7 @@ extension ItemDetailOverviewCell {
         addSubview(popularIndicatorLabel)
         popularIndicatorLabel.isHidden = true
         popularIndicatorLabel.textColor = ApplicationDependency.manager.theme.colors.doorDashRed
-        popularIndicatorLabel.font = ApplicationDependency.manager.theme.fontSchema.extraBold14
+        popularIndicatorLabel.font = ApplicationDependency.manager.theme.fonts.extraBold14
         popularIndicatorLabel.textAlignment = .left
         popularIndicatorLabel.adjustsFontSizeToFitWidth = true
         popularIndicatorLabel.minimumScaleFactor = 0.5

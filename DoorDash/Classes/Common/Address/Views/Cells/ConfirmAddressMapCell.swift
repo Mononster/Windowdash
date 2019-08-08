@@ -70,12 +70,12 @@ extension ConfirmAddressMapCell {
         refineLocationLabel.minimumScaleFactor = 0.5
         refineLocationLabel.isUserInteractionEnabled = true
         let regular = Style("regular", {
-            $0.font = FontAttribute(font: ApplicationDependency.manager.theme.fontSchema.medium15)
+            $0.font = FontAttribute(font: ApplicationDependency.manager.theme.fonts.medium15)
             $0.color = ApplicationDependency.manager.theme.colors.black
             $0.align = .center
         })
         let refineRed = Style("red", {
-            $0.font = FontAttribute(font: ApplicationDependency.manager.theme.fontSchema.medium15)
+            $0.font = FontAttribute(font: ApplicationDependency.manager.theme.fonts.medium15)
             $0.color = ApplicationDependency.manager.theme.colors.doorDashRed
             $0.align = .center
         })

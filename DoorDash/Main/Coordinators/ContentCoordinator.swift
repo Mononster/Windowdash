@@ -21,7 +21,7 @@ final class ContentCoordinator: Coordinator {
     private var tabConfigs: [TabConfig] = []
     private let appTracker: AppTracker
     private let numOfChildren = 5
-    private let childrenTitle = ["Food", "Drinks", "Search", "Orders", "Account"]
+    private let childrenTitle = ["Delivery", "Pickup", "Search", "Orders", "Account"]
 
     var tabBarController: MainTabBarController? {
         return self.router.rootViewController as? MainTabBarController
@@ -48,31 +48,41 @@ extension ContentCoordinator {
     private func setupTabConfigs() {
         let imageTheme = ApplicationDependency.manager.theme.imageAssets
         for (i, title) in childrenTitle.enumerated() {
-            tabConfigs.append((title, imageTheme.tabbarImages[i]))
+            let imageName = imageTheme.tabbarImages[i]
+            tabConfigs.append((title, UIImage(named: imageName)!, UIImage(named: imageName + "_selected")!))
         }
+    }
+
+    private func generatePickupMapModule() -> PickupMapViewController {
+        let presenter = PickupMapPresenter()
+        let interactor = PickupMapInteractor(presenter: presenter, apiService: BrowseFoodAPIService())
+        let vc = PickupMapViewController(interactor: interactor)
+        presenter.output = vc
+        return vc
     }
 
     private func setupTabbar() {
         let v1 = BrowseFoodViewController()
-        let v2 = BrowseDrinkViewController()
+        let v2 = generatePickupMapModule()
         let v3 = UIViewController()
         let v4 = UIViewController()
         let v5 = UserAccountViewController()
         let controllers = [v1, v2, v3, v4, v5]
         for (index, vc) in controllers.enumerated(){
             let config = tabConfigs[index]
-            vc.navigationItem.title = config.0
-            vc.tabBarItem.image = config.1
+            vc.navigationItem.title = config.title
+            vc.tabBarItem.image = config.image.withRenderingMode(.alwaysOriginal)
+            vc.tabBarItem.selectedImage = config.selectedImage.withRenderingMode(.alwaysOriginal)
             vc.tabBarItem.title = config.0
             vc.tabBarItem.setTitleTextAttributes(
-                [NSAttributedString.Key.font: ApplicationDependency.manager.theme.fontSchema.medium12,
+                [NSAttributedString.Key.font: ApplicationDependency.manager.theme.fonts.medium12,
                  NSAttributedString.Key.foregroundColor:
                     ApplicationDependency.manager.theme.colors.doorDashGray
                 ],
                 for: .normal
             )
             vc.tabBarItem.setTitleTextAttributes(
-                [NSAttributedString.Key.font: ApplicationDependency.manager.theme.fontSchema.medium16,
+                [NSAttributedString.Key.font: ApplicationDependency.manager.theme.fonts.medium16,
                  NSAttributedString.Key.foregroundColor:
                     ApplicationDependency.manager.theme.colors.doorDashRed
                 ],
@@ -87,7 +97,7 @@ extension ContentCoordinator {
         browseFoodTabCoordinator.start()
         addCoordinator(browseFoodTabCoordinator)
 
-        let browseDrinkCoordinator = BrowseDrinkCoordinator(
+        let browseDrinkCoordinator = PickupMapTabCoordinator(
             rootViewController: v2,
             router: Router()
         )

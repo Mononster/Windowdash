@@ -14,6 +14,20 @@ final public class BrowseFoodAPIServiceError: DefaultError {
     public static let noMoreStores: DefaultError = DefaultError(code: 400)
 }
 
+final class StoreFilterRequestModel {
+
+    let values: [String: Any]
+
+    init(values: [String: Any]) {
+        self.values = values
+    }
+
+    func toEncodedURLParam() -> String {
+        let jsonString = JSON(values).rawString(options: []) ?? ""
+        return jsonString
+    }
+}
+
 final class FetchAllStoresRequestModel {
     let limit: Int
     let offset: Int
@@ -23,13 +37,16 @@ final class FetchAllStoresRequestModel {
     let query: String?
     let curatedCateogryID: String?
 
+    var filters: [StoreFilterRequestModel] = []
+
     init(limit: Int = 50,
          offset: Int,
          latitude: Double,
          longitude: Double,
          sortOption: BrowseFoodSortOptionType?,
          query: String? = nil,
-         curatedCateogryID: String? = nil) {
+         curatedCateogryID: String? = nil,
+         filters: [StoreFilterRequestModel] = []) {
         self.limit = limit
         self.offset = offset
         self.latitude = latitude
@@ -37,6 +54,7 @@ final class FetchAllStoresRequestModel {
         self.sortOption = sortOption
         self.query = query
         self.curatedCateogryID = curatedCateogryID
+        self.filters = filters
     }
 
     func convertToQueryParams() -> [String: Any] {
@@ -58,16 +76,23 @@ final class FetchAllStoresRequestModel {
         }
         result["lat"] = String(latitude)
         result["lng"] = String(longitude)
+        if !filters.isEmpty {
+            result["filter"] = filters.map { $0.toEncodedURLParam() }
+        }
         return result
     }
 }
 
 final class FetchAllStoresResponseModel {
     let nextOffset: Int?
+    let numStores: Int
+    let isFiltered: Bool
     let stores: [Store]
 
-    init(nextOffset: Int?, stores: [Store]) {
+    init(nextOffset: Int?, numStores: Int, isFiltered: Bool, stores: [Store]) {
         self.nextOffset = nextOffset
+        self.numStores = numStores
+        self.isFiltered = isFiltered
         self.stores = stores
     }
 }
@@ -85,6 +110,8 @@ final class BrowseFoodAPIService: DoorDashAPIService {
     enum BrowseFoodAPITarget: TargetType {
         case fetchFrontEndLayout(latitude: Double, longitude: Double)
         case fetchAllStores(request: FetchAllStoresRequestModel)
+        case filterStoreSearch(request: FetchAllStoresRequestModel)
+        case fetchFilters(latitude: Double, longitude: Double)
 
         var baseURL: URL {
             return ApplicationEnvironment.current.networkConfig.hostURL
@@ -95,13 +122,18 @@ final class BrowseFoodAPIService: DoorDashAPIService {
             case .fetchAllStores:
                 return "v2/store_search/"
             case .fetchFrontEndLayout:
-                return "v1/frontend_layouts/consumer_homepage/"
+                return "v2/frontend_layouts/consumer_homepage/"
+            case .filterStoreSearch:
+                return "v1/store_feed/"
+            case .fetchFilters:
+                return "v1/consumer_search_filters/"
             }
         }
 
         var method: Moya.Method {
             switch self {
-            case .fetchAllStores, .fetchFrontEndLayout:
+            case .fetchAllStores, .fetchFrontEndLayout, .filterStoreSearch,
+                 .fetchFilters:
                 return .get
             }
         }
@@ -111,18 +143,28 @@ final class BrowseFoodAPIService: DoorDashAPIService {
             case .fetchAllStores(let model):
                 let params = model.convertToQueryParams()
                 return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
+            case .filterStoreSearch(let model):
+                let params = model.convertToQueryParams()
+                return .requestParameters(parameters: params, encoding: CustomParameterEncoding.queryWithDuplicateKeys)
             case .fetchFrontEndLayout(let latitude, let longitude):
                 var params: [String: Any] = [:]
                 params["lat"] = String(latitude)
                 params["lng"] = String(longitude)
                 params["show_nested"] = String(true)
+                params["display_limits"] = 7
+                return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
+            case .fetchFilters(let latitude, let longitude):
+                var params: [String: Any] = [:]
+                params["lat"] = String(latitude)
+                params["lng"] = String(longitude)
                 return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
             }
         }
 
         var sampleData: Data {
             switch self {
-            case .fetchAllStores, .fetchFrontEndLayout:
+            case .fetchAllStores, .fetchFrontEndLayout, .filterStoreSearch,
+                 .fetchFilters:
                 return Data()
             }
         }
@@ -135,8 +177,12 @@ final class BrowseFoodAPIService: DoorDashAPIService {
 
 extension BrowseFoodAPIService {
     func fetchAllStores(request: FetchAllStoresRequestModel,
+                        isFiltered: Bool,
                         completion: @escaping (FetchAllStoresResponseModel?, Error?) -> ()) {
-        browseFoodAPIProvider.request(.fetchAllStores(request: request)) { (result) in
+        let target = isFiltered ?
+            BrowseFoodAPITarget.filterStoreSearch(request: request) :
+            BrowseFoodAPITarget.fetchAllStores(request: request)
+        browseFoodAPIProvider.request(target) { (result) in
             switch result {
             case .success(let response):
                 guard response.statusCode == 200,
@@ -150,6 +196,7 @@ extension BrowseFoodAPIService {
                     return
                 }
                 let nextOffset = dataJSON["next_offset"].int
+                let numStores = dataJSON["num_results"].int
                 var stores: [Store] = []
                 for storeJSON in storesArray {
                     if let store = try? JSONDecoder().decode(
@@ -157,7 +204,12 @@ extension BrowseFoodAPIService {
                         stores.append(store)
                     }
                 }
-                let model = FetchAllStoresResponseModel(nextOffset: nextOffset, stores: stores)
+                let model = FetchAllStoresResponseModel(
+                    nextOffset: nextOffset,
+                    numStores: numStores ?? 0,
+                    isFiltered: isFiltered,
+                    stores: stores
+                )
                 completion(model, nil)
             case .failure(let error):
                 completion(nil, error)
@@ -243,4 +295,28 @@ extension BrowseFoodAPIService {
     }
 }
 
+extension BrowseFoodAPIService {
 
+    func fetchFilterOptions(userLat: Double,
+                            userLng: Double,
+                            completion: @escaping (ConsumerSearchFilter?, Error?) -> ()) {
+        browseFoodAPIProvider.request(.fetchFilters(latitude: userLat, longitude: userLng)) { (result) in
+            switch result {
+            case .success(let response):
+                do {
+                    guard response.statusCode == 200 else {
+                        let error = self.handleError(response: response)
+                        completion(nil, error)
+                        return
+                    }
+                    let consumerFilter = try response.map(ConsumerSearchFilter.self)
+                    completion(consumerFilter, nil)
+                } catch {
+                    completion(nil, error)
+                }
+            case .failure(let error):
+                completion(nil, error)
+            }
+        }
+    }
+}

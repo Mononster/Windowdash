@@ -13,6 +13,8 @@ final class AccountDetailsSectionController: ListSectionController {
 
     private var models: [UserAccountPagePresentingModel]?
 
+    var userTappedSection: ((UserAccountPageType) -> ())?
+
     override init() {
         super.init()
     }
@@ -71,7 +73,10 @@ final class AccountDetailsSectionController: ListSectionController {
     }
 
     override func didSelectItem(at index: Int) {
-
+        guard let model = models?[safe: index - 1] else {
+            return
+        }
+        self.userTappedSection?(model.type)
     }
 }
 

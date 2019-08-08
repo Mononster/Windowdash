@@ -54,7 +54,7 @@ extension UserAccountPageTitleAndValueCell {
     private func setupTitleLabel() {
         addSubview(titleLabel)
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        titleLabel.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        titleLabel.font = ApplicationDependency.manager.theme.fonts.medium16
         titleLabel.textAlignment = .left
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.5
@@ -64,7 +64,7 @@ extension UserAccountPageTitleAndValueCell {
     private func setupValueLabel() {
         addSubview(valueLabel)
         valueLabel.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
-        valueLabel.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        valueLabel.font = ApplicationDependency.manager.theme.fonts.medium16
         valueLabel.textAlignment = .left
         valueLabel.adjustsFontSizeToFitWidth = true
         valueLabel.minimumScaleFactor = 0.5

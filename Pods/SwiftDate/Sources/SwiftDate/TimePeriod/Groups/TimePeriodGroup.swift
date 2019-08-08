@@ -1,9 +1,13 @@
 //
-//  TimePeriodGroupSequence.swift
 //  SwiftDate
+//  Parse, validate, manipulate, and display dates, time and timezones in Swift
 //
-//  Created by Daniele Margutti on 14/06/2018.
-//  Copyright © 2018 SwiftDate. All rights reserved.
+//  Created by Daniele Margutti
+//   - Web: https://www.danielemargutti.com
+//   - Twitter: https://twitter.com/danielemargutti
+//   - Mail: hello@danielemargutti.com
+//
+//  Copyright © 2019 Daniele Margutti. Licensed under MIT License.
 //
 
 import Foundation
@@ -27,7 +31,7 @@ open class TimePeriodGroup: Sequence, Equatable {
 	/// The total amount of time between the earliest and latest dates stored in the periods array.
 	/// `nil` if any beginning or end date in any contained period is `nil`.
 	public var duration: TimeInterval? {
-		guard let start = self.start, let end = self.end else { return nil }
+		guard let start = start, let end = end else { return nil }
 		return end.timeIntervalSince(start)
 	}
 

@@ -15,6 +15,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import <GooglePlaces/GooglePlaces.h>
+
 /*
  * This file contains a set of data objects which represent the list of demos which are provided by
  * this sample app.
@@ -43,10 +45,17 @@
  * Construct and return a new UIViewController instance which contains the view to present when the
  * demo is selected from the list.
  *
- * @param splitViewController The |UISplitViewController| in which the demo will be presented. NOTE:
- * This may be nil.
+ * @param autocompleteBoundsMode The |GMSAutocompleteBoundsMode| to determine whether this should
+ *     be biased or restricted to the coordinate bounds.
+ * @param autocompleteBounds The |GMSCoordinateBounds| to restrict the autcomplete results within.
+ * @param autocompleteFilter The |GMSAutocompleteFilter| that filters on types and countries.
+ * @param placeField The |GMSPlaceField| to request individual fields for the |GMSPlace| result.
  */
-- (UIViewController *)createViewControllerForSplitView:(UISplitViewController *)splitViewController;
+- (UIViewController *)
+    createViewControllerWithAutocompleteBoundsMode:(GMSAutocompleteBoundsMode)autocompleteBoundsMode
+                                autocompleteBounds:(GMSCoordinateBounds *)autocompleteBounds
+                                autocompleteFilter:(GMSAutocompleteFilter *)autocompleteFilter
+                                       placeFields:(GMSPlaceField)placeField;
 
 @end
 

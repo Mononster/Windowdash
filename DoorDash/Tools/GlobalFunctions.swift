@@ -59,4 +59,13 @@ class HelperManager {
         let bounds = (text as NSString).boundingRect(with: constrainedSize, options: options, attributes: attributes, context: nil)
         return ceil(bounds.height)
     }
+
+    static func textWidth(_ text: String?, font: UIFont) -> CGFloat {
+        guard let text = text else {
+            return 0
+        }
+        let fontAttributes = [NSAttributedString.Key.font: font]
+        let size = text.size(withAttributes: fontAttributes)
+        return size.width
+    }
 }

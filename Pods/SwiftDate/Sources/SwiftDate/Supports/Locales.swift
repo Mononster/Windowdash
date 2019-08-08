@@ -1,9 +1,13 @@
 //
-//  Locales.swift
 //  SwiftDate
+//  Parse, validate, manipulate, and display dates, time and timezones in Swift
 //
-//  Created by Daniele Margutti on 06/06/2018.
-//  Copyright © 2018 SwiftDate. All rights reserved.
+//  Created by Daniele Margutti
+//   - Web: https://www.danielemargutti.com
+//   - Twitter: https://twitter.com/danielemargutti
+//   - Mail: hello@danielemargutti.com
+//
+//  Copyright © 2019 Daniele Margutti. Licensed under MIT License.
 //
 
 // swiftlint:disable file_length
@@ -747,7 +751,7 @@ public enum Locales: String, LocaleConvertible {
 		switch self {
 		case .current:			return Locale.current
 		case .autoUpdating:		return Locale.autoupdatingCurrent
-		default:				return Locale(identifier: self.rawValue)
+		default:				return Locale(identifier: rawValue)
 		}
 	}
 }

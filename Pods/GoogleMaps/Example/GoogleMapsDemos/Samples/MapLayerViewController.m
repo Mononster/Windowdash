@@ -29,8 +29,9 @@
   _mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
   self.view = _mapView;
 
+  GMSMapView *mapView = _mapView;
   dispatch_async(dispatch_get_main_queue(), ^{
-    _mapView.myLocationEnabled = YES;
+    mapView.myLocationEnabled = YES;
   });
 
   UIBarButtonItem *myLocationButton =

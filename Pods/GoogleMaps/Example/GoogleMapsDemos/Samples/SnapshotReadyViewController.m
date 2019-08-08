@@ -66,10 +66,10 @@
   _statusLabel.alpha = 0.8f;
   _statusLabel.text = @"Snapshot Ready";
   // Remove status label after 1 second.
-  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC),
-                 dispatch_get_main_queue(), ^{
-                   _statusLabel.alpha = 0.0f;
-                 });
+  UILabel *statusLabel = _statusLabel;
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    statusLabel.alpha = 0.0f;
+  });
 }
 
 #pragma mark Private

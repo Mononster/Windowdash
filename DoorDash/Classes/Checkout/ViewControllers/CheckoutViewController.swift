@@ -12,6 +12,7 @@ import IGListKit
 
 protocol CheckoutViewControllerDelegate: class {
     func dismiss()
+    func showPaymentPage()
 }
 
 final class CheckoutViewController: BaseViewController {
@@ -63,6 +64,11 @@ final class CheckoutViewController: BaseViewController {
         }
     }
 
+    func refreshData() {
+        self.viewModel.refreshPaymentSection()
+        self.adapter.performUpdates(animated: false, completion: nil)
+    }
+
     private func setupActions() {
 
     }
@@ -95,6 +101,9 @@ extension CheckoutViewController {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationItem.title = "Checkout"
+        let backBarButton = UIBarButtonItem(title: "My Cart", style: .plain, target: nil, action: nil)
+        backBarButton.setTitleTextAttributes([NSAttributedString.Key.font: theme.fonts.medium18], for: .normal)
+        self.navigationItem.backBarButtonItem = backBarButton
     }
 
     private func setupCollectionView() {
@@ -147,12 +156,31 @@ extension CheckoutViewController: ListAdapterDataSource {
 
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
         switch object {
+        case is CheckoutDeliveryDetailsPresentingModel:
+            return CheckoutDeliveryDetailsSectionController()
+        case is CheckoutPaymentPresentingModel:
+            let controller = CheckoutPaymentSectionController()
+            controller.delegate = self
+            return controller
         default:
-            return OrderCartItemSectionController()
+            return CheckoutPaymentSectionController()
         }
     }
 
     func emptyView(for listAdapter: ListAdapter) -> UIView? {
         return nil
+    }
+}
+
+extension CheckoutViewController: CheckoutPaymentSectionControllerDelegate {
+
+    func showPaymentPage() {
+        self.delegate?.showPaymentPage()
+    }
+
+    func userChangedTipValue(index: Int) {
+        self.viewModel.updateSelectedTipValue(index: index)
+        self.updateContinueButtonText()
+        self.adapter.performUpdates(animated: false)
     }
 }

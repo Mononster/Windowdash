@@ -162,7 +162,7 @@ extension StoreCarouselSectionController: ListSupplementaryViewSource {
         if elementKind == UICollectionView.elementKindSectionHeader {
             let height: CGFloat
             if items?.carouselDescription == nil {
-                height = BrowseFoodSectionHeaderViewCell.height
+                height = BrowseFoodSectionHeaderViewCell.calcHeight(containerWidth: width, title: items?.carouselTitle ?? "")
             } else {
                 height = BrowseFoodHeaderWithSubTitleViewCell.height
             }
@@ -192,7 +192,7 @@ extension StoreCarouselSectionController: ListSupplementaryViewSource {
                 at: index) as? BrowseFoodSectionHeaderViewCell else {
                     fatalError()
             }
-            cell.titleLabel.text = items?.carouselTitle.uppercased()
+            cell.setupCell(title: items?.carouselTitle.uppercased() ?? "")
             return cell
         }
     }

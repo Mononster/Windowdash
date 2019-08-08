@@ -71,7 +71,7 @@ extension StoreDetailDeliveryInfoCell {
     private func setupIndicatorLabel(label: UILabel) {
         addSubview(label)
         label.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
-        label.font = ApplicationDependency.manager.theme.fontSchema.medium14
+        label.font = ApplicationDependency.manager.theme.fonts.medium14
         label.textAlignment = .left
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.5
@@ -87,7 +87,7 @@ extension StoreDetailDeliveryInfoCell {
     private func setupValueLabel(label: UILabel) {
         addSubview(label)
         label.textColor = ApplicationDependency.manager.theme.colors.black
-        label.font = ApplicationDependency.manager.theme.fontSchema.bold17
+        label.font = ApplicationDependency.manager.theme.fonts.bold17
         label.textAlignment = .left
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.5
@@ -97,7 +97,7 @@ extension StoreDetailDeliveryInfoCell {
     private func setupTypeControl() {
         addSubview(deliveryTypeControl)
         deliveryTypeControl.setTitleTextAttributes(
-            [NSAttributedString.Key.font: ApplicationDependency.manager.theme.fontSchema.medium14],
+            [NSAttributedString.Key.font: ApplicationDependency.manager.theme.fonts.medium14],
             for: .normal
         )
         deliveryTypeControl.tintColor = ApplicationDependency.manager.theme.colors.doorDashRed

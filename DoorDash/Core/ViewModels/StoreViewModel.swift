@@ -52,7 +52,7 @@ final class StoreViewModel {
         isNewlyAdded = store.isNewlyAdded
         ratingPreciseDescription = (ratingNumberDisplay ?? "") + " (\(store.numRatings) ratings)"
         if let distance = store.distanceFromConsumer {
-            distanceFromConsumer = String(format: "%.1f", distance)
+            distanceFromConsumer = String(format: "%.1f", distance.displayValue)
         } else {
             distanceFromConsumer = "N/A"
         }
@@ -125,7 +125,8 @@ final class StoreViewModel {
 
 extension StoreViewModel {
 
-    func convertToPresenterItem(shouldAddInset: Bool) -> BrowseFoodAllStoreItem{
+    func convertToPresenterItem(shouldAddInset: Bool,
+                                layout: MenuCollectionViewLayoutKind) -> BrowseFoodAllStoreItem{
         let urls = self.menuURLs
         let menuItems = urls.map { url in
             return BrowseFoodAllStoreMenuItem(imageURL: url)
@@ -142,6 +143,7 @@ extension StoreViewModel {
                 : deliveryTimeDisplay,
             deliveryCost: costDisplayLong,
             isClosed: isClosed,
+            layout: layout,
             shouldAddTopInset: shouldAddInset,
             closeTimeDisplay: closeTimeDisplay)
     }

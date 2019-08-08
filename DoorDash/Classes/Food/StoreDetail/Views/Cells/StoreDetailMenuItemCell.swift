@@ -20,7 +20,7 @@ final class StoreDetailMenuItemCell: UICollectionViewCell {
     let separator: Separator
 
     static let menuItemImageViewHeight: CGFloat = 200
-    static let descriptionLabelFont: UIFont = ApplicationDependency.manager.theme.fontSchema.medium14
+    static let descriptionLabelFont: UIFont = ApplicationDependency.manager.theme.fonts.medium14
 
     override init(frame: CGRect) {
         itemImageView = UIImageView()
@@ -100,7 +100,7 @@ extension StoreDetailMenuItemCell {
         addSubview(popularIndicatorLabel)
         popularIndicatorLabel.isHidden = true
         popularIndicatorLabel.textColor = ApplicationDependency.manager.theme.colors.doorDashRed
-        popularIndicatorLabel.font = ApplicationDependency.manager.theme.fontSchema.extraBold12
+        popularIndicatorLabel.font = ApplicationDependency.manager.theme.fonts.extraBold12
         popularIndicatorLabel.textAlignment = .left
         popularIndicatorLabel.adjustsFontSizeToFitWidth = true
         popularIndicatorLabel.minimumScaleFactor = 0.5
@@ -110,7 +110,7 @@ extension StoreDetailMenuItemCell {
     private func setupNameLabel() {
         addSubview(itemNameLabel)
         itemNameLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        itemNameLabel.font = ApplicationDependency.manager.theme.fontSchema.bold18
+        itemNameLabel.font = ApplicationDependency.manager.theme.fonts.bold18
         itemNameLabel.textAlignment = .left
         itemNameLabel.adjustsFontSizeToFitWidth = true
         itemNameLabel.minimumScaleFactor = 0.5
@@ -130,7 +130,7 @@ extension StoreDetailMenuItemCell {
     private func setupPriceLabel() {
         addSubview(itemPriceLabel)
         itemPriceLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        itemPriceLabel.font = ApplicationDependency.manager.theme.fontSchema.medium15
+        itemPriceLabel.font = ApplicationDependency.manager.theme.fonts.medium15
         itemPriceLabel.textAlignment = .left
         itemPriceLabel.adjustsFontSizeToFitWidth = true
         itemPriceLabel.minimumScaleFactor = 0.5

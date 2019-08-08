@@ -51,7 +51,7 @@ extension StoreDetailSwitchMenuCell {
     private func setupLabels() {
         addSubview(currentMenuTypeLabel)
         currentMenuTypeLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        currentMenuTypeLabel.font = ApplicationDependency.manager.theme.fontSchema.extraBold17
+        currentMenuTypeLabel.font = ApplicationDependency.manager.theme.fonts.extraBold17
         currentMenuTypeLabel.textAlignment = .left
         currentMenuTypeLabel.adjustsFontSizeToFitWidth = true
         currentMenuTypeLabel.minimumScaleFactor = 0.5
@@ -60,7 +60,7 @@ extension StoreDetailSwitchMenuCell {
 
         addSubview(switchMenuLabel)
         switchMenuLabel.textColor = ApplicationDependency.manager.theme.colors.doorDashRed
-        switchMenuLabel.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        switchMenuLabel.font = ApplicationDependency.manager.theme.fonts.medium16
         switchMenuLabel.textAlignment = .left
         switchMenuLabel.adjustsFontSizeToFitWidth = true
         switchMenuLabel.minimumScaleFactor = 0.5

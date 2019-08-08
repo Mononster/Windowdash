@@ -42,7 +42,7 @@ extension ItemDetailAddInstructionsCell {
     private func setupLabel() {
         addSubview(addInstructionLabel)
         addInstructionLabel.textColor = ApplicationDependency.manager.theme.colors.doorDashDarkGray
-        addInstructionLabel.font = ApplicationDependency.manager.theme.fontSchema.medium16
+        addInstructionLabel.font = ApplicationDependency.manager.theme.fonts.medium16
         addInstructionLabel.textAlignment = .left
         addInstructionLabel.adjustsFontSizeToFitWidth = true
         addInstructionLabel.minimumScaleFactor = 0.5

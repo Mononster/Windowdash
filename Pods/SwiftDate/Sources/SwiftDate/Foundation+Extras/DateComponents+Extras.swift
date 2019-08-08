@@ -1,9 +1,13 @@
 //
-//  DateComponents+Extras.swift
 //  SwiftDate
+//  Parse, validate, manipulate, and display dates, time and timezones in Swift
 //
-//  Created by Daniele Margutti on 07/06/2018.
-//  Copyright © 2018 SwiftDate. All rights reserved.
+//  Created by Daniele Margutti
+//   - Web: https://www.danielemargutti.com
+//   - Twitter: https://twitter.com/danielemargutti
+//   - Mail: hello@danielemargutti.com
+//
+//  Copyright © 2019 Daniele Margutti. Licensed under MIT License.
 //
 
 import Foundation
@@ -15,7 +19,7 @@ public extension Calendar.Component {
 	/// Return a description of the calendar component in seconds.
 	/// Note: 	Values for `era`,`weekday`,`weekdayOrdinal`, `yearForWeekOfYear`, `calendar`, `timezone` are `nil`.
 	/// 		For `weekOfYear` it return the same value of `weekOfMonth`.
-	public var timeInterval: Double? {
+	var timeInterval: Double? {
 		switch self {
 		case .era: 						return nil
 		case .year: 					return (Calendar.Component.day.timeInterval! * 365.0)
@@ -39,7 +43,7 @@ public extension Calendar.Component {
 	/// - returns: return the plural or singular form of the time unit used to compose a valid identifier for search a localized
 	///   string in resource bundle
 	internal func localizedKey(forValue value: Int) -> String {
-		let locKey = self.localizedKey
+		let locKey = localizedKey
 		let absValue = abs(value)
 		switch absValue {
 		case 0: // zero difference for this unit
@@ -97,10 +101,10 @@ public extension DateComponents {
 	///			- `hour` is 3600 `seconds`
 	///			- `minute` is 60 `seconds`
 	///			- `nanosecond` is 1e-9 `seconds`
-	public var timeInterval: TimeInterval {
+	var timeInterval: TimeInterval {
 		var totalAmount: TimeInterval = 0
 		DateComponents.allComponents.forEach {
-			if let multipler = $0.timeInterval, let value = self.value(for: $0), value != Int(NSDateComponentUndefined) {
+			if let multipler = $0.timeInterval, let value = value(for: $0), value != Int(NSDateComponentUndefined) {
 				totalAmount += (TimeInterval(value) * multipler)
 			}
 		}
@@ -111,7 +115,7 @@ public extension DateComponents {
 	///
 	/// - Parameter builder: callback for builder
 	/// - Returns: new instance
-	public static func create(_ builder: ((inout DateComponents) -> Void)) -> DateComponents {
+	static func create(_ builder: ((inout DateComponents) -> Void)) -> DateComponents {
 		var components = DateComponents()
 		builder(&components)
 		return components
@@ -130,14 +134,14 @@ public extension DateComponents {
 	}
 
 	/// - returns: the date that will occur once the receiver's components pass after the provide date.
-	public func from(_ date: DateRepresentable) -> Date? {
+	func from(_ date: DateRepresentable) -> Date? {
 		return date.calendar.date(byAdding: self, to: date.date)
 	}
 
 	/// Return `true` if all interval components are zeroes
-	public var isZero: Bool {
+	var isZero: Bool {
 		for component in DateComponents.allComponents {
-			if let value = self.value(for: component), value != 0 {
+			if let value = value(for: component), value != 0 {
 				return false
 			}
 		}
@@ -165,18 +169,18 @@ public extension DateComponents {
 	internal mutating func alterComponents(_ components: [Calendar.Component: Int?]) {
 		components.forEach {
 			if let v = $0.value {
-				self.setValue(v, for: $0.key)
+				setValue(v, for: $0.key)
 			}
 		}
 	}
 
 	/// Adds two NSDateComponents and returns their combined individual components.
-	public static func + (lhs: DateComponents, rhs: DateComponents) -> DateComponents {
+	static func + (lhs: DateComponents, rhs: DateComponents) -> DateComponents {
 		return combine(lhs, rhs: rhs, transform: +)
 	}
 
 	/// Subtracts two NSDateComponents and returns the relative difference between them.
-	public static func - (lhs: DateComponents, rhs: DateComponents) -> DateComponents {
+	static func - (lhs: DateComponents, rhs: DateComponents) -> DateComponents {
 		return lhs + (-rhs)
 	}
 
@@ -189,7 +193,7 @@ public extension DateComponents {
 
 	/// - returns: a new `NSDateComponents` that represents the negative of all values within the
 	/// components that are not `NSDateComponentUndefined`.
-	public static prefix func - (rhs: DateComponents) -> DateComponents {
+	static prefix func - (rhs: DateComponents) -> DateComponents {
 		var components = DateComponents()
 		components.era = rhs.era.map(-)
 		components.year = rhs.year.map(-)
@@ -235,7 +239,7 @@ public extension DateComponents {
 	/// Note: This does not take into account any built-in errors, `Int.max` returned instead of `nil`.
 	///
 	/// - Parameter component: component to get
-	public subscript(component: Calendar.Component) -> Int? {
+	subscript(component: Calendar.Component) -> Int? {
 		switch component {
 		case .era: 					return era
 		case .year: 				return year
@@ -261,7 +265,7 @@ public extension DateComponents {
 	/// - parameter calendar:  context calendar to use
 	///
 	/// - returns: the value of interval expressed in selected `Calendar.Component`
-	public func `in`(_ component: Calendar.Component, of calendar: CalendarConvertible? = nil) -> Int? {
+	func `in`(_ component: Calendar.Component, of calendar: CalendarConvertible? = nil) -> Int? {
 		let cal = (calendar?.toCalendar() ?? SwiftDate.defaultRegion.calendar)
 		let dateFrom = Date()
 		let dateTo = (dateFrom + self)
@@ -276,7 +280,7 @@ public extension DateComponents {
 	///   - component: time component
 	///   - calendar: context calendar to use
 	/// - Returns: a dictionary of extract values.
-	public func `in`(_ components: Set<Calendar.Component>, of calendar: CalendarConvertible? = nil) -> [Calendar.Component : Int] {
+	func `in`(_ components: Set<Calendar.Component>, of calendar: CalendarConvertible? = nil) -> [Calendar.Component: Int] {
 		let cal = (calendar?.toCalendar() ?? SwiftDate.defaultRegion.calendar)
 		let dateFrom = Date()
 		let dateTo = (dateFrom + self)

@@ -1,9 +1,13 @@
 //
-//  DateInRegion+Operations.swift
 //  SwiftDate
+//  Parse, validate, manipulate, and display dates, time and timezones in Swift
 //
-//  Created by Daniele Margutti on 06/06/2018.
-//  Copyright © 2018 SwiftDate. All rights reserved.
+//  Created by Daniele Margutti
+//   - Web: https://www.danielemargutti.com
+//   - Twitter: https://twitter.com/danielemargutti
+//   - Mail: hello@danielemargutti.com
+//
+//  Copyright © 2019 Daniele Margutti. Licensed under MIT License.
 //
 
 import Foundation
@@ -20,7 +24,7 @@ public extension DateInRegion {
 	///   - final: upper date bound.
 	///   - region: region of the dates.
 	/// - Returns: array of dates
-	public static func randomDates(count: Int, between initial: DateInRegion, and final: DateInRegion,
+	static func randomDates(count: Int, between initial: DateInRegion, and final: DateInRegion,
 								   region: Region = SwiftDate.defaultRegion) -> [DateInRegion] {
 		var list: [DateInRegion] = []
 		for _ in 0..<count {
@@ -35,7 +39,7 @@ public extension DateInRegion {
 	///   - days: days range
 	///   - region: destination region, `nil` to use the default region
 	/// - Returns: random date
-	public static func randomDate(withinDaysBeforeToday days: Int,
+	static func randomDate(withinDaysBeforeToday days: Int,
 								  region: Region = SwiftDate.defaultRegion) -> DateInRegion {
 		let today = DateInRegion(region: region)
 		let earliest = DateInRegion(today.date.addingTimeInterval(TimeInterval(-days * 24 * 60 * 60)), region: region)
@@ -46,8 +50,8 @@ public extension DateInRegion {
 	///
 	/// - Parameter region: destination region, `nil` to use the default region
 	/// - Returns: random date
-	public static func randomDate(region: Region = SwiftDate.defaultRegion) -> DateInRegion {
-		let randomTime = TimeInterval(arc4random_uniform(UInt32.max))
+	static func randomDate(region: Region = SwiftDate.defaultRegion) -> DateInRegion {
+		let randomTime = TimeInterval(UInt32.random(in: UInt32.min..<UInt32.max))
 		let absoluteDate = Date(timeIntervalSince1970: randomTime)
 		return DateInRegion(absoluteDate, region: region)
 	}
@@ -59,10 +63,10 @@ public extension DateInRegion {
 	///   - final: upper bound date
 	///   - region: destination region, `nil` to use the default region
 	/// - Returns: random Date
-	public static func randomDate(between initial: DateInRegion, and final: DateInRegion,
+	static func randomDate(between initial: DateInRegion, and final: DateInRegion,
 								  region: Region = SwiftDate.defaultRegion) -> DateInRegion {
 		let interval = final.timeIntervalSince(initial)
-		let randomInterval = TimeInterval(arc4random_uniform(UInt32(interval)))
+		let randomInterval = TimeInterval(UInt32.random(in: UInt32.min..<UInt32(interval)))
 		return initial.addingTimeInterval(randomInterval)
 	}
 
@@ -70,7 +74,7 @@ public extension DateInRegion {
 	///
 	/// - Parameter list: list of dates
 	/// - Returns: a tuple with the index of the oldest date and its instance.
-	public static func oldestIn(list: [DateInRegion]) -> DateInRegion? {
+	static func oldestIn(list: [DateInRegion]) -> DateInRegion? {
 		guard list.count > 0 else { return nil }
 		guard list.count > 1 else { return list.first! }
 		return list.min(by: {
@@ -82,7 +86,7 @@ public extension DateInRegion {
 	///
 	/// - Parameter list: list to sort
 	/// - Returns: sorted array
-	public static func sortedByOldest(list: [DateInRegion]) -> [DateInRegion] {
+	static func sortedByOldest(list: [DateInRegion]) -> [DateInRegion] {
 		return list.sorted(by: { $0.date.compare($1.date) == .orderedAscending })
 	}
 
@@ -90,15 +94,15 @@ public extension DateInRegion {
 	///
 	/// - Parameter list: list to sort
 	/// - Returns: sorted array
-	public static func sortedByNewest(list: [DateInRegion]) -> [DateInRegion] {
+	static func sortedByNewest(list: [DateInRegion]) -> [DateInRegion] {
 		return list.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
 	}
 
-	/// Return the oldest date in given list (timezone is ignored, comparison uses absolute date).
+	/// Return the newest date in given list (timezone is ignored, comparison uses absolute date).
 	///
 	/// - Parameter list: list of dates
-	/// - Returns: a tuple with the index of the oldest date and its instance.
-	public static func newestIn(list: [DateInRegion]) -> DateInRegion? {
+	/// - Returns: a tuple with the index of the newest date and its instance.
+	static func newestIn(list: [DateInRegion]) -> DateInRegion? {
 		guard list.count > 0 else { return nil }
 		guard list.count > 1 else { return list.first! }
 		return list.max(by: {
@@ -115,7 +119,7 @@ public extension DateInRegion {
 	///   - endDate: ending date
 	///   - increment: components to add
 	/// - Returns: array of dates
-	public static func enumerateDates(from startDate: DateInRegion, to endDate: DateInRegion, increment: DateComponents) -> [DateInRegion] {
+	static func enumerateDates(from startDate: DateInRegion, to endDate: DateInRegion, increment: DateComponents) -> [DateInRegion] {
 		return DateInRegion.enumerateDates(from: startDate, to: endDate, increment: { _ in
 			return increment
 		})
@@ -130,7 +134,7 @@ public extension DateInRegion {
 	///   - endDate: ending date
 	///   - increment: increment function. It get the last generated date and require a valida `DateComponents` instance which define the increment
 	/// - Returns: array of dates
-	public static func enumerateDates(from startDate: DateInRegion, to endDate: DateInRegion, increment: ((DateInRegion) -> (DateComponents))) -> [DateInRegion] {
+	static func enumerateDates(from startDate: DateInRegion, to endDate: DateInRegion, increment: ((DateInRegion) -> (DateComponents))) -> [DateInRegion] {
 		guard startDate.calendar == endDate.calendar else {
 			debugPrint("Cannot enumerate dates between two different region's calendars. Return empty array.")
 			return []
@@ -149,9 +153,21 @@ public extension DateInRegion {
 	///
 	/// - Parameter unit: time unit value.
 	/// - Returns: instance at the beginning of the time unit; `self` if fails.
-	public func dateAtStartOf(_ unit: Calendar.Component) -> DateInRegion {
-		guard let result = self.region.calendar.rangex(of: unit, for: self.date) else { return self }
-		return DateInRegion(result.start, region: self.region)
+	func dateAtStartOf(_ unit: Calendar.Component) -> DateInRegion {
+		#if os(Linux)
+		guard let result = (region.calendar as NSCalendar).range(of: unit.nsCalendarUnit, for: date) else {
+			return self
+		}
+		return DateInRegion(result.start, region: region)
+		#else
+		var start: NSDate?
+		var interval: TimeInterval = 0
+		guard (region.calendar as NSCalendar).range(of: unit.nsCalendarUnit, start: &start, interval: &interval, for: date),
+			let startDate = start else {
+				return self
+		}
+		return DateInRegion(startDate as Date, region: region)
+		#endif
 	}
 
 	/// Return a new DateInRegion that is initialized at the start of the specified components
@@ -159,7 +175,7 @@ public extension DateInRegion {
 	///
 	/// - Parameter units: sequence of transformations as time unit components
 	/// - Returns: new date at the beginning of the passed components, intermediate results if fails.
-	public func dateAtStartOf(_ units: [Calendar.Component]) -> DateInRegion {
+	func dateAtStartOf(_ units: [Calendar.Component]) -> DateInRegion {
 		return units.reduce(self) { (currentDate, currentUnit) -> DateInRegion in
 			return currentDate.dateAtStartOf(currentUnit)
 		}
@@ -170,12 +186,26 @@ public extension DateInRegion {
 	/// - parameter unit: time unit value.
 	///
 	/// - returns: A new Moment instance.
-	public func dateAtEndOf(_ unit: Calendar.Component) -> DateInRegion {
+	func dateAtEndOf(_ unit: Calendar.Component) -> DateInRegion {
 		// RangeOfUnit returns the start of the next unit; we will subtract one thousandth of a second
-		guard let result = self.region.calendar.rangex(of: unit, for: self.date) else { return self }
+		#if os(Linux)
+		guard let result = (region.calendar as NSCalendar).range(of: unit.nsCalendarUnit, for: date) else {
+			return self
+		}
 		let startOfNextUnit = result.start.addingTimeInterval(result.duration)
 		let endOfThisUnit = Date(timeInterval: -0.001, since: startOfNextUnit)
-		return DateInRegion(endOfThisUnit, region: self.region)
+		return DateInRegion(endOfThisUnit, region: region)
+		#else
+		var start: NSDate?
+		var interval: TimeInterval = 0
+		guard (self.region.calendar as NSCalendar).range(of: unit.nsCalendarUnit, start: &start, interval: &interval, for: date),
+		let startDate = start else {
+			return self
+		}
+		let startOfNextUnit = startDate.addingTimeInterval(interval)
+		let endOfThisUnit = Date(timeInterval: -0.001, since: startOfNextUnit as Date)
+		return DateInRegion(endOfThisUnit, region: region)
+		#endif
 	}
 
 	/// Return a new DateInRegion that is initialized at the end of the specified components
@@ -183,7 +213,7 @@ public extension DateInRegion {
 	///
 	/// - Parameter units: sequence of transformations as time unit components
 	/// - Returns: new date at the end of the passed components, intermediate results if fails.
-	public func dateAtEndOf(_ units: [Calendar.Component]) -> DateInRegion {
+	func dateAtEndOf(_ units: [Calendar.Component]) -> DateInRegion {
 		return units.reduce(self) { (currentDate, currentUnit) -> DateInRegion in
 			return currentDate.dateAtEndOf(currentUnit)
 		}
@@ -196,15 +226,15 @@ public extension DateInRegion {
 	///
 	/// - Parameter components: components to alter with their new values.
 	/// - Returns: new altered `DateInRegion` instance
-	public func dateBySet(_ components: [Calendar.Component: Int?]) -> DateInRegion? {
+	func dateBySet(_ components: [Calendar.Component: Int?]) -> DateInRegion? {
 		var dateComponents = DateComponents()
-		dateComponents.year = (components[.year] ?? self.year)
-		dateComponents.month = (components[.month] ?? self.month)
-		dateComponents.day = (components[.day] ?? self.day)
-		dateComponents.hour = (components[.hour] ?? self.hour)
-		dateComponents.minute = (components[.minute] ?? self.minute)
-		dateComponents.second = (components[.second] ?? self.second)
-		dateComponents.nanosecond = (components[.nanosecond] ?? self.nanosecond)
+		dateComponents.year = (components[.year] ?? year)
+		dateComponents.month = (components[.month] ?? month)
+		dateComponents.day = (components[.day] ?? day)
+		dateComponents.hour = (components[.hour] ?? hour)
+		dateComponents.minute = (components[.minute] ?? minute)
+		dateComponents.second = (components[.second] ?? second)
+		dateComponents.nanosecond = (components[.nanosecond] ?? nanosecond)
 
 		// Some components may interfer with others, so we'll set it them only if explicitly set.
 		if let weekday = components[.weekday] {
@@ -220,8 +250,8 @@ public extension DateInRegion {
 			dateComponents.yearForWeekOfYear = yearForWeekOfYear
 		}
 
-		guard let newDate = self.calendar.date(from: dateComponents) else { return nil }
-		return DateInRegion(newDate, region: self.region)
+		guard let newDate = calendar.date(from: dateComponents) else { return nil }
+		return DateInRegion(newDate, region: region)
 	}
 
 	/// Create a new date by altering specified time components.
@@ -230,24 +260,30 @@ public extension DateInRegion {
 	///   - hour: hour to set (`nil` to leave it unaltered)
 	///   - min: min to set (`nil` to leave it unaltered)
 	///   - secs: sec to set (`nil` to leave it unaltered)
+	///   - ms: milliseconds to set (`nil` to leave it unaltered)
 	///   - options: options for calculation
 	/// - Returns: new altered `DateInRegion` instance
-	public func dateBySet(hour: Int?, min: Int?, secs: Int?, options: TimeCalculationOptions = TimeCalculationOptions()) -> DateInRegion? {
-		guard let date = self.calendar.date(bySettingHour: (hour ?? self.hour),
+	func dateBySet(hour: Int?, min: Int?, secs: Int?, ms: Int? = nil, options: TimeCalculationOptions = TimeCalculationOptions()) -> DateInRegion? {
+		guard let date = calendar.date(bySettingHour: (hour ?? self.hour),
 											minute: (min ?? self.minute),
 											second: (secs ?? self.second),
 											of: self.date,
 											matchingPolicy: options.matchingPolicy,
 											repeatedTimePolicy: options.repeatedTimePolicy,
 											direction: options.direction) else { return nil }
-		return DateInRegion(date, region: self.region)
+		guard let ms = ms else {
+			return DateInRegion(date, region: region)
+		}
+		var timestamp = date.timeIntervalSince1970.rounded(.down)
+		timestamp += Double(ms) / 1000.0
+		return DateInRegion(Date(timeIntervalSince1970: timestamp), region: region)
 	}
 
 	/// Creates a new instance by truncating the components
 	///
 	/// - Parameter components: components to truncate.
 	/// - Returns: new date with truncated components.
-	public func dateTruncated(at components: [Calendar.Component]) -> DateInRegion? {
+	func dateTruncated(at components: [Calendar.Component]) -> DateInRegion? {
 		var dateComponents = self.dateComponents
 
 		for component in components {
@@ -262,15 +298,15 @@ public extension DateInRegion {
 			}
 		}
 
-		guard let newDate = self.calendar.date(from: dateComponents) else { return nil }
-		return DateInRegion(newDate, region: self.region)
+		guard let newDate = calendar.date(from: dateComponents) else { return nil }
+		return DateInRegion(newDate, region: region)
 	}
 
 	/// Creates a new instance by truncating the components starting from given components down the granurality.
 	///
 	/// - Parameter component: The component to be truncated from.
 	/// - Returns: new date with truncated components.
-	public func dateTruncated(from component: Calendar.Component) -> DateInRegion? {
+	func dateTruncated(from component: Calendar.Component) -> DateInRegion? {
 		switch component {
 		case .month:		return dateTruncated(at: [.month, .day, .hour, .minute, .second, .nanosecond])
 		case .day:			return dateTruncated(at: [.day, .hour, .minute, .second, .nanosecond])
@@ -286,35 +322,35 @@ public extension DateInRegion {
 	///
 	/// - Parameter style: rounding mode.
 	/// - Returns: rounded date
-	public func dateRoundedAt(_ style: RoundDateMode) -> DateInRegion {
+	func dateRoundedAt(_ style: RoundDateMode) -> DateInRegion {
 		switch style {
-		case .to5Mins:			return self.dateRoundedAt(.toMins(5))
-		case .to10Mins:			return self.dateRoundedAt(.toMins(10))
-		case .to30Mins:			return self.dateRoundedAt(.toMins(30))
-		case .toCeil5Mins:		return self.dateRoundedAt(.toCeilMins(5))
-		case .toCeil10Mins:		return self.dateRoundedAt(.toCeilMins(10))
-		case .toCeil30Mins:		return self.dateRoundedAt(.toCeilMins(30))
-		case .toFloor5Mins:		return self.dateRoundedAt(.toFloorMins(5))
-		case .toFloor10Mins:	return self.dateRoundedAt(.toFloorMins(10))
-		case .toFloor30Mins:	return self.dateRoundedAt(.toFloorMins(30))
+		case .to5Mins:			return dateRoundedAt(.toMins(5))
+		case .to10Mins:			return dateRoundedAt(.toMins(10))
+		case .to30Mins:			return dateRoundedAt(.toMins(30))
+		case .toCeil5Mins:		return dateRoundedAt(.toCeilMins(5))
+		case .toCeil10Mins:		return dateRoundedAt(.toCeilMins(10))
+		case .toCeil30Mins:		return dateRoundedAt(.toCeilMins(30))
+		case .toFloor5Mins:		return dateRoundedAt(.toFloorMins(5))
+		case .toFloor10Mins:	return dateRoundedAt(.toFloorMins(10))
+		case .toFloor30Mins:	return dateRoundedAt(.toFloorMins(30))
 
 		case .toMins(let minuteInterval):
-			let onesDigit: Int = (self.minute % 10)
+			let onesDigit: Int = (minute % 10)
 			if onesDigit < 5 {
-				return self.dateRoundedAt(.toFloorMins(minuteInterval))
+				return dateRoundedAt(.toFloorMins(minuteInterval))
 			} else {
-				return self.dateRoundedAt(.toCeilMins(minuteInterval))
+				return dateRoundedAt(.toCeilMins(minuteInterval))
 			}
 
 		case .toCeilMins(let minuteInterval):
-			let remain: Int = (self.minute % minuteInterval)
-			let value = (( Int(1.minutes.timeInterval) * (minuteInterval - remain)) - self.second)
-			return self.dateByAdding(value, .second)
+			let remain: Int = (minute % minuteInterval)
+			let value = (( Int(1.minutes.timeInterval) * (minuteInterval - remain)) - second)
+			return dateByAdding(value, .second)
 
 		case .toFloorMins(let minuteInterval):
-			let remain: Int = (self.minute % minuteInterval)
-			let value = -((Int(1.minutes.timeInterval) * remain) + self.second)
-			return self.dateByAdding(value, .second)
+			let remain: Int = (minute % minuteInterval)
+			let value = -((Int(1.minutes.timeInterval) * remain) + second)
+			return dateByAdding(value, .second)
 
 		}
 	}
@@ -326,7 +362,7 @@ public extension DateInRegion {
 	///   - count: value of the offset (maybe negative).
 	///   - component: component to offset.
 	/// - Returns: new altered date.
-	public func dateByAdding(_ count: Int, _ component: Calendar.Component) -> DateInRegion {
+	func dateByAdding(_ count: Int, _ component: Calendar.Component) -> DateInRegion {
 		var newComponent = DateComponents(second: 0)
 		switch component {
 		case .era: 					newComponent = DateComponents(era: count)
@@ -346,76 +382,76 @@ public extension DateInRegion {
 		default: break // .calendar and .timezone does nothing in this context
 		}
 
-		guard let newDate = self.region.calendar.date(byAdding: newComponent, to: self.date) else {
+		guard let newDate = region.calendar.date(byAdding: newComponent, to: date) else {
 			return self // failed to add component, return unmodified date
 		}
-		return DateInRegion(newDate, region: self.region)
+		return DateInRegion(newDate, region: region)
 	}
 
 	/// Return related date starting from the receiver attributes.
 	///
 	/// - Parameter type: related date to obtain.
 	/// - Returns: instance of the related date; if fails the same unmodified date is returned
-	public func dateAt(_ type: DateRelatedType) -> DateInRegion {
+	func dateAt(_ type: DateRelatedType) -> DateInRegion {
 		switch type {
 		case .startOfDay:
-			return self.calendar.startOfDay(for: self.date).in(region: self.region)
+			return calendar.startOfDay(for: date).in(region: region)
 		case .endOfDay:
-			return self.dateByAdding(1, .day).dateAt(.startOfDay).dateByAdding(-1, .second)
+			return dateByAdding(1, .day).dateAt(.startOfDay).dateByAdding(-1, .second)
 		case .startOfWeek:
-			let components = self.calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: self.date)
-			return self.calendar.date(from: components)!.in(region: self.region)
+			let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date)
+			return calendar.date(from: components)!.in(region: region)
 		case .endOfWeek:
-			return self.dateAt(.startOfWeek).dateByAdding(7, .day).dateByAdding(-1, .second)
+			return dateAt(.startOfWeek).dateByAdding(7, .day).dateByAdding(-1, .second)
 		case .startOfMonth:
-			return self.dateBySet([.day: 1, .hour: 1, .minute: 1, .second: 1, .nanosecond: 1])!
+			return dateBySet([.day: 1, .hour: 1, .minute: 1, .second: 1, .nanosecond: 1])!
 		case .endOfMonth:
-			return self.dateByAdding((self.monthDays - self.day), .day).dateAtEndOf(.day)
+			return dateByAdding((monthDays - day), .day).dateAtEndOf(.day)
 		case .tomorrow:
-			return self.dateByAdding(1, .day)
+			return dateByAdding(1, .day)
 		case .tomorrowAtStart:
-			return self.dateByAdding(1, .day).dateAtStartOf(.day)
+			return dateByAdding(1, .day).dateAtStartOf(.day)
 		case .yesterday:
-			return self.dateByAdding(-1, .day)
+			return dateByAdding(-1, .day)
 		case .yesterdayAtStart:
-			return self.dateByAdding(-1, .day).dateAtStartOf(.day)
+			return dateByAdding(-1, .day).dateAtStartOf(.day)
 		case .nearestMinute(let nearest):
-			let minutes = (self.minute + nearest / 2) / nearest * nearest
+			let minutes = (minute + nearest / 2) / nearest * nearest
 			return dateBySet([.minute: minutes])!
 		case .nearestHour(let nearest):
-			let hours = (self.hour + nearest / 2) / nearest * nearest
+			let hours = (hour + nearest / 2) / nearest * nearest
 			return dateBySet([.hour: hours, .minute: 0])!
 		case .nextWeekday(let weekday):
-			var cal = Calendar(identifier: self.calendar.identifier)
+			var cal = Calendar(identifier: calendar.identifier)
 			cal.firstWeekday = 2 // Sunday = 1, Saturday = 7
 			var components = DateComponents()
 			components.weekday = weekday.rawValue
-			guard let next = cal.nextDate(after: self.date, matching: components, matchingPolicy: .nextTimePreservingSmallerComponents) else {
+			guard let next = cal.nextDate(after: date, matching: components, matchingPolicy: .nextTimePreservingSmallerComponents) else {
 				return self
 			}
-			return DateInRegion(next, region: self.region)
+			return DateInRegion(next, region: region)
 		case .nextDSTDate:
-			guard let nextDate = self.region.timeZone.nextDaylightSavingTimeTransition(after: self.date) else {
+			guard let nextDate = region.timeZone.nextDaylightSavingTimeTransition(after: date) else {
 				return self
 			}
-			return DateInRegion(nextDate, region: self.region)
+			return DateInRegion(nextDate, region: region)
 		case .prevMonth:
-			return self.dateByAdding(-1, .month).dateAtStartOf(.month).dateAtStartOf(.day)
+			return dateByAdding(-1, .month).dateAtStartOf(.month).dateAtStartOf(.day)
 		case .nextMonth:
-			return self.dateByAdding(1, .month).dateAtStartOf(.month).dateAtStartOf(.day)
+			return dateByAdding(1, .month).dateAtStartOf(.month).dateAtStartOf(.day)
 		case .prevWeek:
-			return self.dateByAdding(-1, .weekOfYear).dateAtStartOf(.weekOfYear).dateAtStartOf(.day)
+			return dateByAdding(-1, .weekOfYear).dateAtStartOf(.weekOfYear).dateAtStartOf(.day)
 		case .nextWeek:
-			return self.dateByAdding(1, .weekOfYear).dateAtStartOf(.weekOfYear).dateAtStartOf(.day)
+			return dateByAdding(1, .weekOfYear).dateAtStartOf(.weekOfYear).dateAtStartOf(.day)
 		case .nextYear:
-			return self.dateByAdding(1, .year).dateAtStartOf(.year)
+			return dateByAdding(1, .year).dateAtStartOf(.year)
 		case .prevYear:
-			return self.dateByAdding(-1, .year).dateAtStartOf(.year)
+			return dateByAdding(-1, .year).dateAtStartOf(.year)
 		case .nextDSTTransition:
-			guard let transitionDate = self.region.timeZone.nextDaylightSavingTimeTransition(after: self.date) else {
+			guard let transitionDate = region.timeZone.nextDaylightSavingTimeTransition(after: date) else {
 				return self
 			}
-			return DateInRegion(transitionDate, region: self.region)
+			return DateInRegion(transitionDate, region: region)
 		}
 	}
 
@@ -423,8 +459,8 @@ public extension DateInRegion {
 	///
 	/// - Parameter interval: time interval to shift; maybe negative.
 	/// - Returns: new instance of the `DateInRegion`
-	public func addingTimeInterval(_ interval: TimeInterval) -> DateInRegion {
-		return DateInRegion(self.date.addingTimeInterval(interval), region: self.region)
+	func addingTimeInterval(_ interval: TimeInterval) -> DateInRegion {
+		return DateInRegion(date.addingTimeInterval(interval), region: region)
 	}
 
 	// MARK: - Conversion
@@ -437,11 +473,118 @@ public extension DateInRegion {
 	///   - timezone: non `nil` value to change the timezone
 	///   - locale: non `nil` value to change the locale
 	/// - Returns: converted date
-	public func convertTo(calendar: CalendarConvertible? = nil, timezone: ZoneConvertible? = nil, locale: LocaleConvertible? = nil) -> DateInRegion {
-		let newRegion = Region(calendar: (calendar ?? self.region.calendar),
-							   zone: (timezone ?? self.region.timeZone),
-							   locale: (locale ?? self.region.locale))
-		return self.convertTo(region: newRegion)
+	func convertTo(calendar: CalendarConvertible? = nil, timezone: ZoneConvertible? = nil, locale: LocaleConvertible? = nil) -> DateInRegion {
+		let newRegion = Region(calendar: (calendar ?? region.calendar),
+							   zone: (timezone ?? region.timeZone),
+							   locale: (locale ?? region.locale))
+		return convertTo(region: newRegion)
 	}
 
+	/// Return the dates for a specific weekday inside given month of specified year.
+	/// Ie. get me all the saturdays of Feb 2018.
+	/// NOTE: Values are returned in order.
+	///
+	/// - Parameters:
+	///   - weekday: weekday target.
+	///   - month: month target.
+	///   - year: year target.
+	///   - region: region target, omit to use `SwiftDate.defaultRegion`
+	/// - Returns: Ordered list of the dates for given weekday into given month.
+	static func datesForWeekday(_ weekday: WeekDay, inMonth month: Int, ofYear year: Int,
+									   region: Region = SwiftDate.defaultRegion) -> [DateInRegion] {
+		let fromDate = DateInRegion(year: year, month: month, day: 1, hour: 0, minute: 0, second: 0, nanosecond: 0, region: region)
+		let toDate = fromDate.dateAt(.endOfMonth)
+		return DateInRegion.datesForWeekday(weekday, from: fromDate, to: toDate, region: region)
+	}
+
+	/// Return the dates for a specific weekday inside a specified date range.
+	/// NOTE: Values are returned in order.
+	///
+	/// - Parameters:
+	///   - weekday: weekday target.
+	///   - startDate: from date of the range.
+	///   - endDate: to date of the range.
+	///   - region: region target, omit to use `SwiftDate.defaultRegion`
+	/// - Returns: Ordered list of the dates for given weekday in passed range.
+	static func datesForWeekday(_ weekday: WeekDay, from startDate: DateInRegion, to endDate: DateInRegion,
+									   region: Region = SwiftDate.defaultRegion) -> [DateInRegion] {
+
+		let calendarObj = region.calendar
+		let startDateWeekDay = Int(calendarObj.component(.weekday, from: startDate.date))
+		let desiredDay = weekday.rawValue
+
+		let offset = (desiredDay - startDateWeekDay + 7) % 7
+		let firstOccurrence = calendarObj.startOfDay(for: calendarObj.date(byAdding: DateComponents(day: offset), to: startDate.date)!)
+		guard firstOccurrence.timeIntervalSince1970 < endDate.timeIntervalSince1970 else {
+			return []
+		}
+		var dateOccurrences = [DateInRegion(firstOccurrence, region: region)]
+		while true {
+			let nextDate = DateInRegion(calendarObj.date(byAdding: DateComponents(day: 7), to: dateOccurrences.last!.date)!,
+										region: region)
+			guard nextDate < endDate else {
+				break
+			}
+			dateOccurrences.append(nextDate)
+		}
+		return dateOccurrences
+	}
+
+}
+
+public extension DateInRegion {
+
+    /// Returns the date at the given week number and week day preserving smaller components (hour, minute, seconds)
+    ///
+    /// For example: to get the third friday of next month
+    ///         let today = DateInRegion()
+    ///         let result = today.dateAt(weekdayOrdinal: 3, weekday: .friday, monthNumber: today.month + 1)
+    ///
+    /// - Parameters:
+    ///     - weekdayOrdinal: the week number (by set position in a recurrence rule)
+    ///     - weekday: WeekDay
+    ///     - monthNumber: a number from 1 to 12 representing the month, optional parameter
+    ///     - yearNumber: a number representing the year, optional parameter
+    /// - Returns: new date created with the given parameters
+    func dateAt(weekdayOrdinal: Int, weekday: WeekDay, monthNumber: Int? = nil,
+                yearNumber: Int? = nil) -> DateInRegion {
+        let monthNum = monthNumber ?? month
+        let yearNum = yearNumber ?? year
+
+        var requiredWeekNum = weekdayOrdinal
+        var result = DateInRegion(year: yearNum, month: monthNum, day: 1, hour: hour,
+                                  minute: minute, second: second, nanosecond: nanosecond, region: region)
+
+        if result.weekday == weekday.rawValue {
+            requiredWeekNum -= 1
+        }
+
+        while requiredWeekNum > 0 {
+            result = result.nextWeekday(weekday)
+            requiredWeekNum -= 1
+        }
+
+        return result
+    }
+
+    /// Returns the next weekday preserving smaller components (hour, minute, seconds)
+    ///
+    /// - Parameters:
+    ///   - weekday: weekday to get.
+    ///   - region: region target, omit to use `SwiftDate.defaultRegion`
+    /// - Returns: `DateInRegion`
+    func nextWeekday(_ weekday: WeekDay) -> DateInRegion {
+        var components = DateComponents()
+        components.weekday = weekday.rawValue
+        components.hour = hour
+        components.second = second
+        components.minute = minute
+
+        guard let next = region.calendar.nextDate(after: date, matching: components,
+                                                  matchingPolicy: .nextTimePreservingSmallerComponents) else {
+                                                    return self
+        }
+
+        return DateInRegion(next, region: region)
+    }
 }
