@@ -9,6 +9,10 @@
 import UIKit
 import IGListKit
 
+protocol PickupMapBannerViewDelegate: class {
+    func showDetailStorePage(id: String)
+}
+
 final class PickupMapBannerView: UIView {
 
     enum ViewPresentingState {
@@ -31,6 +35,8 @@ final class PickupMapBannerView: UIView {
     private let theme = ApplicationDependency.manager.theme
 
     var viewState: ViewPresentingState = .hidden
+
+    weak var delegate: PickupMapBannerViewDelegate?
 
     override init(frame: CGRect) {
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -56,7 +62,7 @@ final class PickupMapBannerView: UIView {
         if viewModel.menuURLs.count == 0 {
             height += BrowseFoodStoreDispalyCell.heightWithoutMenu
         } else {
-            height += BrowseFoodStoreDispalyCell.heightWithMenu + BrowseFoodAllStoresSectionController.Constants().centerTwoItemsHeight
+            height += BrowseFoodStoreDispalyCell.heightWithMenu + SingleStoreSectionController.Constants().centerTwoItemsHeight
         }
         if viewModel.closeTimeDisplay != nil {
             height += BrowseFoodStoreDispalyCell.closeTimeHeight
@@ -100,12 +106,12 @@ extension PickupMapBannerView: ListAdapterDataSource {
             guard let item = object as? BrowseFoodAllStoreItem else {
                 fatalError()
             }
-            let controller = BrowseFoodAllStoresSectionController(
+            let controller = SingleStoreSectionController(
                 addInset: item.shouldAddTopInset,
                 menuLayout: item.layout
             )
             controller.didSelectItem = { storeID in
-                //self.delegate?.showDetailStorePage(id: storeID)
+                self.delegate?.showDetailStorePage(id: storeID)
             }
             return controller
         default:

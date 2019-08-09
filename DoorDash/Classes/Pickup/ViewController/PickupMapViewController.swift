@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 
 protocol PickupMapViewControllerDelegate: class {
-
+    func routeToStorePage(id: String)
 }
 
 final class PickupMapViewController: BaseViewController {
@@ -22,6 +22,7 @@ final class PickupMapViewController: BaseViewController {
         let redoButtonTopMargin: CGFloat = 16
         let myLocationButtonSize: CGFloat = 50
         let bannerPadding: CGFloat = 8
+        let mapInitPinAppearDelayConstant: Double = 0.005
     }
 
     private let interactor: PickupMapInteractor
@@ -31,6 +32,7 @@ final class PickupMapViewController: BaseViewController {
     private let mapView: MKMapView
     private let primaryStoreBanner: PickupMapBannerView
     private let secondaryStoreBanner: PickupMapBannerView
+    private let navigationSeparator: Separator
     private let constants = Constants()
 
     weak var delegate: PickupMapViewControllerDelegate?
@@ -43,6 +45,7 @@ final class PickupMapViewController: BaseViewController {
         self.mapView = MKMapView()
         self.primaryStoreBanner = PickupMapBannerView()
         self.secondaryStoreBanner = PickupMapBannerView()
+        self.navigationSeparator = Separator.create()
         super.init()
     }
 
@@ -77,11 +80,13 @@ final class PickupMapViewController: BaseViewController {
 extension PickupMapViewController {
 
     private func setupUI() {
+        navigationController?.navigationBar.shouldRemoveShadow(true)
         setupMapView()
         setupNavigationBar()
         setupRedoSearchButton()
         setupMyLocationButton()
         setupStoreBannerView()
+        setupSeparator()
         setupConstrainst()
     }
 
@@ -109,9 +114,11 @@ extension PickupMapViewController {
     private func setupStoreBannerView() {
         view.addSubview(primaryStoreBanner)
         primaryStoreBanner.layer.cornerRadius = 8
+        primaryStoreBanner.delegate = self
 
         view.addSubview(secondaryStoreBanner)
         secondaryStoreBanner.layer.cornerRadius = 8
+        secondaryStoreBanner.delegate = self
     }
 
     private func setupRedoSearchButton() {
@@ -134,6 +141,11 @@ extension PickupMapViewController {
         myLocationButton.contentVerticalAlignment = .center
         myLocationButton.addTarget(self, action: #selector(myLocationButtonTapped), for: .touchUpInside)
         myLocationButton.layer.cornerRadius = constants.myLocationButtonSize / 2
+    }
+
+    private func setupSeparator() {
+        view.addSubview(navigationSeparator)
+        navigationSeparator.alpha = 0.6
     }
 
     private func setupConstrainst() {
@@ -163,6 +175,11 @@ extension PickupMapViewController {
             make.height.equalTo(100)
             make.leading.trailing.equalToSuperview().inset(constants.bannerPadding)
             make.top.equalTo(view.snp.bottom).offset(8)
+        }
+
+        navigationSeparator.snp.makeConstraints { (make) in
+            make.leading.trailing.top.equalToSuperview()
+            make.height.equalTo(0.6)
         }
     }
 }
@@ -320,11 +337,18 @@ extension PickupMapViewController: MKMapViewDelegate {
                 continue
             }
             view.alpha = 0
-            let delay = 0.005 * Double(i)
+            let delay = constants.mapInitPinAppearDelayConstant * Double(i)
             UIView.animate(withDuration: 0.1, delay: delay, options: .curveEaseIn, animations: {
                 view.alpha = 1
             })
         }
+    }
+}
+
+extension PickupMapViewController: PickupMapBannerViewDelegate {
+
+    func showDetailStorePage(id: String) {
+        delegate?.routeToStorePage(id: id)
     }
 }
 

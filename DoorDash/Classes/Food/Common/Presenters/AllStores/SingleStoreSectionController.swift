@@ -1,5 +1,5 @@
 //
-//  BrowseFoodAllStoresSectionController.swift
+//  SingleStoreSectionController.swift
 //  DoorDash
 //
 //  Created by Marvin Zhan on 2018-09-26.
@@ -9,11 +9,11 @@
 import IGListKit
 import UIKit
 
-final class BrowseFoodAllStoresSectionController: ListSectionController, ListAdapterDataSource {
+final class SingleStoreSectionController: ListSectionController, ListAdapterDataSource {
 
     struct Constants {
         let centerOneItemHeight: CGFloat = 180
-        let centerTwoItemsHeight: CGFloat = 90
+        let centerTwoItemsHeight: CGFloat = 80
         let topInset: CGFloat = 20
     }
 
@@ -112,7 +112,7 @@ final class BrowseFoodAllStoresSectionController: ListSectionController, ListAda
     }
 }
 
-extension BrowseFoodAllStoresSectionController {
+extension SingleStoreSectionController {
 
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
         var diffableItems: [ListDiffable] = []
@@ -135,7 +135,7 @@ extension BrowseFoodAllStoresSectionController {
     }
 }
 
-extension BrowseFoodAllStoresSectionController: ListScrollDelegate {
+extension SingleStoreSectionController: ListScrollDelegate {
 
     func listAdapter(_ listAdapter: ListAdapter, didScroll sectionController: ListSectionController) {
         guard let cell = collectionContext?.cellForItem(

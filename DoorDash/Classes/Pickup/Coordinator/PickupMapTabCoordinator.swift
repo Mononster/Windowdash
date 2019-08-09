@@ -32,5 +32,17 @@ final class PickupMapTabCoordinator: Coordinator {
 
 extension PickupMapTabCoordinator: PickupMapViewControllerDelegate {
 
+    func routeToStorePage(id: String) {
+        let viewController = StoreDetailViewController(storeID: id, style: .nativeNavBar)
+        let coordinator = StoreDetailCoordinator(
+            rootViewController: viewController,
+            router: self.router
+        )
+        coordinator.start()
+        addCoordinator(coordinator)
+        self.router.push(coordinator, animated: true) {
+            self.removeCoordinator(coordinator)
+        }
+    }
 }
 

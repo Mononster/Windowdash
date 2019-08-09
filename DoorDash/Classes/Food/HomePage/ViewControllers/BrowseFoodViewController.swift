@@ -255,7 +255,7 @@ extension BrowseFoodViewController: ListAdapterDataSource {
             guard let item = object as? BrowseFoodAllStoreItem else {
                 fatalError()
             }
-            let controller = BrowseFoodAllStoresSectionController(
+            let controller = SingleStoreSectionController(
                 addInset: item.shouldAddTopInset, menuLayout: item.layout
             )
             controller.didSelectItem = { [weak self] storeID in

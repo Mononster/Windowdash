@@ -97,6 +97,8 @@ extension StoreDetailViewController {
     private func setupUI() {
         if self.style == .withCustomNavBar {
             setupNavigationBar()
+        } else {
+            navigationController?.navigationBar.shouldRemoveShadow(true)
         }
         setupCollectionView()
         setupSkeletonLoadingView()
@@ -237,4 +239,3 @@ extension StoreDetailViewController: ListAdapterDataSource {
         return nil
     }
 }
-

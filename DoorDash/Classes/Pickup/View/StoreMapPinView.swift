@@ -14,6 +14,7 @@ final class StoreMapPinView: MKAnnotationView {
         let imageSize: CGFloat = 50
         let selectedImageSize: CGFloat = 80
         let marginBetweenTitleAndImage: CGFloat = 2
+        let titleLabelFont: UIFont = ApplicationDependency.manager.theme.fonts.bold10
     }
 
     private let imageView: UIImageView
@@ -46,6 +47,8 @@ final class StoreMapPinView: MKAnnotationView {
 
     func setupView(title: String) {
         titleLabel.text = title
+        let width = HelperManager.textWidth(title, font: constants.titleLabelFont)
+        self.frame = CGRect(x: 0, y: 0, width: width, height: frame.height)
     }
 }
 
@@ -60,7 +63,7 @@ extension StoreMapPinView {
     private func setupTitleLabel() {
         addSubview(titleLabel)
         titleLabel.textColor = theme.colors.black
-        titleLabel.font = theme.fonts.bold10
+        titleLabel.font = constants.titleLabelFont
         titleLabel.backgroundColor = theme.colors.white
         titleLabel.textAlignment = .center
         titleLabel.adjustsFontSizeToFitWidth = true

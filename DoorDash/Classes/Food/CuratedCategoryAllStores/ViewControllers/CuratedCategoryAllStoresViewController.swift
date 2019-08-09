@@ -80,7 +80,7 @@ extension CuratedCategoryAllStoresViewController: ListAdapterDataSource {
             guard let item = object as? BrowseFoodAllStoreItem else {
                 fatalError()
             }
-            let controller = BrowseFoodAllStoresSectionController(
+            let controller = SingleStoreSectionController(
                 addInset: item.shouldAddTopInset,
                 menuLayout: .centerTwoItems
             )
@@ -90,7 +90,7 @@ extension CuratedCategoryAllStoresViewController: ListAdapterDataSource {
             controller.edgeSwipeBackGesture = self.navigationController?.interactivePopGestureRecognizer
             return controller
         default:
-            return BrowseFoodAllStoresSectionController(addInset: true, menuLayout: .centerTwoItems)
+            return SingleStoreSectionController(addInset: true, menuLayout: .centerTwoItems)
         }
     }
 

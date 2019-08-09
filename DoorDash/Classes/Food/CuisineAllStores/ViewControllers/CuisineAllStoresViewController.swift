@@ -79,7 +79,7 @@ extension CuisineAllStoresViewController: ListAdapterDataSource {
             guard let item = object as? BrowseFoodAllStoreItem else {
                 fatalError()
             }
-            let controller = BrowseFoodAllStoresSectionController(
+            let controller = SingleStoreSectionController(
                 addInset: item.shouldAddTopInset,
                 menuLayout: .centerOneItem
             )
@@ -89,7 +89,7 @@ extension CuisineAllStoresViewController: ListAdapterDataSource {
             controller.edgeSwipeBackGesture = self.navigationController?.interactivePopGestureRecognizer
             return controller
         default:
-            return BrowseFoodAllStoresSectionController(addInset: true, menuLayout: .centerOneItem)
+            return SingleStoreSectionController(addInset: true, menuLayout: .centerOneItem)
         }
     }
 
