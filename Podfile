@@ -14,11 +14,10 @@ target 'DoorDash' do
   pod 'Cache'
   pod 'Alamofire'
   pod 'Moya', '~> 11.0'
-  pod 'SwiftyJSON'
+  pod 'SwiftyJSON', '~> 4.0.0-alpha.1'
   pod 'XCGLogger'
   pod 'KeychainAccess'
   pod 'SDWebImage', '~> 4.0'
-  pod 'FLAnimatedImage', '~> 1.0'
   pod 'GoogleMaps'
   pod 'GooglePlaces'
   pod 'PhoneNumberKit', '~> 2.1'
@@ -26,4 +25,5 @@ target 'DoorDash' do
   pod 'SwiftDate'
   pod 'SwipeCellKit'
   pod 'lottie-ios'
+  pod 'SwiftLocation', '~> 3.2.3'
 end

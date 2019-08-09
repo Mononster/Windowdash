@@ -140,7 +140,7 @@ extension BrowseFoodStoreDispalyCell {
     private func setupLabels() {
         addSubview(storeNameLabel)
         storeNameLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        storeNameLabel.font = ApplicationDependency.manager.theme.fonts.bold18
+        storeNameLabel.font = ApplicationDependency.manager.theme.fonts.bold16
         storeNameLabel.textAlignment = .left
         storeNameLabel.adjustsFontSizeToFitWidth = true
         storeNameLabel.minimumScaleFactor = 0.5

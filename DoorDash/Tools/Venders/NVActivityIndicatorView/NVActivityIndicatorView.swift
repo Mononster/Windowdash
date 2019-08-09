@@ -140,16 +140,19 @@ public final class NVActivityIndicatorView: UIView {
     /// Current status of animation, read-only.
     private(set) public var isAnimating: Bool = false
 
+    public var lineWidth: CGFloat = 3
+
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         backgroundColor = UIColor.clear
         isHidden = true
     }
 
-    public init(frame: CGRect, type: NVActivityIndicatorType? = nil, color: UIColor? = nil, padding: CGFloat? = nil) {
+    public init(frame: CGRect, type: NVActivityIndicatorType? = nil, color: UIColor? = nil, padding: CGFloat? = nil, lineWidth: CGFloat = 3) {
         self.type = type ?? NVActivityIndicatorView.DEFAULT_TYPE
         self.color = color ?? NVActivityIndicatorView.DEFAULT_COLOR
         self.padding = padding ?? NVActivityIndicatorView.DEFAULT_PADDING
+        self.lineWidth = lineWidth
         super.init(frame: frame)
         isHidden = true
     }
@@ -209,15 +212,11 @@ public final class NVActivityIndicatorView: UIView {
 
     private final func setUpAnimation() {
         let animation: NVActivityIndicatorAnimationDelegate = type.animation()
-        #if swift(>=4.2)
         var animationRect = frame.inset(by: UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding))
-        #else
-        var animationRect = UIEdgeInsetsInsetRect(frame, UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding))
-        #endif
         let minEdge = min(animationRect.width, animationRect.height)
 
         layer.sublayers = nil
         animationRect.size = CGSize(width: minEdge, height: minEdge)
-        animation.setUpAnimation(in: layer, size: animationRect.size, color: color)
+        animation.setUpAnimation(in: layer, size: animationRect.size, color: color, lineWidth: lineWidth)
     }
 }

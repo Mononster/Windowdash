@@ -6,6 +6,8 @@
 //  Copyright © 2018 Monster. All rights reserved.
 //
 
+import MapKit
+
 final class StoreListViewModel {
 
     var allStores: [StoreViewModel] = []
@@ -24,7 +26,7 @@ final class StoreListViewModel {
     private var layout: MenuCollectionViewLayoutKind = .centerOneItem
 
     init(service: BrowseFoodAPIService,
-         serverFetchLimit: Int = 50,
+         serverFetchLimit: Int = 60,
          query: String? = nil,
          curatedCateogryID: String? = nil) {
         self.service = service
@@ -38,7 +40,7 @@ final class StoreListViewModel {
     }
 
     private func reset() {
-        self.serverFetchLimit = 50
+        self.serverFetchLimit = 60
         self.serverPageOffset = 0
         self.localPageOffset = 0
         self.localFetchLimit = 10
@@ -75,11 +77,14 @@ final class StoreListViewModel {
         }
     }
 
-    func fetchStores(completion: @escaping (String?) -> ()) {
+    func fetchStores(location: Location? = nil,
+                     completion: @escaping (String?) -> ()) {
         guard let user = ApplicationEnvironment.current.currentUser else {
             fatalError("WTF? NO USER?")
         }
-        guard let lat = user.defaultAddress?.latitude, let lng = user.defaultAddress?.longitude else {
+        let latitude: CLLocationDegrees? = location?.latitude ?? user.defaultAddress?.latitude
+        let longitude: CLLocationDegrees? = location?.longitude ?? user.defaultAddress?.longitude
+        guard let lat = latitude, let lng = longitude else {
             fatalError("User MUST have an address at this point")
         }
         guard let pageOffset = serverPageOffset else {

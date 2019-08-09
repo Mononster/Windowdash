@@ -32,7 +32,7 @@ enum NVActivityIndicatorShape {
     case ringThirdFour
 
     // swiftlint:disable:next cyclomatic_complexity function_body_length
-    func layerWith(size: CGSize, color: UIColor) -> CAShapeLayer {
+    func layerWith(size: CGSize, color: UIColor, lineWidth: CGFloat = 3) -> CAShapeLayer {
         let layer: CAShapeLayer = CAShapeLayer()
         let path: UIBezierPath = UIBezierPath()
 
@@ -45,8 +45,12 @@ enum NVActivityIndicatorShape {
                         clockwise: true)
             layer.fillColor = nil
             layer.strokeColor = color.cgColor
-            layer.lineWidth = 3
-            layer.lineDashPattern = [8, 8]
+            layer.lineWidth = lineWidth
+            if lineWidth >= 3 {
+                layer.lineDashPattern = [8, 8]
+            } else {
+                layer.lineDashPattern = [4, 4]
+            }
             layer.lineCap = .round
         case .ringThirdFour:
             path.addArc(withCenter: CGPoint(x: size.width / 2, y: size.height / 2),
@@ -56,7 +60,7 @@ enum NVActivityIndicatorShape {
                         clockwise: false)
             layer.fillColor = nil
             layer.strokeColor = color.cgColor
-            layer.lineWidth = 3
+            layer.lineWidth = lineWidth
         }
 
         layer.backgroundColor = nil

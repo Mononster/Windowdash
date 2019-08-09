@@ -107,7 +107,7 @@ public struct StringAttributeTagStyle {
 }
 
 extension Notification.Name {
-    public static let unAuthorized = Notification.Name(rawValue: "com.limebike.unauthorized")
+    public static let unAuthorized = Notification.Name(rawValue: "com.doordash.unauthorized")
 }
 
 extension FileManager {

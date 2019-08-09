@@ -1,7 +1,6 @@
 PODS:
   - Alamofire (4.8.2)
   - Cache (5.2.0)
-  - FLAnimatedImage (1.0.12)
   - GoogleMaps (3.1.0):
     - GoogleMaps/Maps (= 3.1.0)
   - GoogleMaps/Base (3.1.0)
@@ -38,7 +37,9 @@ PODS:
   - SnapKit (5.0.0)
   - Stripe (15.0.1)
   - SwiftDate (6.0.3)
-  - SwiftyJSON (5.0.0)
+  - SwiftLocation (3.2.3):
+    - SwiftyJSON (~> 4.0.0-alpha.1)
+  - SwiftyJSON (4.0.0)
   - SwipeCellKit (2.6.0)
   - XCGLogger (7.0.0):
     - XCGLogger/Core (= 7.0.0)
@@ -48,7 +49,6 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - Cache
-  - FLAnimatedImage (~> 1.0)
   - GoogleMaps
   - GooglePlaces
   - IGListKit
@@ -61,7 +61,8 @@ DEPENDENCIES:
   - SnapKit
   - Stripe
   - SwiftDate
-  - SwiftyJSON
+  - SwiftLocation (~> 3.2.3)
+  - SwiftyJSON (~> 4.0.0-alpha.1)
   - SwipeCellKit
   - XCGLogger
 
@@ -69,7 +70,6 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - Cache
-    - FLAnimatedImage
     - GoogleMaps
     - GooglePlaces
     - IGListKit
@@ -84,6 +84,7 @@ SPEC REPOS:
     - SnapKit
     - Stripe
     - SwiftDate
+    - SwiftLocation
     - SwiftyJSON
     - SwipeCellKit
     - XCGLogger
@@ -91,7 +92,6 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   Cache: 807c5d86d01a177f06ede9865add3aea269bbfd4
-  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   GoogleMaps: 5c13302e6fe6bb6e686b267196586b91cd594225
   GooglePlaces: e874db179f2675c4f3eeda0b686b540273a578b0
   IGListKit: 7a5d788e9fb746bcd402baa8e8b24bc3bd2a5a07
@@ -106,10 +106,11 @@ SPEC CHECKSUMS:
   SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
   Stripe: 2c4d0a88817361a102886315ff452d90f65e898b
   SwiftDate: 8d4f14bf1ef68e95094511504856547bf9e3e1a6
-  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
+  SwiftLocation: a3c3bc2023118171ef3572188a31def94aa0892c
+  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   SwipeCellKit: 935ca28c187ec6e1ffb2b578cf8ddca842bfdcbb
   XCGLogger: 0434f15e3909cdc450bb63faf638b8792ab782ab
 
-PODFILE CHECKSUM: 094cc99fdb662e040f77b7d84da100fda89e7332
+PODFILE CHECKSUM: 2a0fe492f95baaeb49d0b62fb9c94921a21732cb
 
-COCOAPODS: 1.7.0.rc.2
+COCOAPODS: 1.7.3

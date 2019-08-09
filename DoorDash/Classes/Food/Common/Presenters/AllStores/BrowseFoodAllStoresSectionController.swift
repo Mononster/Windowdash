@@ -11,11 +11,18 @@ import UIKit
 
 final class BrowseFoodAllStoresSectionController: ListSectionController, ListAdapterDataSource {
 
+    struct Constants {
+        let centerOneItemHeight: CGFloat = 180
+        let centerTwoItemsHeight: CGFloat = 90
+        let topInset: CGFloat = 20
+    }
+
     private var item: BrowseFoodAllStoreItem?
-    weak var edgeSwipeBackGesture: UIGestureRecognizer?
     private let menuLayout: MenuCollectionViewLayoutKind
     private let menuCollectionViewHeight: CGFloat
+    private let constants = Constants()
 
+    weak var edgeSwipeBackGesture: UIGestureRecognizer?
     var didSelectItem: ((String) -> ())?
 
     private lazy var adapter: ListAdapter = {
@@ -28,10 +35,10 @@ final class BrowseFoodAllStoresSectionController: ListSectionController, ListAda
 
     init(addInset: Bool, menuLayout: MenuCollectionViewLayoutKind) {
         self.menuLayout = menuLayout
-        self.menuCollectionViewHeight = menuLayout == .centerOneItem ? 180 : 100
+        self.menuCollectionViewHeight = menuLayout == .centerOneItem ? constants.centerOneItemHeight : constants.centerTwoItemsHeight
         super.init()
         if addInset {
-            self.inset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+            self.inset = UIEdgeInsets(top: constants.topInset, left: 0, bottom: 0, right: 0)
         }
         scrollDelegate = self
     }

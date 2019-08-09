@@ -9,6 +9,11 @@
 import UIKit
 import SwiftDate
 
+enum BannerViewMode {
+    case pickup
+    case delivery
+}
+
 final class StoreViewModel {
 
     let model: Store
@@ -76,7 +81,7 @@ final class StoreViewModel {
         if !isClosed {
             // check time interval between current time and close time
             let hours = Date().hours(from: model.nextCloseTime)
-            if abs(hours) < 6 {
+            if abs(hours) < 1 {
                 // less than 1 hour to close the store, add close time display
                 let closeTime = nextCloseDate.toFormat("hh:mm a")
                 closeTimeDisplay = "CLOSES AT " + closeTime
@@ -121,15 +126,27 @@ final class StoreViewModel {
     func getDeliveryTimeAndCostCombineString() -> String {
         return deliveryTimeDisplay + " • " + costDisplayLong
     }
+
+    private func locationFromUser() -> String {
+        guard let storeLocation = model.location,
+            let userLocation = DoordashLocator.manager.userLastLocation else {
+            return ""
+        }
+        return storeLocation.distance(from: userLocation).calculatedDistance
+    }
 }
 
 extension StoreViewModel {
 
     func convertToPresenterItem(shouldAddInset: Bool,
+                                mode: BannerViewMode = .delivery,
                                 layout: MenuCollectionViewLayoutKind) -> BrowseFoodAllStoreItem{
         let urls = self.menuURLs
-        let menuItems = urls.map { url in
+        var menuItems = urls.map { url in
             return BrowseFoodAllStoreMenuItem(imageURL: url)
+        }
+        if mode == .pickup && menuItems.count >= 2 {
+            menuItems = Array(menuItems.prefix(upTo: 2))
         }
         return BrowseFoodAllStoreItem(
             storeID: String(model.id),
@@ -141,10 +158,11 @@ extension StoreViewModel {
             shouldHighlightRating: shouldHighlightRating,
             deliveryTime: isClosed ? openTimeDisplay ?? ""
                 : deliveryTimeDisplay,
-            deliveryCost: costDisplayLong,
+            deliveryCost: mode == .pickup ? locationFromUser() : costDisplayLong,
             isClosed: isClosed,
             layout: layout,
             shouldAddTopInset: shouldAddInset,
-            closeTimeDisplay: closeTimeDisplay)
+            closeTimeDisplay: closeTimeDisplay,
+            bannerDisplayMode: mode)
     }
 }

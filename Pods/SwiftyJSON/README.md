@@ -1,14 +1,8 @@
 # SwiftyJSON
 
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) ![CocoaPods](https://img.shields.io/cocoapods/v/SwiftyJSON.svg) ![Platform](https://img.shields.io/badge/platforms-iOS%208.0%20%7C%20macOS%2010.10%20%7C%20tvOS%209.0%20%7C%20watchOS%203.0-F28D00.svg) [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
+[![Travis CI](https://travis-ci.org/SwiftyJSON/SwiftyJSON.svg?branch=master)](https://travis-ci.org/SwiftyJSON/SwiftyJSON) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) ![CocoaPods](https://img.shields.io/cocoapods/v/SwiftyJSON.svg) ![Platform](https://img.shields.io/badge/platforms-iOS%208.0+%20%7C%20macOS%2010.10+%20%7C%20tvOS%209.0+%20%7C%20watchOS%202.0+-333333.svg)
 
 SwiftyJSON makes it easy to deal with JSON data in Swift.
-
-Platform | Build Status
----------| --------------| 
-*OS      | [![Travis CI](https://travis-ci.org/SwiftyJSON/SwiftyJSON.svg?branch=master)](https://travis-ci.org/SwiftyJSON/SwiftyJSON)    | 
-[Linux](https://github.com/IBM-Swift/SwiftyJSON)      | [![Build Status](https://travis-ci.org/IBM-Swift/SwiftyJSON.svg?branch=master)](https://travis-ci.org/IBM-Swift/SwiftyJSON)     | 
-
 
 1. [Why is the typical JSON handling in Swift NOT good](#why-is-the-typical-json-handling-in-swift-not-good)
 2. [Requirements](#requirements)
@@ -26,7 +20,8 @@ Platform | Build Status
    - [Merging](#merging)
 5. [Work with Alamofire](#work-with-alamofire)
 6. [Work with Moya](#work-with-moya)
-7. [SwiftyJSON Model Generator](#swiftyjson-model-generator)
+
+> For Legacy Swift support, take a look at the [swift2 branch](https://github.com/SwiftyJSON/SwiftyJSON/tree/swift2)
 
 > [中文介绍](http://tangplin.github.io/swiftyjson/)
 
@@ -35,7 +30,7 @@ Platform | Build Status
 
 Swift is very strict about types. But although explicit typing is good for saving us from mistakes, it becomes painful when dealing with JSON and other areas that are, by nature, implicit about types.
 
-Take the Twitter API for example. Say we want to retrieve a user's "name" value of some tweet in Swift (according to [Twitter's API](https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-home_timeline)).
+Take the Twitter API for example. Say we want to retrieve a user's "name" value of some tweet in Swift (according to Twitter's API https://dev.twitter.com/docs/api/1.1/get/statuses/home_timeline).
 
 The code would look like this:
 
@@ -73,12 +68,11 @@ And don't worry about the Optional Wrapping thing. It's done for you automatical
 
 ```swift
 let json = JSON(data: dataFromNetworking)
-let result = json[999999]["wrong_key"]["wrong_name"]
-if let userName = result.string {
+if let userName = json[999999]["wrong_key"]["wrong_name"].string {
     //Calm down, take it easy, the ".string" property still produces the correct Optional String type with safety
 } else {
     //Print the error
-    print(result.error)
+    print(json[999999]["wrong_key"]["wrong_name"])
 }
 ```
 
@@ -98,36 +92,38 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'MyApp' do
-    pod 'SwiftyJSON', '~> 4.0'
+	pod 'SwiftyJSON'
 end
 ```
+
+Note that this requires CocoaPods version 36, and your iOS deployment target to be at least 8.0:
+
 
 #### Carthage (iOS 8+, OS X 10.9+)
 
 You can use [Carthage](https://github.com/Carthage/Carthage) to install `SwiftyJSON` by adding it to your `Cartfile`:
 
 ```
-github "SwiftyJSON/SwiftyJSON" ~> 4.0
+github "SwiftyJSON/SwiftyJSON"
 ```
-
-If you use Carthage to build your dependencies, make sure you have added `SwiftyJSON.framework` to the "Linked Frameworks and Libraries" section of your target, and have included them in your Carthage framework copying build phase.
 
 #### Swift Package Manager
 
 You can use [The Swift Package Manager](https://swift.org/package-manager) to install `SwiftyJSON` by adding the proper description to your `Package.swift` file:
 
 ```swift
-// swift-tools-version:4.0
 import PackageDescription
 
 let package = Package(
     name: "YOUR_PROJECT_NAME",
+    targets: [],
     dependencies: [
-        .package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", from: "4.0.0"),
+        .Package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", versions: Version(1, 0, 0)..<Version(3, .max, .max)),
     ]
 )
 ```
-Then run `swift build` whenever you get prepared.
+
+Note that the [Swift Package Manager](https://swift.org/package-manager) is still in early design and development, for more information checkout its [GitHub Page](https://github.com/apple/swift-package-manager)
 
 #### Manually (iOS 7+, OS X 10.9+)
 
@@ -169,7 +165,7 @@ let name = json[0].double
 
 ```swift
 // Getting an array of string from a JSON Array
-let arrayNames =  json["users"].arrayValue.map {$0["name"].stringValue}
+let arrayNames =  json["users"].arrayValue.map({$0["name"].stringValue})
 ```
 
 ```swift
@@ -194,7 +190,7 @@ let name = json[].string
 
 ```swift
 // With a custom way
-let keys:[JSONSubscriptType] = [1,"list",2,"name"]
+let keys:[SubscriptType] = [1,"list",2,"name"]
 let name = json[keys].string
 ```
 
@@ -555,8 +551,3 @@ provider.request(.showProducts) { result in
 }
 
 ```
-
-## SwiftyJSON Model Generator
-Tools to generate SwiftyJSON Models
-* [JSON Cafe](http://www.jsoncafe.com/)
-* [JSON Export](https://github.com/Ahmed-Ali/JSONExport)

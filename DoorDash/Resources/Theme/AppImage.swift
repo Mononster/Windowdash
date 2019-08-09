@@ -37,6 +37,9 @@ protocol ImageAsset {
     var dropDownIndicator: UIImage { get }
     var orderCartIcon: UIImage { get }
     var dismissIcon: UIImage { get }
+    var storePinNormal: UIImage { get }
+    var storePinSelected: UIImage { get }
+    var myLocationImage: UIImage { get }
 }
 
 struct DefaultImageAsset: ImageAsset {
@@ -151,5 +154,17 @@ struct DefaultImageAsset: ImageAsset {
 
     var dismissIcon: UIImage {
         return UIImage(named: "icon_close_grey")!
+    }
+
+    var storePinNormal: UIImage {
+        return UIImage(named: "map_pin_normal")!
+    }
+
+    var storePinSelected: UIImage {
+        return UIImage(named: "map_pin_selected")!
+    }
+
+    var myLocationImage: UIImage {
+        return UIImage(named: "my_location")!
     }
 }

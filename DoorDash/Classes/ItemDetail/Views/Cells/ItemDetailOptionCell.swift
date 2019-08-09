@@ -77,7 +77,7 @@ final class ItemDetailOptionCell: UICollectionViewCell {
 
     func presentInvalidSeletion() {
         let animator = ShakeAnimator()
-        animator.shake(viewToShake: self)
+        animator.shake(view: self)
     }
 
     @objc

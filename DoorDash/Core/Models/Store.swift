@@ -109,6 +109,7 @@ public struct Store {
         case id
         case numRatings = "num_ratings"
         case averageRating = "average_rating"
+        case location
         case storeDescription = "description"
         case priceRange = "price_range"
         case deliveryMoney = "delivery_fee_monetary_fields"
@@ -140,6 +141,7 @@ public struct Store {
     public let isNewlyAdded: Bool
     public let distanceFromConsumer: QuantumValue?
     public let offersPickup: Bool
+    public var location: Location?
     public let menus: [Menu]?
 
     public init(id: Int64,
@@ -158,6 +160,7 @@ public struct Store {
                 isNewlyAdded: Bool,
                 distanceFromConsumer: QuantumValue?,
                 offersPickup: Bool,
+                location: Location?,
                 menus: [Menu]?) {
         self.id = id
         self.numRatings = numRatings
@@ -175,6 +178,7 @@ public struct Store {
         self.isNewlyAdded = isNewlyAdded
         self.distanceFromConsumer = distanceFromConsumer
         self.offersPickup = offersPickup
+        self.location = location
         self.menus = menus
     }
 }
@@ -205,6 +209,7 @@ extension Store: Codable {
         let deliveryRange: [Int64] = try deliveryStatusContainer.decodeIfPresent([Int64].self, forKey: .minuteRate) ?? []
         let isNewlyAdded: Bool = try values.decodeIfPresent(Bool.self, forKey: .isNewlyAdded) ?? false
         let offersPickup: Bool = try values.decodeIfPresent(Bool.self, forKey: .offersPickup) ?? false
+        let location: Location? = try values.decodeIfPresent(Location.self, forKey: .location)
         self.init(id: id,
                   numRatings: numRatings,
                   averageRating: averageRating,
@@ -222,6 +227,7 @@ extension Store: Codable {
                   isNewlyAdded: isNewlyAdded,
                   distanceFromConsumer: distanceFromConsumer,
                   offersPickup: offersPickup,
+                  location: location,
                   menus: menus)
     }
 

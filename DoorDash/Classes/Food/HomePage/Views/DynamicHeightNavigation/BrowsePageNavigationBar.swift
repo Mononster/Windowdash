@@ -70,7 +70,7 @@ extension AddressHeadlineView {
         deliveryLabel.adjustsFontSizeToFitWidth = true
         deliveryLabel.minimumScaleFactor = 0.5
         deliveryLabel.numberOfLines = 1
-        deliveryLabel.text = "DELIVER TO"
+        deliveryLabel.text = "DELIVERING TO"
     }
 
     private func setupDropDownIndicator() {

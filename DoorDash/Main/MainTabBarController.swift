@@ -73,8 +73,6 @@ final class MainTabBarController: UITabBarController {
     func loadData() {
         viewModel.fetchCurrentCart { (errorMsg) in
             if let error = errorMsg {
-                // TODO: This is bad if we got error when fetching cart,
-                // considering send request again.
                 log.error(error)
                 return
             }
@@ -104,7 +102,7 @@ final class MainTabBarController: UITabBarController {
 
     func hideCartThumbnailView(animated: Bool) {
         self.cartThumbnailView.snp.updateConstraints { (make) in
-            make.top.equalTo(tabBar)
+            make.top.equalTo(tabBar).offset(8)
         }
         updateExistingViewInsets(cartThumbnailHeight: 0)
         if !animated {
@@ -117,11 +115,6 @@ final class MainTabBarController: UITabBarController {
         }, completion: { finished in
             self.cartThumbnailView.isHidden = true
         })
-    }
-
-    @objc
-    func cartTapped() {
-        self.tabBarDelegate?.showOrderCart()
     }
 
     private func updateExistingViewInsets(cartThumbnailHeight: CGFloat) {
@@ -175,7 +168,7 @@ extension MainTabBarController {
     private func setupConstraints() {
         cartThumbnailView.snp.makeConstraints({ (make) in
             make.centerX.equalToSuperview()
-            make.top.equalTo(tabBar)
+            make.top.equalTo(tabBar).offset(4)
             make.height.equalTo(constants.cartThumbnailViewHeight)
             make.width.equalTo(UIScreen.main.bounds.width - 2 * 16.0)
         })
@@ -191,6 +184,7 @@ extension MainTabBarController: UITabBarControllerDelegate {
         guard let cartVM = self.viewModel.cartViewModel else {
             return
         }
+        viewController.view.layoutIfNeeded()
         if type == .delivery || type == .account {
             if cartThumbnailView.isHidden {
                 showCartThumbnailView(text: cartVM.storeNameDisplay)
@@ -198,5 +192,13 @@ extension MainTabBarController: UITabBarControllerDelegate {
         } else {
             hideCartThumbnailView(animated: true)
         }
+    }
+}
+
+extension MainTabBarController {
+
+    @objc
+    private func cartTapped() {
+        tabBarDelegate?.showOrderCart()
     }
 }

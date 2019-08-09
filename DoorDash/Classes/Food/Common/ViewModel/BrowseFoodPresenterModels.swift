@@ -41,6 +41,7 @@ final class BrowseFoodAllStoreItem: NSObject, ListDiffable {
     var closeTimeDisplay: String?
     let isClosed: Bool
     var currentScrollOffset: CGPoint?
+    let bannerDisplayMode: BannerViewMode
 
     init(storeID: String,
          menuItems: [BrowseFoodAllStoreMenuItem],
@@ -54,7 +55,8 @@ final class BrowseFoodAllStoreItem: NSObject, ListDiffable {
          isClosed: Bool,
          layout: MenuCollectionViewLayoutKind = .centerOneItem,
          shouldAddTopInset: Bool = true,
-         closeTimeDisplay: String? = nil) {
+         closeTimeDisplay: String? = nil,
+         bannerDisplayMode: BannerViewMode) {
         self.storeID = storeID
         self.menuItems = menuItems
         self.storeName = storeName
@@ -68,6 +70,7 @@ final class BrowseFoodAllStoreItem: NSObject, ListDiffable {
         self.layout = layout
         self.shouldAddTopInset = shouldAddTopInset
         self.closeTimeDisplay = closeTimeDisplay
+        self.bannerDisplayMode = bannerDisplayMode
     }
 
     func diffIdentifier() -> NSObjectProtocol {

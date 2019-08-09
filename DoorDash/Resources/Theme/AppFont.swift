@@ -45,6 +45,7 @@ protocol FontSchema {
     var bold10: UIFont { get }
     var bold12: UIFont { get }
     var bold14: UIFont { get }
+    var bold15: UIFont { get }
     var bold16: UIFont { get }
     var bold17: UIFont { get }
     var bold18: UIFont { get }
@@ -169,6 +170,10 @@ struct DefaultFontSchema: FontSchema {
 
     var bold14: UIFont {
         return font(style: .bold, size: 14)
+    }
+
+    var bold15: UIFont {
+        return font(style: .bold, size: 15)
     }
 
     var bold16: UIFont {
