@@ -6,10 +6,11 @@ Windowdash is an extremly high imitation swift clone of the popular food deliver
 
 ## Demo
 
-<img src="./Demo/home_page.gif" width="250"> <img src="./Demo/map_demo.gif" width="250">
+<img src=https://mononster.github.io/doordash_demo/home_page.gif width="250"> <img src=https://mononster.github.io/doordash_demo/map_demo.gif width="250">
 
-<img src="./Demo/home.PNG" width="250"> <img src="./Demo/store_page.PNG" width="250"> 
-<img src="./Demo/order.PNG" width="250"> <img src="./Demo/account.PNG" width="250">
+<img src="./Demo/home.PNG" width="250"> <img src=https://mononster.github.io/doordash_demo/store_page.PNG width="250"> 
+
+<img src="./Demo/order.PNG" width="250"> <img src=https://mononster.github.io/doordash_demo/account.PNG width="250">
 
 ## Getting Started
 
