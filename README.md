@@ -6,7 +6,9 @@ Windowdash is an extremly high imitation swift clone of the popular food deliver
 
 ## Demo
 
-<img src="./Demo/delivery.jpeg" width="250"> <img src="./Demo/home.PNG" width="250"> <img src="./Demo/map.PNG" width="250"> <img src="./Demo/map_selected.PNG" width="250"> <img src="./Demo/order.PNG" width="250"> <img src="./Demo/account.PNG" width="250">
+<img src="./Demo/home_page.gif" width="250"> <img src="./Demo/map_demo.gif" width="250">
+
+<img src="./Demo/home.PNG" width="250"> <img src="./Demo/store_page.PNG" width="250"> <img src="./Demo/order.PNG" width="250"> <img src="./Demo/account.PNG" width="250">
 
 ## Getting Started
 
