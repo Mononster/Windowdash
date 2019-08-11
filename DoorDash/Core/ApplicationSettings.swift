@@ -11,6 +11,6 @@ import Foundation
 final class ApplicationSettings {
 
     final class Stored {
-        static let enableVisualizeDemoMode: Bool = false
+        static let enableVisualizeDemoMode: Bool = true
     }
 }

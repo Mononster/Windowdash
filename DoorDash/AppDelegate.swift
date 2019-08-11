@@ -29,9 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             ApplicationEnvironment.pushEnvironment(env)
         }
         
-        ApplicationEnvironment.current.dataStore.loadStore {
-
-        }
+        ApplicationEnvironment.current.dataStore.loadStore {}
 
         if ApplicationSettings.Stored.enableVisualizeDemoMode {
             window = SensorVisualizerWindow(frame: UIScreen.main.bounds)
