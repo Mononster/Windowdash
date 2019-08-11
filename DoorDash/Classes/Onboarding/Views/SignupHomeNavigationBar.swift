@@ -11,12 +11,14 @@ import SnapKit
 
 protocol SignupHomeNavigationBarDelegate: class {
     func userSwitched(mode: SignupMode)
+    func backButtonTapped()
 }
 
 final class SignupHomeNavigationBar: UIView {
 
     private let segmentedControl: UISegmentedControl
     private let separator: Separator
+    private let backButton: UIButton
     private let theme = ApplicationDependency.manager.theme
     weak var delegate: SignupHomeNavigationBarDelegate?
     let skipButton: UIButton
@@ -25,10 +27,11 @@ final class SignupHomeNavigationBar: UIView {
     init(mode: SignupMode) {
         self.mode = mode
         segmentedControl = UISegmentedControl(
-            items: ["Sign Up", "Sign In"]
+            items: [SignupMode.login.rawValue, SignupMode.register.rawValue]
         )
         separator = Separator.create()
         skipButton = UIButton()
+        backButton = UIButton()
         super.init(frame: CGRect.zero)
         setupUI()
     }
@@ -44,6 +47,7 @@ extension SignupHomeNavigationBar {
         self.backgroundColor = theme.colors.white
         setupNavigationBar()
         setupSkipButton()
+        setupBackButton()
         setupSeparator()
         setupConstraints()
     }
@@ -56,7 +60,7 @@ extension SignupHomeNavigationBar {
         segmentedControl.tintColor = theme.colors.doorDashRed
         segmentedControl.backgroundColor = theme.colors.white
         segmentedControl.addTarget(self, action: #selector(toggleSwithed(_:)), for: .valueChanged)
-        segmentedControl.selectedSegmentIndex = mode == .register ? 0 : 1
+        segmentedControl.selectedSegmentIndex = mode == .register ? 1 : 0
     }
 
     private func setupSkipButton() {
@@ -65,7 +69,19 @@ extension SignupHomeNavigationBar {
         skipButton.backgroundColor = .clear
         skipButton.setTitle("Skip", for: .normal)
         skipButton.setTitleColor(theme.colors.doorDashRed, for: .normal)
-        skipButton.titleLabel?.font = theme.fonts.medium16
+        skipButton.titleLabel?.font = theme.fonts.medium18
+    }
+
+    private func setupBackButton() {
+        self.addSubview(backButton)
+        backButton.tintColor = theme.colors.doorDashRed
+        backButton.backgroundColor = .clear
+        backButton.setTitle("Back", for: .normal)
+        backButton.setTitleColor(theme.colors.doorDashRed, for: .normal)
+        backButton.setImage(theme.imageAssets.backTriangleIcon, for: .normal)
+        backButton.titleLabel?.font = theme.fonts.medium18
+        backButton.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 12)
+        backButton.addTarget(self, action: #selector(userTappedBackButton), for: .touchUpInside)
     }
 
     private func setupSeparator() {
@@ -80,9 +96,16 @@ extension SignupHomeNavigationBar {
             make.centerX.equalToSuperview()
         }
 
+        backButton.snp.makeConstraints { (make) in
+            make.leading.equalToSuperview().offset(8)
+            make.centerY.equalTo(segmentedControl)
+            make.width.equalTo(60)
+            make.height.equalTo(segmentedControl)
+        }
+
         skipButton.snp.makeConstraints { (make) in
-            make.trailing.equalToSuperview().offset(-16)
-            make.centerY.equalTo(segmentedControl).offset(3)
+            make.trailing.equalToSuperview().offset(-12)
+            make.centerY.equalTo(segmentedControl)
             make.width.equalTo(50)
             make.height.equalTo(segmentedControl)
         }
@@ -97,11 +120,13 @@ extension SignupHomeNavigationBar {
 extension SignupHomeNavigationBar {
 
     @objc
-    func toggleSwithed(_ segmentedControl: UISegmentedControl) {
-        if segmentedControl.selectedSegmentIndex == 0 {
-            self.delegate?.userSwitched(mode: .register)
-        } else {
-            self.delegate?.userSwitched(mode: .login)
-        }
+    private func toggleSwithed(_ segmentedControl: UISegmentedControl) {
+        guard let mode = SignupMode(rawValue: segmentedControl.titleForSegment(at: segmentedControl.selectedSegmentIndex) ?? "") else { return }
+        self.delegate?.userSwitched(mode: mode)
+    }
+
+    @objc
+    private func userTappedBackButton() {
+        delegate?.backButtonTapped()
     }
 }

@@ -15,6 +15,8 @@ protocol PickupMapPresenterOutput: class {
     func presentStoreMarkerOnMap(model: StoreMapPinModel)
     func showStoreBannerView(model: StoreViewModel)
     func hideStoreBannerView()
+    func showListView(models: [StoreViewModel])
+    func hideListView()
 }
 
 protocol PickupMapPresenterType: class {
@@ -24,6 +26,8 @@ protocol PickupMapPresenterType: class {
     func mapDidFinishedRefreshing()
     func presentStoreBannerView(model: StoreViewModel)
     func hideStoreBannerView()
+    func presentListView(models: [StoreViewModel])
+    func hideListView()
 }
 
 final class PickupMapPresenter: PickupMapPresenterType {
@@ -55,6 +59,14 @@ final class PickupMapPresenter: PickupMapPresenterType {
 
     func hideStoreBannerView() {
         output?.hideStoreBannerView()
+    }
+
+    func presentListView(models: [StoreViewModel]) {
+        output?.showListView(models: models)
+    }
+
+    func hideListView() {
+        output?.hideListView()
     }
 
     private func addStoreToMap(store: StoreViewModel) {

@@ -55,7 +55,6 @@ class GooglePlaceAPIService: DoorDashAPIService {
                 params["input"] = input
                 params["sensor"] = "true"
                 params["key"] = Constants.GooglePlaceKey.release.rawValue
-                params["channel"] = "consumer_ios"
                 params["radius"] = "100.000000"
                 params["language"] = "en"
                 return .requestParameters(parameters: params, encoding: URLEncoding.queryString)

@@ -15,6 +15,7 @@ extension SessionManager {
         let sessionManager = SessionManager(configuration: configuration)
         let authAdapter = AuthenticatedRequestAdapter()
         sessionManager.adapter = authAdapter
+        configuration.httpShouldSetCookies = false
         return sessionManager
     }
 }

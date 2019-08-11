@@ -15,6 +15,7 @@ protocol BrowseFoodViewControllerDelegate: class {
     func showCuisineAllStores(cuisine: BrowseFoodCuisineCategory)
     func showCuratedCategoryAllStores(id: String, name: String, description: String?)
     func showDetailStorePage(id: String)
+    func routeToChangeAddressModule()
 }
 
 final class BrowseFoodViewController: BaseViewController {
@@ -56,6 +57,7 @@ final class BrowseFoodViewController: BaseViewController {
         super.viewDidLoad()
         setupUI()
         bindModels()
+        navigationBar.userTappedChangeAddress = handleChangeAddressAction
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -85,7 +87,7 @@ final class BrowseFoodViewController: BaseViewController {
                     numShops: self.viewModel.getCurrentNumStoreDisplay()
                 )
                 self.skeletonLoadingView.hide()
-                self.adapter.performUpdates(animated: false)
+                self.adapter.performUpdates(animated: true)
             }
         }
     }
@@ -125,6 +127,16 @@ final class BrowseFoodViewController: BaseViewController {
         }
         self.view.layoutIfNeeded()
         self.skeletonLoadingView.show()
+    }
+
+    private func handleChangeAddressAction() {
+        delegate?.routeToChangeAddressModule()
+    }
+
+    func handleUserAddressUpdated() {
+        showSkeleton(coverAll: true)
+        viewModel.updateToLatestUser()
+        bindModels()
     }
 }
 
@@ -256,7 +268,7 @@ extension BrowseFoodViewController: ListAdapterDataSource {
                 fatalError()
             }
             let controller = SingleStoreSectionController(
-                addInset: item.shouldAddTopInset, menuLayout: item.layout
+                topInset: item.topInset, menuLayout: item.layout
             )
             controller.didSelectItem = { [weak self] storeID in
                 self?.delegate?.showDetailStorePage(id: storeID)

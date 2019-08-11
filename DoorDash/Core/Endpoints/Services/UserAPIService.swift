@@ -89,9 +89,11 @@ class UserAPIService: DoorDashAPIService {
         case register(account: Account)
         case guestSignup(password: String)
         case fetchUserProfile(authToken: AuthToken)
+        case fetchUserAddress
         case fetchUserAccount(uid: String)
-        case updateDeliveryLocation(uid: String, location: GMDetailLocation)
+        case updateDeliveryLocation(aptNumber: String?, instruction: String?, location: GMDetailLocation)
         case fetchStripeCredentials
+        case updateDefaultAddress(id: String)
 
         var baseURL: URL {
             return ApplicationEnvironment.current.networkConfig.hostURL
@@ -101,14 +103,14 @@ class UserAPIService: DoorDashAPIService {
             switch self {
             case .login:
                 return "v2/auth/token/"
-            case .fetchUserProfile:
+            case .fetchUserProfile, .updateDefaultAddress:
                 return "v2/consumer/me/"
+            case .fetchUserAddress, .updateDeliveryLocation:
+                return "v2/consumer/me/address/"
             case .fetchUserAccount(let uid):
                 return "v2/consumer/\(uid)/"
             case .register, .guestSignup:
                 return "v2/consumer/"
-            case .updateDeliveryLocation(let uid, _):
-                return "v2/consumer/\(uid)/address/"
             case .fetchStripeCredentials:
                 return "v2/consumer/me/stripe_credentials/"
             }
@@ -118,7 +120,9 @@ class UserAPIService: DoorDashAPIService {
             switch self {
             case .login, .register, .guestSignup, .updateDeliveryLocation:
                 return .post
-            case .fetchUserProfile, .fetchUserAccount, .fetchStripeCredentials:
+            case .updateDefaultAddress:
+                return .patch
+            case .fetchUserProfile, .fetchUserAddress, .fetchUserAccount, .fetchStripeCredentials:
                 return .get
             }
         }
@@ -140,9 +144,16 @@ class UserAPIService: DoorDashAPIService {
                     parameters: ["is_guest": 1,
                                  "password": password],
                     encoding: JSONEncoding.default)
-            case .fetchUserProfile, .fetchUserAccount, .fetchStripeCredentials:
+            case .fetchUserProfile, .fetchUserAccount, .fetchStripeCredentials, .fetchUserAddress:
                 return .requestPlain
-            case .updateDeliveryLocation(_, let location):
+            case .updateDefaultAddress(let id):
+                var paramters: [String: Any] = [:]
+                paramters["default_address"] = ["id": id]
+                return .requestParameters(
+                    parameters: paramters,
+                    encoding: JSONEncoding.default
+                )
+            case .updateDeliveryLocation(let apt, let instruction, let location):
                 var paramters: [String: Any] = [:]
                 if let lat = location.latitude {
                     paramters["manual_lat"] = lat
@@ -150,11 +161,9 @@ class UserAPIService: DoorDashAPIService {
                 if let lng = location.longitude {
                     paramters["manual_lng"] = lng
                 }
-                if let instructions = location.dasherInstructions {
-                    paramters["driver_instructions"] = instructions
-                }
+                paramters["driver_instructions"] = instruction ?? ""
                 paramters["printable_address"] = location.address
-                paramters["subpremise"] = location.apartmentNumber ?? ""
+                paramters["subpremise"] = apt ?? ""
                 paramters["google_place_id"] = location.placeID
                 return .requestParameters(
                     parameters: paramters,
@@ -171,7 +180,9 @@ class UserAPIService: DoorDashAPIService {
             case .register(let account):
                 return "{\"email\": \"\(account.accountIdentifier.email)\", \"phone_number\": \"\(account.accountIdentifier.phoneNumber)\", \"password\": \"\(account.password ?? "")\", \"last_name\": \"\(account.accountIdentifier.lastName)\", \"last_name\": \"\(account.accountIdentifier.lastName)\"}".data(using: String.Encoding.utf8)!
             case .fetchUserProfile, .fetchUserAccount,
-                 .updateDeliveryLocation, .guestSignup, .fetchStripeCredentials:
+                 .updateDeliveryLocation, .guestSignup,
+                 .fetchStripeCredentials, .fetchUserAddress,
+                 .updateDefaultAddress:
                 return Data()
             }
         }
@@ -322,10 +333,24 @@ extension UserAPIService {
         }
     }
 
-    func postUserDeliveryInfo(uid: String,
-                              location: GMDetailLocation,
+    func fetchUserAddresses(completion: @escaping (UserAddressesResponseModel?, Error?) -> Void) {
+        userAPIProvider.request(.fetchUserAddress) { result in
+            networkResponseHandler(result: result, errorHandler: self.handleError, completion: completion)
+        }
+    }
+
+    func updateUserDefaultAddres(id: String,
+                                 completion: @escaping (UserResponseModel?, Error?) -> Void) {
+        userAPIProvider.request(.updateDefaultAddress(id: id)) { result in
+            networkResponseHandler(result: result, errorHandler: self.handleError, completion: completion)
+        }
+    }
+
+    func postUserDeliveryInfo(location: GMDetailLocation,
+                              aptNumber: String?,
+                              instruction: String?,
                               completion: @escaping (DeliveryAddress?, Error?) -> ()) {
-        userAPIProvider.request(.updateDeliveryLocation(uid: uid, location: location)) { (result) in
+        userAPIProvider.request(.updateDeliveryLocation(aptNumber: aptNumber, instruction: instruction, location: location)) { (result) in
             switch result {
             case .success(let response):
                 do {

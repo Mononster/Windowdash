@@ -51,8 +51,8 @@ final class SignupHomeViewModel {
                 SignInputFormModel(
                     inputs: [.firstName, .lastName, .email, .phoneNumber, .password]
                 ),
-                SignupAgreementModel(),
-                SignupButtonModel(mode: mode)
+                SignupButtonModel(mode: mode),
+                SignupAgreementModel()
             ]
         }
     }

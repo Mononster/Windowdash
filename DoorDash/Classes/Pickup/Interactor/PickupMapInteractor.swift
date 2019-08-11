@@ -8,14 +8,20 @@
 
 import MapKit
 
+enum PickupMapMode {
+    case list
+    case map
+}
+
 final class PickupMapInteractor {
 
     private let presenter: PickupMapPresenter
     private let apiService: BrowseFoodAPIService
     private let storeList: StoreListViewModel
+    private var mode: PickupMapMode = .map
     private var mapView: MKMapView?
 
-    private var annotations: [MKAnnotation] = []
+    private var annotations: [StoreMapPinModel] = []
 
     init(presenter: PickupMapPresenter, apiService: BrowseFoodAPIService) {
         self.presenter = presenter
@@ -27,13 +33,22 @@ final class PickupMapInteractor {
         self.mapView = mapView
     }
 
-    func registerAnnotation(_ annotation: MKAnnotation) {
+    func registerAnnotation(_ annotation: StoreMapPinModel) {
         annotations.append(annotation)
     }
 
     func didTappedOnAnnotation(_ annotation: MKAnnotation) {
         guard let storeAnnotation = annotation as? StoreMapPinModel else { return }
         presenter.presentStoreBannerView(model: storeAnnotation.model)
+    }
+
+    func toggleMapMode() {
+        mode = mode == .map ? .list : .map
+        if mode == .list {
+            presenter.presentListView(models: annotations.map { $0.model })
+        } else {
+            presenter.hideListView()
+        }
     }
 }
 

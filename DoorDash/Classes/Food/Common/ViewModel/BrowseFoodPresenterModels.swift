@@ -36,7 +36,7 @@ final class BrowseFoodAllStoreItem: NSObject, ListDiffable {
     let shouldHighlightRating: Bool
     let deliveryTime: String
     let deliveryCost: String
-    let shouldAddTopInset: Bool
+    let topInset: CGFloat
     let layout: MenuCollectionViewLayoutKind
     var closeTimeDisplay: String?
     let isClosed: Bool
@@ -54,7 +54,7 @@ final class BrowseFoodAllStoreItem: NSObject, ListDiffable {
          deliveryCost: String,
          isClosed: Bool,
          layout: MenuCollectionViewLayoutKind = .centerOneItem,
-         shouldAddTopInset: Bool = true,
+         topInset: CGFloat = 0,
          closeTimeDisplay: String? = nil,
          bannerDisplayMode: BannerViewMode) {
         self.storeID = storeID
@@ -68,7 +68,7 @@ final class BrowseFoodAllStoreItem: NSObject, ListDiffable {
         self.deliveryCost = deliveryCost
         self.isClosed = isClosed
         self.layout = layout
-        self.shouldAddTopInset = shouldAddTopInset
+        self.topInset = topInset
         self.closeTimeDisplay = closeTimeDisplay
         self.bannerDisplayMode = bannerDisplayMode
     }

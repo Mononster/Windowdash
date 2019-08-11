@@ -20,7 +20,7 @@ final class HorizontalCarouselCollectionViewCell: UICollectionViewCell {
         view.alwaysBounceHorizontal = true
         view.showsHorizontalScrollIndicator = false
         var insets = view.contentInset
-        insets.left = BrowseFoodViewModel.UIConfigure.homePageLeadingSpace - 10
+        insets.left = 4//BrowseFoodViewModel.UIConfigure.homePageLeadingSpace - 10
         insets.right = insets.left
         view.contentInset = insets
         self.contentView.addSubview(view)
@@ -36,5 +36,3 @@ final class HorizontalCarouselCollectionViewCell: UICollectionViewCell {
         collectionView.contentInset = inset
     }
 }
-
-

@@ -61,7 +61,7 @@ public final class NVActivityIndicatorView: UIView {
     public static var DEFAULT_TYPE: NVActivityIndicatorType = .circleStrokeSpin
 
     /// Default color of activity indicator. Default value is UIColor.white.
-    public static var DEFAULT_COLOR = UIColor.white
+    public static var DEFAULT_COLOR = ApplicationDependency.manager.theme.colors.doorDashRed
 
     /// Default color of text. Default value is UIColor.white.
     public static var DEFAULT_TEXT_COLOR = UIColor.white

@@ -98,6 +98,7 @@ public struct DeliveryAddress {
         case id
         case timezone
         case state
+        case street
         case shortName = "shortname"
         case latitude = "lat"
         case longitude = "lng"
@@ -111,6 +112,7 @@ public struct DeliveryAddress {
     public let id: Int64
     public let timezone: String
     public let state: String
+    public let street: String
     public let shortName: String
     public let latitude: CLLocationDegrees
     public let longitude: CLLocationDegrees
@@ -123,6 +125,7 @@ public struct DeliveryAddress {
                 id: Int64,
                 timezone: String,
                 state: String,
+                street: String,
                 shortName: String,
                 latitude: CLLocationDegrees,
                 longitude: CLLocationDegrees,
@@ -134,6 +137,7 @@ public struct DeliveryAddress {
         self.id = id
         self.timezone = timezone
         self.state = state
+        self.street = street
         self.shortName = shortName
         self.latitude = latitude
         self.longitude = longitude
@@ -151,12 +155,13 @@ extension DeliveryAddress: Codable {
         let id: Int64 = try values.decode(Int64.self, forKey: .id)
         let timezone: String = try values.decode(String.self, forKey: .timezone)
         let state: String = try values.decode(String.self, forKey: .state)
+        let street: String = try values.decodeIfPresent(String.self, forKey: .street) ?? ""
         let shortName: String = try values.decode(String.self, forKey: .shortName)
         let latitudeDouble: Double = (try? values.decode(Double.self, forKey: .latitude)) ?? 0
         let longitudeDouble: Double = (try? values.decode(Double.self, forKey: .longitude)) ?? 0
         let latitude: CLLocationDegrees = CLLocationDegrees(latitudeDouble)
         let longitude: CLLocationDegrees = CLLocationDegrees(longitudeDouble)
-        let driverInstructions: String? = try? values.decode(String.self, forKey: .id)
+        let driverInstructions: String? = try? values.decode(String.self, forKey: .driverInstructions)
         let printableAddress: String = (try? values.decode(String.self, forKey: .printableAddress)) ?? ""
         let zipCode: String = try values.decode(String.self, forKey: .zipCode)
         let district: District? = try? values.decode(District.self, forKey: .district)
@@ -164,6 +169,7 @@ extension DeliveryAddress: Codable {
                   id: id,
                   timezone: timezone,
                   state: state,
+                  street: street,
                   shortName: shortName,
                   latitude: latitude,
                   longitude: longitude,

@@ -53,6 +53,7 @@ class HelperManager {
         guard let text = text else {
             return 0
         }
+        if text.isEmpty { return 0 }
         let constrainedSize = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
         let attributes = [NSAttributedString.Key.font: font]
         let options: NSStringDrawingOptions = [.usesFontLeading, .usesLineFragmentOrigin]

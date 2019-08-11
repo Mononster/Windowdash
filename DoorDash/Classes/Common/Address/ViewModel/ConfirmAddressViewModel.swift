@@ -11,11 +11,17 @@ import Foundation
 final class ConfirmAddressViewModel {
 
     let location: GMDetailLocation
+    let aptNumber: String?
+    let instruction: String?
     let dataStore: DataStoreType
 
     init(location: GMDetailLocation,
+         aptNumber: String? = nil,
+         instruction: String? = nil,
          dataStore: DataStoreType) {
         self.location = location
+        self.aptNumber = aptNumber
+        self.instruction = instruction
         self.dataStore = dataStore
     }
 
@@ -36,20 +42,17 @@ final class ConfirmAddressViewModel {
                                           longitude: location.longitude ?? 0)
     }
 
-    func sendUserLocation(completion: @escaping (String?) -> ()) {
+    func postNewUserAddress(completion: @escaping (Int64?, Error?) -> ()) {
         guard let currentUser = ApplicationEnvironment.current.currentUser else {
-            completion("Error current user does not exist. WTF happend?")
             return
         }
-
         let service = UserAPIService()
-        service.postUserDeliveryInfo(uid: String(currentUser.id), location: location) { (address, error) in
+        service.postUserDeliveryInfo(location: location, aptNumber: aptNumber, instruction: instruction) { (address, error) in
             if let error = error as? UserAPIError {
-                completion(error.errorMessage)
+                completion(nil, error)
                 return
             }
             guard let address = address else {
-                completion("Can't load address")
                 return
             }
             let updatedUser = User(
@@ -64,7 +67,7 @@ final class ConfirmAddressViewModel {
             )
             ApplicationEnvironment.updateCurrentUser(updatedUser: updatedUser)
             try? updatedUser.savePersistently(to: self.dataStore)
-            completion(nil)
+            completion(address.id, nil)
         }
     }
 }

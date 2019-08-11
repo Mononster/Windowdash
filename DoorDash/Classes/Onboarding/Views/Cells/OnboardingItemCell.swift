@@ -50,7 +50,7 @@ extension OnboardingItemCell {
     private func setupLabels() {
         addSubview(title)
         title.textColor = ApplicationDependency.manager.theme.colors.doorDashRed
-        title.font = ApplicationDependency.manager.theme.fonts.bold18
+        title.font = ApplicationDependency.manager.theme.fonts.extraBold17
         title.textAlignment = .center
         title.adjustsFontSizeToFitWidth = true
         title.minimumScaleFactor = 0.5

@@ -9,7 +9,7 @@
 import UIKit
 import Moya
 
-private let kMinRequestDelay = 0.2
+private let kMinRequestDelay: Double = 0
 private let kMinQueryLength = 0
 
 final class GMAutoCompleteManager {
@@ -27,8 +27,9 @@ final class GMAutoCompleteManager {
     func decode(_ searchTerm: String, completion: @escaping (_ places: [GMPrediction]?) -> ()) {
         completionHandler = completion
         if searchTerm.count >= minQueryLength {
-            cancel()
+            //cancel()
             if let cached = cachedResult(searchTerm) {
+                print("Completed here")
                 completeRequest(cached)
             } else {
                 performBlock = performAfter(minRequestDelay, closure: { [weak self] () -> Void in

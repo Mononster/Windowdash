@@ -116,10 +116,10 @@ extension ConfirmAddressViewController {
     func confirmAddressButtonTapped() {
         self.viewModel.location.dasherInstructions = sectionController.dasherInstruction
         self.loadingIndicator.show()
-        self.viewModel.sendUserLocation { (errorMsg) in
+        self.viewModel.postNewUserAddress { (_, error) in
             self.loadingIndicator.hide()
-            if let errorMsg = errorMsg {
-                log.error(errorMsg)
+            if let error = error {
+                log.error(error)
                 return
             }
             self.delegate?.userTappedConfirmButton()

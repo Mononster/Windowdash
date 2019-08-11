@@ -48,9 +48,14 @@ extension OnboardingCoordinator: OnboardingViewControllerDelegate {
             self.router.dismissModule(animated: true)
             self.delegate?.didFinishOnboarding(in: self)
         }
+        signupHomeViewController.delegate = self
         self.router.push(signupHomeViewController)
     }
 }
 
+extension OnboardingCoordinator: SignupHomeViewControllerDelegate {
 
-
+    func dismiss() {
+        self.router.popModule()
+    }
+}

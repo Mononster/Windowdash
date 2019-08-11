@@ -9,18 +9,18 @@
 import UIKit
 import IGListKit
 
+enum ViewPresentingState {
+    case hidden
+    case presenting
+    case dismissing
+    case present
+}
+
 protocol PickupMapBannerViewDelegate: class {
     func showDetailStorePage(id: String)
 }
 
 final class PickupMapBannerView: UIView {
-
-    enum ViewPresentingState {
-        case hidden
-        case presenting
-        case dismissing
-        case present
-    }
 
     struct Constants {
     }
@@ -53,7 +53,7 @@ final class PickupMapBannerView: UIView {
     func configData(viewModel: StoreViewModel) {
         sectionData.removeAll()
         currentViewModel = viewModel
-        sectionData.append(viewModel.convertToPresenterItem(shouldAddInset: true, mode: .pickup, layout: .centerTwoItems))
+        sectionData.append(viewModel.convertToPresenterItem(mode: .pickup, layout: .centerTwoItems))
         adapter.performUpdates(animated: true)
     }
 
@@ -107,7 +107,7 @@ extension PickupMapBannerView: ListAdapterDataSource {
                 fatalError()
             }
             let controller = SingleStoreSectionController(
-                addInset: item.shouldAddTopInset,
+                topInset: item.topInset,
                 menuLayout: item.layout
             )
             controller.didSelectItem = { storeID in

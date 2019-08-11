@@ -24,19 +24,19 @@ final class SignupAgreementModel: NSObject, ListDiffable {
             $0.underline = UnderlineAttribute.init(
                 color: ApplicationDependency.manager.theme.colors.linkTextColor,
                 style: .single)
-            $0.align = .center
+            $0.align = .left
         })
 
         let regular = Style("regular", {
             $0.font = FontAttribute(font: ApplicationDependency.manager.theme.fonts.agreementLabelFont)
-            $0.color = ApplicationDependency.manager.theme.colors.black.withAlphaComponent(0.8)
-            $0.align = .center
+            $0.color = ApplicationDependency.manager.theme.colors.gray
+            $0.align = .left
         })
 
         let paragraph = Style("paragrah", {
             $0.minimumLineHeight = 1.5
             $0.lineSpacing = 1.5
-            $0.align = .center
+            $0.align = .left
         })
 
         let descriptionText = "By tapping Sign up, Continue with Facebook, or Continue with Google you agree to our ".set(style: regular)

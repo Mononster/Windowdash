@@ -14,6 +14,11 @@ typealias KeyboardInfo = (
     duration: Double
 )
 
+enum KeyboardState {
+    case hide
+    case show
+}
+
 enum BaseViewControllerStyle {
     case withCustomNavBar
     case nativeNavBar
@@ -22,6 +27,7 @@ enum BaseViewControllerStyle {
 class BaseViewController: UIViewController {
 
     let theme = ApplicationDependency.manager.theme
+    var keyboardState: KeyboardState = .hide
     let loadingIndicator: LoadingIndicator
     let pageLoadingIndicator: LargeLoadingIndicator
     let tableViewPlaceHolder: UITableView

@@ -33,6 +33,8 @@ final class PickupMapViewController: BaseViewController {
     private let primaryStoreBanner: PickupMapBannerView
     private let secondaryStoreBanner: PickupMapBannerView
     private let navigationSeparator: Separator
+    private let listView: PickupMapListView
+    private var rightBarButton: UIBarButtonItem?
     private let constants = Constants()
 
     weak var delegate: PickupMapViewControllerDelegate?
@@ -46,6 +48,7 @@ final class PickupMapViewController: BaseViewController {
         self.primaryStoreBanner = PickupMapBannerView()
         self.secondaryStoreBanner = PickupMapBannerView()
         self.navigationSeparator = Separator.create()
+        self.listView = PickupMapListView()
         super.init()
     }
 
@@ -87,22 +90,23 @@ extension PickupMapViewController {
         setupMyLocationButton()
         setupStoreBannerView()
         setupSeparator()
+        setupListView()
         setupConstrainst()
     }
 
     private func setupNavigationBar() {
-        let container = CustomNavigationTitleView(
-            frame: CGRect(x: 0, y: 0, width: constants.titleViewWidth,height: theme.navigationBarHeight)
-        )
+        let frame = CGRect(x: 0, y: 0, width: constants.titleViewWidth, height: PickupMapTitleView.Constants().height)
+        let container = UIView(frame: frame)
         container.addSubview(titleView)
         titleView.snp.makeConstraints { make in
-            make.width.equalTo(constants.titleViewWidth)
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-8)
-            make.height.equalTo(PickupMapTitleView.Constants().height)
+            make.leading.trailing.equalTo(container)
+            make.bottom.equalToSuperview().offset(-12)
+            make.top.equalToSuperview()
         }
         navigationItem.titleView = container
         titleView.setupView(address: "Current Map Area")
+        rightBarButton = UIBarButtonItem(image: theme.imageAssets.listIcon.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(rightNavBarButtonTapped))
+        navigationItem.setRightBarButton(rightBarButton!, animated: false)
     }
 
     private func setupMapView() {
@@ -148,6 +152,10 @@ extension PickupMapViewController {
         navigationSeparator.alpha = 0.6
     }
 
+    private func setupListView() {
+        view.addSubview(listView)
+    }
+
     private func setupConstrainst() {
         mapView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
@@ -180,6 +188,11 @@ extension PickupMapViewController {
         navigationSeparator.snp.makeConstraints { (make) in
             make.leading.trailing.top.equalToSuperview()
             make.height.equalTo(0.6)
+        }
+
+        listView.snp.makeConstraints { (make) in
+            make.leading.trailing.height.equalToSuperview()
+            make.top.equalTo(self.view.snp.bottom)
         }
     }
 }
@@ -231,6 +244,36 @@ extension PickupMapViewController: PickupMapPresenterOutput {
         }, completion: { _ in
             storeBanner.viewState = .hidden
             storeBanner.isHidden = true
+        })
+    }
+
+    func showListView(models: [StoreViewModel]) {
+        rightBarButton?.image = theme.imageAssets.mapIcon.withRenderingMode(.alwaysOriginal)
+        listView.configData(viewModels: models)
+        listView.snp.updateConstraints { (make) in
+            make.leading.trailing.height.equalToSuperview()
+            make.top.equalTo(self.view.snp.bottom).offset(-view.frame.height)
+        }
+        listView.viewState = .presenting
+        listView.isHidden = false
+        UIView.animate(withDuration: 0.4, delay: 0, options: [.curveEaseInOut], animations: {
+            self.view.layoutIfNeeded()
+        }, completion: { _ in
+            self.listView.viewState = .present
+        })
+    }
+
+    func hideListView() {
+        rightBarButton?.image = theme.imageAssets.listIcon.withRenderingMode(.alwaysOriginal)
+        listView.snp.updateConstraints { make in
+            make.top.equalTo(view.snp.bottom)
+        }
+        listView.viewState = .dismissing
+        UIView.animate(withDuration: 0.4, delay: 0, options: [.curveEaseInOut], animations: {
+            self.view.layoutIfNeeded()
+        }, completion: { _ in
+            self.listView.viewState = .hidden
+            self.listView.isHidden = true
         })
     }
 }
@@ -330,18 +373,15 @@ extension PickupMapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
         var i = -1
         for view in views {
-            guard let annotation = view.annotation else { continue }
+            guard let pinView = view as? StoreMapPinView else { continue }
             i += 1
-            let point: MKMapPoint = MKMapPoint(annotation.coordinate);
-            if !mapView.visibleMapRect.contains(point) {
-                continue
-            }
-            view.alpha = 0
-            let delay = constants.mapInitPinAppearDelayConstant * Double(i)
-            UIView.animate(withDuration: 0.1, delay: delay, options: .curveEaseIn, animations: {
-                view.alpha = 1
-            })
+            performAnimationWhenPinShows(pinView: pinView, index: i)
         }
+    }
+
+    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+        let annoationView = mapView.view(for: userLocation)
+        annoationView?.canShowCallout = false
     }
 }
 
@@ -349,6 +389,39 @@ extension PickupMapViewController: PickupMapBannerViewDelegate {
 
     func showDetailStorePage(id: String) {
         delegate?.routeToStorePage(id: id)
+    }
+}
+
+extension PickupMapViewController {
+
+    private func performAnimationWhenPinShows(pinView: StoreMapPinView, index: Int) {
+        guard let annotation = pinView.annotation else { return }
+        let point: MKMapPoint = MKMapPoint(annotation.coordinate);
+        if !mapView.visibleMapRect.contains(point) {
+            return
+        }
+        var transform = CATransform3DIdentity
+        transform.m34 = 1.0 / -1000.0
+        let finish3DTransform = CATransform3DScale(transform, 0.5, 0.5, 0.5)
+        transform = CATransform3DRotate(transform, CGFloat(Double.pi / 2), 1, 0, 0)
+        transform = CATransform3DScale(transform, 0.3, 0.3, 0.3)
+        pinView.imageView.layer.anchorPoint = CGPoint(x: 0.5, y: 1)
+        pinView.imageView.layer.transform = transform
+        pinView.imageView.snp.updateConstraints { (make) in
+            make.centerY.equalToSuperview().offset(StoreMapPinView.Constants().imageSize / 2)
+        }
+        pinView.titleLabel.alpha = 0
+        let delay = constants.mapInitPinAppearDelayConstant * Double(index)
+        UIView.animate(withDuration: 0.2, delay: delay, options: .curveEaseIn, animations: {
+            pinView.titleLabel.alpha = 1
+        })
+        UIView.animate(withDuration: 0.1, delay: delay, options: .curveEaseIn, animations: {
+            pinView.imageView.layer.transform = finish3DTransform
+        }, completion: { _ in
+            UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 20, options: [.curveEaseInOut], animations: {
+                pinView.imageView.layer.transform = CATransform3DIdentity
+            })
+        })
     }
 }
 
@@ -366,5 +439,10 @@ extension PickupMapViewController {
         }) { (error, loation) in
             log.error(error)
         }
+    }
+
+    @objc
+    private func rightNavBarButtonTapped() {
+        interactor.toggleMapMode()
     }
 }

@@ -14,7 +14,8 @@ final class SingleStoreSectionController: ListSectionController, ListAdapterData
     struct Constants {
         let centerOneItemHeight: CGFloat = 180
         let centerTwoItemsHeight: CGFloat = 80
-        let topInset: CGFloat = 20
+        let topInsetWithImage: CGFloat = 20
+        let topInsetWithoutImage: CGFloat = 14
     }
 
     private var item: BrowseFoodAllStoreItem?
@@ -33,13 +34,11 @@ final class SingleStoreSectionController: ListSectionController, ListAdapterData
     }()
     
 
-    init(addInset: Bool, menuLayout: MenuCollectionViewLayoutKind) {
+    init(topInset: CGFloat, menuLayout: MenuCollectionViewLayoutKind) {
         self.menuLayout = menuLayout
         self.menuCollectionViewHeight = menuLayout == .centerOneItem ? constants.centerOneItemHeight : constants.centerTwoItemsHeight
         super.init()
-        if addInset {
-            self.inset = UIEdgeInsets(top: constants.topInset, left: 0, bottom: 0, right: 0)
-        }
+        inset = UIEdgeInsets(top: topInset, left: 0, bottom: 0, right: 0)
         scrollDelegate = self
     }
 

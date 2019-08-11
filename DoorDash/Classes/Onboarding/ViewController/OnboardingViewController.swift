@@ -71,9 +71,9 @@ extension OnboardingViewController {
 
     private func setupButtons() {
         self.view.addSubview(signInButton)
-        signInButton.layer.cornerRadius = 4
+        signInButton.layer.cornerRadius = 8
         signInButton.layer.borderColor = theme.colors.separatorGray.cgColor
-        signInButton.layer.borderWidth = 0.5
+        signInButton.layer.borderWidth = 1
         signInButton.backgroundColor = theme.colors.white
         signInButton.setTitle("Sign In", for: .normal)
         signInButton.setTitleColor(theme.colors.doorDashDarkGray, for: .normal)
@@ -81,7 +81,7 @@ extension OnboardingViewController {
         signInButton.addTarget(self, action: #selector(signinButtonTapped), for: .touchUpInside)
 
         self.view.addSubview(getStartedButton)
-        getStartedButton.layer.cornerRadius = 4
+        getStartedButton.layer.cornerRadius = 8
         getStartedButton.backgroundColor = theme.colors.doorDashRed
         getStartedButton.setTitle("Get Started", for: .normal)
         getStartedButton.setTitleColor(theme.colors.white, for: .normal)

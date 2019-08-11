@@ -179,10 +179,7 @@ extension BrowseFoodAPIService {
     func fetchAllStores(request: FetchAllStoresRequestModel,
                         isFiltered: Bool,
                         completion: @escaping (FetchAllStoresResponseModel?, Error?) -> ()) {
-        let target = isFiltered ?
-            BrowseFoodAPITarget.filterStoreSearch(request: request) :
-            BrowseFoodAPITarget.fetchAllStores(request: request)
-        browseFoodAPIProvider.request(target) { (result) in
+        browseFoodAPIProvider.request(.filterStoreSearch(request: request)) { (result) in
             switch result {
             case .success(let response):
                 guard response.statusCode == 200,

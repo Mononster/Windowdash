@@ -55,7 +55,7 @@ extension LoginComponentView {
 
     func setupFacebookButton() {
         addSubview(facebookButton)
-        facebookButton.layer.cornerRadius = 4.0
+        facebookButton.layer.cornerRadius = 8
         facebookButton.backgroundColor = theme.colors.signInFacebookButtonColor
         facebookButton.setTitle("Continue with Facebook", for: .normal)
         facebookButton.titleLabel?.textAlignment = .center
@@ -66,7 +66,7 @@ extension LoginComponentView {
 
     func setupGoogleButton() {
         addSubview(googleButton)
-        googleButton.layer.cornerRadius = 4.0
+        googleButton.layer.cornerRadius = 8
         googleButton.backgroundColor = theme.colors.signInGoogleButtonColor
         googleButton.setTitle("Continue with Google", for: .normal)
         googleButton.titleLabel?.textAlignment = .center
@@ -77,8 +77,8 @@ extension LoginComponentView {
 
     func setupEmailLabel() {
         addSubview(continueWithEmailLabel)
-        continueWithEmailLabel.textColor = theme.colors.lightGray
-        continueWithEmailLabel.font = theme.fonts.medium12
+        continueWithEmailLabel.textColor = theme.colors.gray
+        continueWithEmailLabel.font = theme.fonts.medium14
         continueWithEmailLabel.textAlignment = .center
         continueWithEmailLabel.adjustsFontSizeToFitWidth = true
         continueWithEmailLabel.minimumScaleFactor = 0.5
@@ -87,21 +87,21 @@ extension LoginComponentView {
     }
 
     func setupConstraints() {
-        googleButton.snp.makeConstraints { (make) in
+        facebookButton.snp.makeConstraints { (make) in
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
-            make.height.equalTo(46)
+            make.height.equalTo(42)
             make.top.equalToSuperview().offset(18)
         }
 
-        facebookButton.snp.makeConstraints { (make) in
-            make.leading.trailing.height.equalTo(googleButton)
-            make.top.equalTo(googleButton.snp.bottom).offset(8)
+        googleButton.snp.makeConstraints { (make) in
+            make.leading.trailing.height.equalTo(facebookButton)
+            make.top.equalTo(facebookButton.snp.bottom).offset(8)
         }
 
         continueWithEmailLabel.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
-            make.top.equalTo(facebookButton.snp.bottom)
+            make.top.equalTo(googleButton.snp.bottom)
             make.bottom.equalToSuperview()
         }
     }

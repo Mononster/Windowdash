@@ -70,4 +70,23 @@ extension BrowseFoodTabCoordinator: BrowseFoodViewControllerDelegate {
             self.removeCoordinator(coordinator)
         }
     }
+
+    func routeToChangeAddressModule() {
+        let coordinator = SearchAddressCoordinator(router: Router())
+        coordinator.start()
+        addCoordinator(coordinator)
+        coordinator.delegate = self
+        self.router.present(coordinator)
+    }
+}
+
+extension BrowseFoodTabCoordinator: SearchAddressCoordinatorDelegate {
+
+    func didChangedAddress() {
+        rootViewController.handleUserAddressUpdated()
+    }
+
+    func didDismiss(in coordinator: Coordinator) {
+        removeCoordinator(coordinator)
+    }
 }

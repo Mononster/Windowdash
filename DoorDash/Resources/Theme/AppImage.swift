@@ -40,6 +40,9 @@ protocol ImageAsset {
     var storePinNormal: UIImage { get }
     var storePinSelected: UIImage { get }
     var myLocationImage: UIImage { get }
+    var mapIcon: UIImage { get }
+    var listIcon: UIImage { get }
+    var searchIcon: UIImage { get }
 }
 
 struct DefaultImageAsset: ImageAsset {
@@ -166,5 +169,17 @@ struct DefaultImageAsset: ImageAsset {
 
     var myLocationImage: UIImage {
         return UIImage(named: "my_location")!
+    }
+
+    var mapIcon: UIImage {
+        return UIImage(named: "map_icon")!
+    }
+
+    var listIcon: UIImage {
+        return UIImage(named: "list_icon")!
+    }
+
+    var searchIcon: UIImage {
+        return UIImage(named: "search_icon")!
     }
 }

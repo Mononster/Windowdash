@@ -12,13 +12,6 @@ import UIKit
 
 final class SortOptionSelectionView: FullScreenPresentableView {
 
-    enum ViewPresentingState {
-        case hidden
-        case presenting
-        case dismissing
-        case present
-    }
-
     struct Constants {
         let horizontalSpace: CGFloat = 32
         let titleLabelHeight: CGFloat = 32

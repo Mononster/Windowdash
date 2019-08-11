@@ -28,7 +28,7 @@ final class SignInputFormModel: NSObject, ListDiffable {
 final class SignInputFormSectionController: ListSectionController {
 
     private var model: SignInputFormModel?
-    static let formLabelWidthRatio: CGFloat = 0.24
+    static let formLabelWidthRatio: CGFloat = 0.28
 
     var inputResults: [SignInputFieldType: String] = [:]
     var userFinishInputing: (() -> ())?
@@ -73,6 +73,15 @@ extension SignInputFormSectionController: InputFormCellDelegate {
                 cell.inputField.becomeFirstResponder()
             }
         }
+    }
+
+    func getInputResponder() -> SignInputFieldType? {
+        for cell in self.collectionContext?.visibleCells(for: self) ?? [] {
+            if let cell = cell as? InputFormCell, cell.inputField.isFirstResponder {
+                return cell.type
+            }
+        }
+        return nil
     }
 
     func completeInputing() {

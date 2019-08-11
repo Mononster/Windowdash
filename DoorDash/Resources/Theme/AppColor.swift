@@ -42,7 +42,7 @@ struct DefaultColors: ColorSchema {
     }
 
     var backgroundGray: UIColor {
-        return UIColor.hex("F4F4F2")
+        return UIColor.hex("F9FAF9")
     }
 
     var backgroundDarkGray: UIColor {

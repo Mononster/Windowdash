@@ -39,7 +39,7 @@ final class StoreListViewModel {
         self.filterOptions = models
     }
 
-    private func reset() {
+    func reset() {
         self.serverFetchLimit = 60
         self.serverPageOffset = 0
         self.localPageOffset = 0
@@ -119,7 +119,7 @@ final class StoreListViewModel {
             if !addTopInset && i == 0 {
                 shouldAddInset = false
             }
-            let item = store.convertToPresenterItem(shouldAddInset: shouldAddInset, layout: self.layout)
+            let item = store.convertToPresenterItem(topInset: shouldAddInset ? nil : 0, layout: self.layout)
             items.append(item)
         }
         return items

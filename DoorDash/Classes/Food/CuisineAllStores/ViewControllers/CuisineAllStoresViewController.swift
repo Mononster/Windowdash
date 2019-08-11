@@ -80,7 +80,7 @@ extension CuisineAllStoresViewController: ListAdapterDataSource {
                 fatalError()
             }
             let controller = SingleStoreSectionController(
-                addInset: item.shouldAddTopInset,
+                topInset: item.topInset,
                 menuLayout: .centerOneItem
             )
             controller.didSelectItem = { storeID in
@@ -89,7 +89,7 @@ extension CuisineAllStoresViewController: ListAdapterDataSource {
             controller.edgeSwipeBackGesture = self.navigationController?.interactivePopGestureRecognizer
             return controller
         default:
-            return SingleStoreSectionController(addInset: true, menuLayout: .centerOneItem)
+            fatalError()
         }
     }
 

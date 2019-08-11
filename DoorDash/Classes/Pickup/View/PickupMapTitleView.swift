@@ -63,7 +63,7 @@ extension PickupMapTitleView {
         addSubview(addressLabel)
         addressLabel.textColor = ApplicationDependency.manager.theme.colors.black
         addressLabel.font = constants.addressLabelFont
-        addressLabel.textAlignment = .right
+        addressLabel.textAlignment = .center
         addressLabel.adjustsFontSizeToFitWidth = true
         addressLabel.minimumScaleFactor = 0.5
         addressLabel.numberOfLines = 1

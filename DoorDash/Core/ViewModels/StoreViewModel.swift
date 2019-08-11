@@ -50,7 +50,6 @@ final class StoreViewModel {
         nextCloseDate = DateInRegion(store.nextCloseTime)
         nameDisplay = store.name
         businessNameDisplay = store.businessName
-        storeDescriptionDisplay = store.storeDescription
         headerImageURL = URL(string: store.headerImageURL ?? "")
         ratingNumberDisplay = store.averageRating == -1 ? nil : String(store.averageRating)
         shouldHighlightRating = store.averageRating >= 4.7
@@ -66,6 +65,7 @@ final class StoreViewModel {
             tempPriceRange += "$"
         }
         priceRangeDisplay = tempPriceRange + " •"
+        storeDescriptionDisplay = priceRangeDisplay + " " + store.storeDescription
         setup()
     }
 
@@ -138,10 +138,11 @@ final class StoreViewModel {
 
 extension StoreViewModel {
 
-    func convertToPresenterItem(shouldAddInset: Bool,
+    func convertToPresenterItem(topInset: CGFloat? = nil,
                                 mode: BannerViewMode = .delivery,
                                 layout: MenuCollectionViewLayoutKind) -> BrowseFoodAllStoreItem{
         let urls = self.menuURLs
+        let storeConstants = SingleStoreSectionController.Constants()
         var menuItems = urls.map { url in
             return BrowseFoodAllStoreMenuItem(imageURL: url)
         }
@@ -161,7 +162,7 @@ extension StoreViewModel {
             deliveryCost: mode == .pickup ? locationFromUser() : costDisplayLong,
             isClosed: isClosed,
             layout: layout,
-            shouldAddTopInset: shouldAddInset,
+            topInset: topInset ?? (menuURLs.count > 0 ? storeConstants.topInsetWithImage : storeConstants.topInsetWithoutImage),
             closeTimeDisplay: closeTimeDisplay,
             bannerDisplayMode: mode)
     }

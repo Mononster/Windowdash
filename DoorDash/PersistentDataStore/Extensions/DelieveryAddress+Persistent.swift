@@ -57,6 +57,7 @@ extension DeliveryAddress: PersistentModel {
             id: persistent.id,
             timezone: persistent.timezone ?? "",
             state: persistent.state ?? "",
+            street: "",
             shortName: persistent.shortName ?? "",
             latitude: persistent.lattitude,
             longitude: persistent.longitude,

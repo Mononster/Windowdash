@@ -29,7 +29,7 @@ final class InputFormCell: UICollectionViewCell {
 
     weak var delegate: InputFormCellDelegate?
 
-    static let height: CGFloat = 45
+    static let height: CGFloat = 50
 
     override init(frame: CGRect) {
         titleLabel = UILabel()
@@ -64,7 +64,7 @@ final class InputFormCell: UICollectionViewCell {
             self.inputField.placeholder = "at least 8 characters"
         } else {
             self.inputField.isSecureTextEntry = false
-            self.inputField.placeholder = nil
+            self.inputField.placeholder = "required"
         }
 
         if !isLastInputField {
@@ -96,7 +96,7 @@ extension InputFormCell {
     private func setupTitleLabel() {
         addSubview(titleLabel)
         titleLabel.textColor = ApplicationDependency.manager.theme.colors.black
-        titleLabel.font = ApplicationDependency.manager.theme.fonts.medium15
+        titleLabel.font = ApplicationDependency.manager.theme.fonts.bold16
         titleLabel.textAlignment = .right
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.5

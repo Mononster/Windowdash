@@ -11,7 +11,7 @@ import SnapKit
 
 final class SignupButtonCell: UICollectionViewCell {
 
-    static let height: CGFloat = 56
+    static let height: CGFloat = 62
     private let button: UIButton
     private var buttonAction: (() -> ())?
 
@@ -41,9 +41,9 @@ extension SignupButtonCell {
     private func setupButton() {
         addSubview(button)
         button.setTitleColor(ApplicationDependency.manager.theme.colors.white, for: .normal)
-        button.titleLabel?.font = ApplicationDependency.manager.theme.fonts.medium16
+        button.titleLabel?.font = ApplicationDependency.manager.theme.fonts.medium18
         button.backgroundColor = ApplicationDependency.manager.theme.colors.doorDashRed
-        button.layer.cornerRadius = 4
+        button.layer.cornerRadius = 8
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     }
 

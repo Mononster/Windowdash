@@ -41,7 +41,7 @@ extension SignupAgreementCell {
         agreementLabel.numberOfLines = 0
         agreementLabel.adjustsFontSizeToFitWidth = true
         agreementLabel.minimumScaleFactor = 0.5
-        agreementLabel.textAlignment = .center
+        agreementLabel.textAlignment = .left
     }
 
     private func setupConstraints() {

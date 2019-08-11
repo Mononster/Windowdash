@@ -33,7 +33,7 @@ final class BrowseFoodViewModel: PresentableViewModel {
         }
     }
 
-    private let user: User
+    private var user: User
     private let service: BrowseFoodAPIService
     private let storeList: StoreListViewModel
     private var mainView: BrowseFoodMainView?
@@ -53,6 +53,10 @@ final class BrowseFoodViewModel: PresentableViewModel {
         self.user = user
     }
 
+    func updateToLatestUser() {
+        user = ApplicationEnvironment.current.currentUser ?? user
+    }
+
     func generateUserAddressContent() -> String {
         return user.defaultAddress?.shortName ?? ""
     }
@@ -68,6 +72,9 @@ extension BrowseFoodViewModel {
         guard let lat = user.defaultAddress?.latitude, let lng = user.defaultAddress?.longitude else {
             fatalError("User MUST have an address at this point")
         }
+        sectionDataCache.removeAll()
+        sectionData.removeAll()
+        storeList.reset()
         let tasks = DispatchGroup()
         tasks.enter()
         var taskSucceeds = true

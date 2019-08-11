@@ -10,6 +10,10 @@ import UIKit
 import SnapKit
 import IGListKit
 
+protocol SignupHomeViewControllerDelegate: class {
+    func dismiss()
+}
+
 final class SignupHomeViewController: BaseViewController {
 
     lazy var adapter: ListAdapter = {
@@ -21,6 +25,7 @@ final class SignupHomeViewController: BaseViewController {
     private let viewModel: SignupHomeViewModel
     private let inputSectionController: SignInputFormSectionController
 
+    weak var delegate: SignupHomeViewControllerDelegate?
     var userCanProceedToNextStep: ((SignupMode) -> ())?
     var mode: SignupMode
 
@@ -40,6 +45,10 @@ final class SignupHomeViewController: BaseViewController {
         adapter.dataSource = self
     }
 
+    deinit {
+        removeKeyboardNotifications()
+    }
+
     required convenience init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -48,10 +57,27 @@ final class SignupHomeViewController: BaseViewController {
         super.viewDidLoad()
         setupUI()
         bindModels()
+        addKeyboardNotifications()
     }
 
     func bindModels() {
         self.inputSectionController.userFinishInputing = signButtonTapped
+    }
+
+    override func adjustViewWhenKeyboardShow(notification: NSNotification) {
+        guard let keyboard = obtainKeyboardInfo(from: notification) else { return }
+        collectionView.contentInset = .init(top: 0, left: 0, bottom: keyboard.keyboardHeight, right: 0)
+        if inputSectionController.getInputResponder() == .password && mode == .register {
+            let bottomOffset = CGPoint(x: 0, y: collectionView.contentSize.height + keyboard.keyboardHeight - collectionView.frame.height)
+            view.layoutIfNeeded()
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: {
+                self.collectionView.setContentOffset(bottomOffset, animated: false)
+            })
+        }
+    }
+
+    override func adjustViewWhenKeyboardDismiss(notification: NSNotification) {
+        collectionView.contentInset = .init(top: 0, left: 0, bottom: 0, right: 0)
     }
 }
 
@@ -113,10 +139,7 @@ extension SignupHomeViewController: ListAdapterDataSource {
         } else if object is SignupAgreementModel {
             return SignupAgreementSectionController()
         } else if object is SignupButtonModel {
-            var inset: UIEdgeInsets = .zero
-            if mode == .login {
-                inset = UIEdgeInsets(top: 12, left: 0, bottom: 0, right: 0)
-            }
+            let inset: UIEdgeInsets = .init(top: 12, left: 0, bottom: 0, right: 0)
             return SignupButtonSectionController(inset: inset, buttonTapped: signButtonTapped)
         }
         return inputSectionController
@@ -208,5 +231,9 @@ extension SignupHomeViewController: SignupHomeNavigationBarDelegate {
         } else {
             self.customNavigationBar.skipButton.isHidden = false
         }
+    }
+
+    func backButtonTapped() {
+        delegate?.dismiss()
     }
 }

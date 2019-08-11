@@ -26,25 +26,54 @@ final class QueriedAddresses: NSObject, ListDiffable {
 
 final class GMPrediction: NSObject, Codable {
 
+    struct AddressInfo: Codable {
+
+        enum AddressInfoCodingKeys: String, CodingKey {
+            case mainText = "main_text"
+            case secondaryText = "secondary_text"
+        }
+        let mainText: String
+        let secondaryText: String
+
+        init(mainText: String, secondaryText: String) {
+            self.mainText = mainText
+            self.secondaryText = secondaryText
+        }
+
+        init(from decoder: Decoder) throws {
+            let values = try decoder.container(keyedBy: AddressInfoCodingKeys.self)
+            let mainText: String = try values.decodeIfPresent(String.self, forKey: .mainText) ?? ""
+            let secondaryText: String = try values.decodeIfPresent(String.self, forKey: .secondaryText) ?? ""
+            self.init(mainText: mainText, secondaryText: secondaryText)
+        }
+
+        func encode(to encoder: Encoder) throws {}
+    }
+
     public enum GMPredictionCodingKeys: String, CodingKey {
         case address = "description"
+        case addressInfo = "structured_formatting"
         case referenceID = "reference"
     }
 
     let address: String
+    let addressInfo: AddressInfo
     let referenceID: String?
 
     init(address: String,
+         addressInfo: AddressInfo,
          referenceID: String?) {
         self.address = address
+        self.addressInfo = addressInfo
         self.referenceID = referenceID
     }
 
     public convenience init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: GMPredictionCodingKeys.self)
         let address: String = try values.decodeIfPresent(String.self, forKey: .address) ?? ""
+        let addressInfo: AddressInfo = try values.decode(AddressInfo.self, forKey: .addressInfo)
         let referenceID: String? = try values.decodeIfPresent(String.self, forKey: .referenceID)
-        self.init(address: address, referenceID: referenceID)
+        self.init(address: address, addressInfo: addressInfo, referenceID: referenceID)
     }
 }
 

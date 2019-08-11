@@ -17,8 +17,8 @@ final class StoreMapPinView: MKAnnotationView {
         let titleLabelFont: UIFont = ApplicationDependency.manager.theme.fonts.bold10
     }
 
-    private let imageView: UIImageView
-    private let titleLabel: UILabel
+    let imageView: UIImageView
+    let titleLabel: UILabel
 
     private let constants = Constants()
     private let theme = ApplicationDependency.manager.theme
@@ -37,8 +37,12 @@ final class StoreMapPinView: MKAnnotationView {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: false)
         imageView.image = selected ? theme.imageAssets.storePinSelected : theme.imageAssets.storePinNormal
+        let imageSize = selected ? constants.selectedImageSize : constants.imageSize
         imageView.snp.updateConstraints { (make) in
-            make.size.equalTo(selected ? constants.selectedImageSize : constants.imageSize)
+            make.size.equalTo(imageSize)
+        }
+        titleLabel.snp.updateConstraints { (make) in
+            make.top.equalTo(imageView).offset(imageSize / 2 + constants.marginBetweenTitleAndImage)
         }
         UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 20, options: .curveEaseInOut, animations: {
             self.layoutIfNeeded()
@@ -56,7 +60,7 @@ extension StoreMapPinView {
 
     private func setupUI() {
         setupTitleLabel()
-        setupImageViews()
+        setupImageView()
         setupConstraints()
     }
 
@@ -72,7 +76,7 @@ extension StoreMapPinView {
         titleLabel.alpha = 0.8
     }
 
-    private func setupImageViews() {
+    private func setupImageView() {
         addSubview(imageView)
         imageView.image = theme.imageAssets.storePinNormal
         imageView.contentMode = .scaleAspectFit
@@ -80,14 +84,13 @@ extension StoreMapPinView {
 
     private func setupConstraints() {
         imageView.snp.makeConstraints { (make) in
-            make.center.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
             make.size.equalTo(constants.imageSize)
         }
 
         titleLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(imageView.snp.bottom).offset(
-                constants.marginBetweenTitleAndImage
-            )
+            make.top.equalTo(imageView).offset(constants.imageSize / 2 + constants.marginBetweenTitleAndImage)
             make.centerX.equalTo(imageView)
         }
     }

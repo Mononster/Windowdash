@@ -106,16 +106,24 @@ final class BrowsePageNavigationBar: UIView {
     let numShopLabel: UILabel
     private let separator: Separator
 
+    var userTappedChangeAddress: (() -> Void)?
+
     override init(frame: CGRect) {
         addressView = AddressHeadlineView()
         numShopLabel = UILabel()
         separator = Separator.create()
         super.init(frame: frame)
         setupUI()
+        setupAction()
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupAction() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(addressHeadlineViewTapped))
+        addressView.addGestureRecognizer(tap)
     }
 
     private func updateBy(offset: CGFloat, navigattionBarMinHeight: CGFloat) {
@@ -205,5 +213,13 @@ extension BrowsePageNavigationBar {
             make.leading.trailing.bottom.equalToSuperview()
             make.height.equalTo(0.6)
         }
+    }
+}
+
+extension BrowsePageNavigationBar {
+
+    @objc
+    private func addressHeadlineViewTapped() {
+        userTappedChangeAddress?()
     }
 }
