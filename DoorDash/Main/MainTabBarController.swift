@@ -31,6 +31,7 @@ final class MainTabBarController: UITabBarController {
 
     weak var tabBarDelegate: MainTabBarControllerDelegate?
     private let cartThumbnailView: OrderCartThumbnailView
+    private var bottomInsetCache: [Int: CGFloat] = [:]
     let viewModel: MainTabBarViewModel
 
     private let constants = Constants()
@@ -118,7 +119,7 @@ final class MainTabBarController: UITabBarController {
     }
 
     private func updateExistingViewInsets(cartThumbnailHeight: CGFloat) {
-        for vc in self.children {
+        for (i, vc) in self.children.enumerated() {
             guard let navVC = vc as? DoorDashNavigationController,
                 let mainVC = navVC.viewControllers.first, mainVC.isViewLoaded else {
                     continue
@@ -127,10 +128,14 @@ final class MainTabBarController: UITabBarController {
                 guard let subview = subview as? UICollectionView else {
                     continue
                 }
+                subview.tag = i
+                if bottomInsetCache[i] == nil {
+                    bottomInsetCache[i] = subview.contentInset.bottom
+                }
                 let newEdge = UIEdgeInsets(
                     top: subview.contentInset.top,
                     left: subview.contentInset.left,
-                    bottom: subview.contentInset.bottom + cartThumbnailHeight,
+                    bottom: (bottomInsetCache[i] ?? 0) + cartThumbnailHeight,
                     right: subview.contentInset.right
                 )
                 subview.contentInset = newEdge

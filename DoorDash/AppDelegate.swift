@@ -15,7 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        //ApplicationEnvironment.logout()
         SwiftDate.defaultRegion = Region.local
         if let storedEnvironment
             = ApplicationEnvironment.restore(from: UserDefaults.standard) {
@@ -34,12 +33,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         }
 
-        self.window = UIWindow()
+        if ApplicationSettings.Stored.enableVisualizeDemoMode {
+            window = SensorVisualizerWindow(frame: UIScreen.main.bounds)
+        } else {
+            window = UIWindow(frame: UIScreen.main.bounds)
+        }
         self.window?.makeKeyAndVisible()
-        self.window?.frame = UIScreen.main.bounds
         self.window?.backgroundColor = UIColor.white
         ApplicationDependency.manager.coordinator.start(window: self.window!)
-        print(UUID().uuidString)
         return true
     }
 }
