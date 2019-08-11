@@ -2,16 +2,11 @@
 ![Swift version](https://img.shields.io/badge/swift-5.0-orange.svg)
 ![Platforms](https://img.shields.io/badge/platforms-iOS%20-lightgrey.svg)
 
-Windowdash is an extremly high imitation swift clone of the most popular food delivery app Doordash. (Continually updating)
+Windowdash is an extremly high imitation swift clone of the popular food delivery app Doordash. (Continually updating)
 
 ## Demo
 
-<img src="./Demo/delivery.jpeg" width="250">
-<img src="./Demo/home.png" width="250">
-<img src="./Demo/map.PNG" width="250">
-<img src="./Demo/map_selected.PNG" width="250">
-<img src="./Demo/order.PNG" width="250">
-<img src="./Demo/account.PNG" width="250">
+<img src="./Demo/delivery.jpeg" width="250"> <img src="./Demo/home.PNG" width="250"> <img src="./Demo/map.PNG" width="250"> <img src="./Demo/map_selected.PNG" width="250"> <img src="./Demo/order.PNG" width="250"> <img src="./Demo/account.PNG" width="250">
 
 ## Getting Started
 
