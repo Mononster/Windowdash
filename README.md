@@ -60,7 +60,6 @@ So I decide to write the app myself and see how they implemented this product (a
 ## Anything else I can do with this clone?
 
 * Use existing models and make orders from command line.
-* Experience doordash's features before they roll out to public.
 * Remove the features you don't like and build your completely customized doordash experience.
 * More and more...
 
