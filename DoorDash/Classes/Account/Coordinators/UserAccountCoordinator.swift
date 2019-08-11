@@ -48,6 +48,17 @@ extension UserAccountCoordinator: UserAccountViewControllerDelegate {
         self.router.present(signupHomeViewController, animated: true)
     }
 
+    func showSelectAddress() {
+        let coordinator = SearchAddressCoordinator(
+            router: Router(),
+            mode: .userAccount
+        )
+        coordinator.start()
+        addCoordinator(coordinator)
+        coordinator.delegate = self
+        self.router.present(coordinator, animated: true)
+    }
+
     func userLoggedOut() {
         self.delegate?.userLoggedOut()
     }
@@ -64,8 +75,24 @@ extension UserAccountCoordinator: UserAccountViewControllerDelegate {
             self.router.push(coordinator, animated: true) {
                 self.removeCoordinator(coordinator)
             }
+        case .addresses:
+            showSelectAddress()
         default:
             break
         }
+    }
+}
+
+extension UserAccountCoordinator: SearchAddressCoordinatorDelegate {
+
+    func didDismiss(in coordinator: Coordinator) {
+        removeCoordinator(coordinator)
+    }
+
+    func didChangedAddress() {
+        guard let coordinator = ApplicationDependency.manager.coordinator.coordinators.first as? ContentCoordinator else {
+            return
+        }
+        coordinator.refreshDeliveryPage()
     }
 }

@@ -29,7 +29,6 @@ final class GMAutoCompleteManager {
         if searchTerm.count >= minQueryLength {
             //cancel()
             if let cached = cachedResult(searchTerm) {
-                print("Completed here")
                 completeRequest(cached)
             } else {
                 performBlock = performAfter(minRequestDelay, closure: { [weak self] () -> Void in

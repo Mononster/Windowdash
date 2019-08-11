@@ -43,6 +43,7 @@ final class SearchAddressInteractor {
     private let dataStore: DataStoreType
 
     private var currentSelectedLocation: GMDetailLocation?
+    private var currentSearchResult: [SearchAddressItemModel] = []
     private var inputResults: [EnterAddressInputType: String] = [:]
 
     init(presenter: SearchAddressPresenterType, apiService: UserAPIService) {
@@ -144,7 +145,12 @@ extension SearchAddressInteractor {
                 let placeAddress = Array(components.dropFirst()).joined(separator: ", ")
                 return SearchAddressItemModel(id: address.id, placeName: components.first ?? "", placeAddress: placeAddress, instruction: address.driverInstructions, selected: user.defaultAddress?.id == address.id)
             }
-            self.presenter.presentDisplayData(addresses: addresses, didUpdatedInput: self.didUpdatedSearchItem)
+            self.currentSearchResult = addresses
+            self.presenter.presentDisplayData(
+                addresses: addresses,
+                canShowEmptyState: false,
+                didUpdatedInput: self.didUpdatedSearchItem
+            )
         }
     }
 
@@ -159,14 +165,18 @@ extension SearchAddressInteractor {
         }
         searchAddress(query: text) { queries in
             if queries.predictions.isEmpty {
-                self.presenter.presentDisplayData(addresses: [], didUpdatedInput: self.didUpdatedSearchItem)
+                self.presenter.presentDisplayData(addresses: [], canShowEmptyState: true, didUpdatedInput: self.didUpdatedSearchItem)
                 return
             }
             let models = queries.predictions.map { (prediction) -> SearchAddressItemModel in
                 let id = Int64(arc4random()) + (Int64(arc4random()) << 32)
                 return SearchAddressItemModel(id: id, referenceID: prediction.referenceID, placeName: prediction.addressInfo.mainText, placeAddress: prediction.addressInfo.secondaryText, instruction: nil, selected: false)
             }
-            self.presenter.presentDisplayData(addresses: models, didUpdatedInput: self.didUpdatedSearchItem)
+            self.presenter.presentDisplayData(
+                addresses: models,
+                canShowEmptyState: true,
+                didUpdatedInput: self.didUpdatedSearchItem
+            )
         }
     }
 

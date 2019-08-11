@@ -24,6 +24,7 @@ final class SignupHomeViewController: BaseViewController {
     private let collectionView: UICollectionView
     private let viewModel: SignupHomeViewModel
     private let inputSectionController: SignInputFormSectionController
+    private let buttonSectionController: SignupButtonSectionController
 
     weak var delegate: SignupHomeViewControllerDelegate?
     var userCanProceedToNextStep: ((SignupMode) -> ())?
@@ -32,6 +33,7 @@ final class SignupHomeViewController: BaseViewController {
     init(mode: SignupMode) {
         self.mode = mode
         inputSectionController = SignInputFormSectionController()
+        buttonSectionController = SignupButtonSectionController()
         viewModel = SignupHomeViewModel(
             userAPI: UserAPIService(),
             dataStore: ApplicationEnvironment.current.dataStore
@@ -139,8 +141,8 @@ extension SignupHomeViewController: ListAdapterDataSource {
         } else if object is SignupAgreementModel {
             return SignupAgreementSectionController()
         } else if object is SignupButtonModel {
-            let inset: UIEdgeInsets = .init(top: 12, left: 0, bottom: 0, right: 0)
-            return SignupButtonSectionController(inset: inset, buttonTapped: signButtonTapped)
+            buttonSectionController.buttonTapped = signButtonTapped
+            return buttonSectionController
         }
         return inputSectionController
     }
@@ -170,15 +172,9 @@ extension SignupHomeViewController {
 
     func registerUser() {
         self.view.isUserInteractionEnabled = false
-        loadingIndicator.show()
+        buttonSectionController.startAnimating()
         viewModel.register(inputs: inputSectionController.inputResults) { (errorMsg) in
-            self.loadingIndicator.hide()
-            self.view.isUserInteractionEnabled = true
-            if let errorMsg = errorMsg {
-                self.presentAlertView(title: "Whoops", message: errorMsg)
-                return
-            }
-            self.userCanProceedToNextStep?(self.mode)
+            self.authHandler(errorMsg: errorMsg)
         }
     }
 
@@ -189,30 +185,29 @@ extension SignupHomeViewController {
         }
         self.view.endEditing(true)
         self.view.isUserInteractionEnabled = false
-        loadingIndicator.show()
+        buttonSectionController.startAnimating()
         viewModel.login(email: email, password: password) { (errorMsg) in
-            self.loadingIndicator.hide()
-            self.view.isUserInteractionEnabled = true
-            if let errorMsg = errorMsg {
-                self.presentAlertView(title: "Whoops", message: errorMsg)
-                return
-            }
-            self.userCanProceedToNextStep?(self.mode)
+            self.authHandler(errorMsg: errorMsg)
         }
     }
 
     func guestLogin() {
         self.view.isUserInteractionEnabled = false
-        loadingIndicator.show()
+        buttonSectionController.startAnimating()
         viewModel.guestRegister() { (errorMsg) in
-            self.loadingIndicator.hide()
-            self.view.isUserInteractionEnabled = true
-            if let errorMsg = errorMsg {
-                self.presentAlertView(title: "Whoops", message: errorMsg)
-                return
-            }
-            self.userCanProceedToNextStep?(self.mode)
+            self.authHandler(errorMsg: errorMsg)
         }
+    }
+
+    private func authHandler(errorMsg: String?) {
+        self.buttonSectionController.stopAnimating()
+        self.view.isUserInteractionEnabled = true
+        if let errorMsg = errorMsg {
+            self.presentAlertView(title: "Whoops", message: errorMsg)
+            return
+        }
+        self.view.endEditing(true)
+        self.userCanProceedToNextStep?(self.mode)
     }
 
     func presentAlertView(title: String, message: String) {

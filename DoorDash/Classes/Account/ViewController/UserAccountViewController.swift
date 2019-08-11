@@ -50,12 +50,6 @@ final class UserAccountViewController: BaseViewController {
         fetchUserProfile()
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        self.sectionData = []
-        self.adapter.performUpdates(animated: false)
-    }
-
     func fetchUserProfile() {
         guard let currUser = ApplicationEnvironment.current.currentUser else {
             log.error("User should exsist at this point, wtf happend?")
@@ -66,7 +60,6 @@ final class UserAccountViewController: BaseViewController {
             return
         }
         self.pageLoadingIndicator.show()
-        self.tableViewPlaceHolder.isHidden = false
         self.viewModel.fetchUserAccount { (errorMsg) in
             self.pageLoadingIndicator.hide()
             self.sectionData = [
@@ -75,7 +68,6 @@ final class UserAccountViewController: BaseViewController {
                 self.viewModel.generateModelsForMoreSection(),
                 self.viewModel.generateModelsForAppVersionSection()
             ]
-            self.tableViewPlaceHolder.isHidden = true
             if let errorMsg = errorMsg {
                 log.error(errorMsg)
                 return

@@ -186,7 +186,7 @@ extension MainTabBarController: UITabBarControllerDelegate {
         }
         viewController.view.layoutIfNeeded()
         if type == .delivery || type == .account {
-            if cartThumbnailView.isHidden {
+            if cartThumbnailView.isHidden && !cartVM.isEmptyCart {
                 showCartThumbnailView(text: cartVM.storeNameDisplay)
             }
         } else {

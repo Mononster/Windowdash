@@ -29,12 +29,11 @@ final class SignupButtonSectionController: ListSectionController {
 
     private var model: SignupButtonModel?
 
-    let buttonTapped: (() -> ())
+    var buttonTapped: (() -> ())?
 
-    init(inset: UIEdgeInsets = .zero, buttonTapped: @escaping (() -> ())) {
-        self.buttonTapped = buttonTapped
+    override init() {
         super.init()
-        self.inset = inset
+        self.inset = .init(top: 12, left: 0, bottom: 0, right: 0)
     }
 
     override func sizeForItem(at index: Int) -> CGSize {
@@ -47,12 +46,26 @@ final class SignupButtonSectionController: ListSectionController {
             fatalError()
         }
         cell.configureCell(action: {
-            self.buttonTapped()
+            self.buttonTapped?()
         }, mode: model?.mode ?? .login)
         return cell
     }
 
     override func didUpdate(to object: Any) {
         model = object as? SignupButtonModel
+    }
+
+    func stopAnimating() {
+        guard let cell = collectionContext?.cellForItem(at: 0, sectionController: self) as? SignupButtonCell else {
+            return
+        }
+        cell.stopAnimation()
+    }
+
+    func startAnimating() {
+        guard let cell = collectionContext?.cellForItem(at: 0, sectionController: self) as? SignupButtonCell else {
+            return
+        }
+        cell.startAnimaton()
     }
 }

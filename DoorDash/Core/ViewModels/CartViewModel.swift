@@ -62,7 +62,7 @@ final class CartViewModel {
             }
 
         }
-        isEmptyCart = orderCart.orderDetails.first?.orderItems.count == 0
+        isEmptyCart = (orderCart.orderDetails.first?.orderItems.count ?? 0) == 0
         let itemDescription = totalItems == 1 ? "item" : "items"
         storeNameDisplay = "\(storeDisplayName ?? "")"
         quantityDisplay = "\(totalItems) \(itemDescription)"

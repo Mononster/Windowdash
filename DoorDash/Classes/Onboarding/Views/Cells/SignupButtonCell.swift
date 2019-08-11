@@ -12,11 +12,11 @@ import SnapKit
 final class SignupButtonCell: UICollectionViewCell {
 
     static let height: CGFloat = 62
-    private let button: UIButton
+    private let button: LoadingButton
     private var buttonAction: (() -> ())?
 
     override init(frame: CGRect) {
-        button = UIButton()
+        button = LoadingButton()
         super.init(frame: frame)
         setupUI()
     }
@@ -28,6 +28,14 @@ final class SignupButtonCell: UICollectionViewCell {
     func configureCell(action: @escaping (() -> ()), mode: SignupMode) {
         self.buttonAction = action
         self.button.setTitle(mode.rawValue, for: .normal)
+    }
+
+    func stopAnimation() {
+        button.hideLoading()
+    }
+
+    func startAnimaton() {
+        button.showLoading()
     }
 }
 

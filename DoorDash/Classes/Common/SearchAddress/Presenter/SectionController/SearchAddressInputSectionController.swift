@@ -60,6 +60,13 @@ final class SearchAddressInputSectionController: BaseSearchAddressSectionControl
         }
         cell.searchTextField.text = text
     }
+
+    func wakeUpInput() {
+        guard let cell = collectionContext?.cellForItem(at: 0, sectionController: self) as? SearchAddressInputCell else {
+            return
+        }
+        cell.searchTextField.becomeFirstResponder()
+    }
 }
 
 extension SearchAddressInputSectionController {

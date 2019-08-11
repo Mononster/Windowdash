@@ -18,6 +18,7 @@ protocol SearchAddressPresenterOutput: class {
 
 protocol SearchAddressPresenterType: class {
     func presentDisplayData(addresses: [SearchAddressItemModel],
+                            canShowEmptyState: Bool,
                             didUpdatedInput: ((String?) -> Void)?)
     func presentInitLoadingState(didUpdatedInput: ((String?) -> Void)?)
     func presentAddressResultState(location: GMDetailLocation,
@@ -33,13 +34,13 @@ final class SearchAddressPresenter: SearchAddressPresenterType {
     weak var output: SearchAddressPresenterOutput?
 
     func presentDisplayData(addresses: [SearchAddressItemModel],
+                            canShowEmptyState: Bool,
                             didUpdatedInput: ((String?) -> Void)?) {
         var models: [ListDiffable] = [
             SearchAddressInputPresentingModel(didUpdatedInput: didUpdatedInput),
         ]
-        if !addresses.isEmpty {
-            models.append(contentsOf: addresses.map { SearchAddressItemPresentingModel(item: $0) })
-        } else {
+        models.append(contentsOf: addresses.map { SearchAddressItemPresentingModel(item: $0) })
+        if addresses.isEmpty && canShowEmptyState {
             models.append(SearchAddressEmptyResultPresentingModel(
                 emptyText: "Sorry, we couldn't find that address. Try entering your address without apt/suite/floor numbers."
             ))

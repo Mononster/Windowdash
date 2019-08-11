@@ -39,7 +39,6 @@ extension PaymentMethodsCoordinator: PaymentMethodsViewControllerDelegate {
 
     func dismiss() {
         self.router.popModule()
-        self.delegate?.didDismiss(in: self)
     }
 
     func showAddCardModule() {
@@ -50,7 +49,6 @@ extension PaymentMethodsCoordinator: PaymentMethodsViewControllerDelegate {
         coordinator.start()
         addCoordinator(coordinator)
         self.router.push(coordinator, animated: true) {
-            self.dismiss()
             self.removeCoordinator(coordinator)
         }
     }

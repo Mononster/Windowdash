@@ -138,7 +138,10 @@ extension SearchAddressResultMapCell: MKMapViewDelegate {
             view = StoreMapPinView(annotation: annotation, reuseIdentifier: reuseIdentifier)
         }
         guard let storePinView = view as? StoreMapPinView else { return nil }
-        storePinView.imageView.image = theme.imageAssets.storePinSelected
+        storePinView.imageView.image = theme.imageAssets.houseIcon
+        storePinView.imageView.snp.updateConstraints { (make) in
+            make.size.equalTo(StoreMapPinView.Constants().selectedImageSize)
+        }
         storePinView.displayPriority = .required
         storePinView.annotation = annotation
         storePinView.canShowCallout = false

@@ -13,6 +13,12 @@ protocol SearchAddressCoordinatorDelegate: class {
     func didChangedAddress()
 }
 
+enum SearchAddressEntryMode {
+    case onboarding
+    case browseFood
+    case userAccount
+}
+
 final class SearchAddressCoordinator: Coordinator {
 
     let router: Router
@@ -21,12 +27,12 @@ final class SearchAddressCoordinator: Coordinator {
 
     weak var delegate: SearchAddressCoordinatorDelegate?
 
-    init(router: Router) {
+    init(router: Router, mode: SearchAddressEntryMode) {
         self.router = router
         self.router.setNavigationBarStyle(style: .white)
         let presenter = SearchAddressPresenter()
         let interactor = SearchAddressInteractor(presenter: presenter, apiService: UserAPIService())
-        rootViewController = SearchAddressViewController(interactor: interactor)
+        rootViewController = SearchAddressViewController(interactor: interactor, mode: mode)
         presenter.output = rootViewController
     }
 

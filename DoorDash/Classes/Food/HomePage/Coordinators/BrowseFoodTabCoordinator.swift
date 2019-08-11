@@ -72,7 +72,7 @@ extension BrowseFoodTabCoordinator: BrowseFoodViewControllerDelegate {
     }
 
     func routeToChangeAddressModule() {
-        let coordinator = SearchAddressCoordinator(router: Router())
+        let coordinator = SearchAddressCoordinator(router: Router(), mode: .browseFood)
         coordinator.start()
         addCoordinator(coordinator)
         coordinator.delegate = self

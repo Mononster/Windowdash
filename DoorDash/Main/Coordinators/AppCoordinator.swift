@@ -53,15 +53,13 @@ class AppCoordinator: Coordinator {
     }
 
     func showSelectAddress() {
-        let coordinator = SelectAddressCoordinator(
-            router: Router()
+        let coordinator = SearchAddressCoordinator(
+            router: Router(),
+            mode: .onboarding
         )
         coordinator.start()
         addCoordinator(coordinator)
-        coordinator.userDidFinishSelectingAddress = { coordinator in
-            self.removeCoordinator(coordinator)
-            self.showContents()
-        }
+        coordinator.delegate = self
         self.router.present(coordinator, animated: true)
     }
 
@@ -144,5 +142,16 @@ extension AppCoordinator: ContentCoordinatorDelegate {
     func restartApp(in coordinator: ContentCoordinator) {
         self.removeCoordinator(coordinator)
         self.show()
+    }
+}
+
+extension AppCoordinator: SearchAddressCoordinatorDelegate {
+
+    func didDismiss(in coordinator: Coordinator) {
+        removeCoordinator(coordinator)
+    }
+
+    func didChangedAddress() {
+        self.showContents()
     }
 }

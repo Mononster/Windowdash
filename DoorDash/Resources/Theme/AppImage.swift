@@ -43,6 +43,7 @@ protocol ImageAsset {
     var mapIcon: UIImage { get }
     var listIcon: UIImage { get }
     var searchIcon: UIImage { get }
+    var houseIcon: UIImage { get }
 }
 
 struct DefaultImageAsset: ImageAsset {
@@ -181,5 +182,9 @@ struct DefaultImageAsset: ImageAsset {
 
     var searchIcon: UIImage {
         return UIImage(named: "search_icon")!
+    }
+
+    var houseIcon: UIImage {
+        return UIImage(named: "house_icon")!
     }
 }

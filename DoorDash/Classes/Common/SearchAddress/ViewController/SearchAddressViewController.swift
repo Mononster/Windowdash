@@ -19,13 +19,15 @@ final class SearchAddressViewController: BaseListViewController {
     private let interactor: SearchAddressInteractor
     private let searchSectionController: SearchAddressInputSectionController
     private let addressLoadingIndicator: NVActivityIndicatorView
+    private let mode: SearchAddressEntryMode
 
     weak var delegate: SearchAddressViewControllerDelegate?
 
-    init(interactor: SearchAddressInteractor) {
+    init(interactor: SearchAddressInteractor, mode: SearchAddressEntryMode) {
         self.interactor = interactor
         self.searchSectionController = SearchAddressInputSectionController()
         self.addressLoadingIndicator = NVActivityIndicatorView(frame: CGRect.zero, lineWidth: 3)
+        self.mode = mode
         super.init()
         adapter.collectionView = collectionView
         adapter.dataSource = self
@@ -45,6 +47,13 @@ final class SearchAddressViewController: BaseListViewController {
         setupUI()
         loadData()
         addKeyboardNotifications()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if mode == .onboarding {
+            searchSectionController.wakeUpInput()
+        }
     }
 
     private func loadData() {
@@ -71,8 +80,10 @@ extension SearchAddressViewController {
 
     private func setupNavigationBar() {
         navigationItem.title = "Enter Address"
-        let leftBarButton = UIBarButtonItem(image: theme.imageAssets.dismissIcon, style: .plain, target: self, action: #selector(dismissButtonTapped))
-        navigationItem.setLeftBarButtonItems([leftBarButton], animated: false)
+        if mode == .browseFood || mode == .userAccount {
+            let leftBarButton = UIBarButtonItem(image: theme.imageAssets.dismissIcon, style: .plain, target: self, action: #selector(dismissButtonTapped))
+            navigationItem.setLeftBarButtonItems([leftBarButton], animated: false)
+        }
     }
 
     private func setupCollectionView() {

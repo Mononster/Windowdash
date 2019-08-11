@@ -25,7 +25,7 @@ class LoadingButton: UIButton {
         activityIndicator = NVActivityIndicatorView(
             frame: loadingViewFrame,
             type: .circleStrokeSpin,
-            lineWidth: 1.5
+            lineWidth: 2
         )
         super.init(frame: CGRect.zero)
         activityIndicator.isHidden = true
@@ -58,7 +58,8 @@ class LoadingButton: UIButton {
         activityIndicator.startAnimating()
         activityIndicator.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.size.equalTo(30)
+            make.width.equalTo(activityIndicator.snp.height)
+            make.height.equalToSuperview().multipliedBy(0.6)
         }
     }
 }

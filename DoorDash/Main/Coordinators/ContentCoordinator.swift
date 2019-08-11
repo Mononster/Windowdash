@@ -41,6 +41,13 @@ final class ContentCoordinator: Coordinator {
     func toPresentable() -> UIViewController {
         return self.router.navigationController
     }
+
+    func refreshDeliveryPage() {
+        guard let coordinator = coordinators[safe: 0] as? BrowseFoodTabCoordinator else {
+            return
+        }
+        coordinator.didChangedAddress()
+    }
 }
 
 extension ContentCoordinator {
