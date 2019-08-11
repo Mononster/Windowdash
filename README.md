@@ -4,6 +4,15 @@
 
 Windowdash is an extremly high imitation swift clone of the most popular food delivery app Doordash. (Continually updating)
 
+## Demo
+
+<img src="./Demo/delivery.jpeg" width="250">
+<img src="./Demo/home.png" width="250">
+<img src="./Demo/map.PNG" width="250">
+<img src="./Demo/map_selected.PNG" width="250">
+<img src="./Demo/order.PNG" width="250">
+<img src="./Demo/account.PNG" width="250">
+
 ## Getting Started
 
 ```bash
@@ -54,26 +63,6 @@ So I decide to write the app myself and see how they implemented this product (a
 * Experience doordash's features before they roll out to public.
 * Remove the features you don't like and build your completely customized doordash experience.
 * More and more...
-
-## Third party libraries acknowledgement
-  * SnapKit
-  * Stripe
-  * IGListKit
-  * Cache
-  * Alamofire
-  * Moya
-  * SwiftyJSON
-  * XCGLogger
-  * KeychainAccess
-  * SDWebImage
-  * GoogleMaps
-  * GooglePlaces
-  * PhoneNumberKit
-  * SkeletonView
-  * SwiftDate
-  * SwipeCellKit
-  * lottie-ios
-  * SwiftLocation
 
 ## Feature Check List
 The project goal is to achieve 100%(+) similarity to exsiting doordash app. Below is the checklist of the current state of the app and I'll continue update the app by the checklist. You can also suggest me which features you want to see by submitting issues.
