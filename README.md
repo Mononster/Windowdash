@@ -105,7 +105,7 @@ If this project helped you, you can buy me a cup of blue bottle coffee ;)
 
 Windowdash is [BSD 3-Clause Licensed](https://opensource.org/licenses/BSD-3-Clause)
 
-Copyright (c) 2018, the respective contributors, as shown by the AUTHORS file.
+Copyright (c) 2019, the respective contributors, as shown by the AUTHORS file.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
