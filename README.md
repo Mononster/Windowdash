@@ -2,15 +2,15 @@
 ![Swift version](https://img.shields.io/badge/swift-5.0-orange.svg)
 ![Platforms](https://img.shields.io/badge/platforms-iOS%20-lightgrey.svg)
 
+**Please use this repo as STUDY purpose only and do not use for other purposes**
+
 Windowdash is an extremly high imitation swift clone of the popular food delivery app Doordash. (Continually updating)
 
 ## Demo
 
 <img src=https://media.giphy.com/media/d8tprMnunZi2QEXedZ/giphy.gif width="250"> <img src=https://media.giphy.com/media/KbeKvWft1z6sN4ick0/giphy.gif width="250">
 
-<img src=https://mononster.github.io/doordash_demo/home.PNG width="250"> <img src=https://mononster.github.io/doordash_demo/store_page.PNG width="250"> 
-
-<img src=https://mononster.github.io/doordash_demo/order.PNG width="250"> <img src=https://mononster.github.io/doordash_demo/account.PNG width="250">
+<img src=https://mononster.github.io/doordash_demo/11.png width="200"> <img src=https://mononster.github.io/doordash_demo/13.png width="200"> <img src=https://mononster.github.io/doordash_demo/12.png width="200"> <img src=https://mononster.github.io/doordash_demo/14.png width="200">
 
 ## Getting Started
 
@@ -60,7 +60,6 @@ So I decide to write the app myself and see how they implemented this product (a
 ## Anything else I can do with this clone?
 
 * Use existing models and make orders from command line.
-* Experience doordash's features before they roll out to public.
 * Remove the features you don't like and build your completely customized doordash experience.
 * More and more...
 
@@ -104,5 +103,33 @@ If this project helped you, you can buy me a cup of blue bottle coffee ;)
 
 ## License
 
-Windowdash is [MIT-licensed](https://opensource.org/licenses/MIT). See LICENSE for details.
+Windowdash is [BSD 3-Clause Licensed](https://opensource.org/licenses/BSD-3-Clause)
+
+Copyright (c) 2019, the respective contributors, as shown by the AUTHORS file.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+
+* Neither the name of the copyright holder nor the names of its
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
