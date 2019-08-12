@@ -4,7 +4,7 @@
 
 Windowdash is an extremly high imitation swift clone of the popular food delivery app Doordash. (Continually updating)
 
-Please use this repo as a STUDY purpose only and do not use commercially! 
+**Please use this repo as STUDY purpose only and do not use for other purposes**`
 
 ## Demo
 
