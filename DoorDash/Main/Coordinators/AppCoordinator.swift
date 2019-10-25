@@ -41,6 +41,7 @@ class AppCoordinator: Coordinator {
         coordinator.delegate = self
         coordinator.start()
         addCoordinator(coordinator)
+        coordinator.toPresentable().modalPresentationStyle = .overFullScreen
         self.router.present(coordinator)
     }
 
@@ -49,6 +50,7 @@ class AppCoordinator: Coordinator {
         coordinator.delegate = self
         coordinator.start()
         addCoordinator(coordinator)
+        coordinator.toPresentable().modalPresentationStyle = .overFullScreen
         self.router.present(coordinator, animated: false)
     }
 
@@ -64,6 +66,7 @@ class AppCoordinator: Coordinator {
     }
 
     func showLaunchLoadingScreen() {
+        loadingVC.modalPresentationStyle = .overFullScreen
         self.router.present(loadingVC, animated: false)
     }
 
